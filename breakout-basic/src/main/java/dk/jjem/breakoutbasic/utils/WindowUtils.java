@@ -16,4 +16,8 @@ public class WindowUtils {
     public static double getWindowWidth() {
         return primaryStage.getWidth();
     }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
+    }
 }

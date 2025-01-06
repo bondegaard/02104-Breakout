@@ -1,22 +1,21 @@
 package dk.jjem.breakoutbasic;
 
-import dk.jjem.breakoutbasic.grid.Grid;
 import dk.jjem.breakoutbasic.loop.GameLoop;
+import dk.jjem.breakoutbasic.scenes.AbstractScene;
+import dk.jjem.breakoutbasic.scenes.PlayScene;
 import dk.jjem.breakoutbasic.utils.WindowUtils;
 import javafx.application.Application;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.scene.canvas.*;
 
 import java.io.IOException;
 
 public class Breakout extends Application {
 
-    private Scene scene;
-
-    private Text text;
+    private AbstractScene currentScene;
 
     private GameLoop gameLoop;
 
@@ -27,38 +26,43 @@ public class Breakout extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        // Setup Stage
         primaryStage.setTitle("Breakout");
         primaryStage.setMaximized(true);
 
-        text = new Text();
-        text.setText("test");
-        text.setFill(Color.WHITE);
-        BorderPane borderPane = new BorderPane(text);
-        scene = new Scene(borderPane);
-        scene.setFill(Color.BLACK);
-        primaryStage.setScene(scene);
+        // Adding Stage to window util
+        WindowUtils.setPrimaryStage(primaryStage);
 
-        // Adding it to window util
-      //  WindowUtils.setPrimaryStage(primaryStage);
-      //  new Grid(5,10);
+        // Setup Play Scene for Game
+        setupPlayScene();
+
+        // Setup Grid
+       // new Grid(5,10);
 
         // Start Game Loop
-        initGameLoop();
-
-        primaryStage.show();
-
-        primaryStage.setOnCloseRequest(event -> { if (gameLoop != null) gameLoop.stop();});
+        gameLoop = new GameLoop(this::onTick);
+        gameLoop.start();
+        WindowUtils.getPrimaryStage().setOnCloseRequest(event -> { if (gameLoop != null) gameLoop.stop();});
     }
 
-    public void initGameLoop() {
+    private void setupPlayScene() {
+        // Setup Canvas
+        Canvas canvas = new Canvas();
 
-        final long time = System.currentTimeMillis();
-        gameLoop = new GameLoop(() -> {
-            long currentTime = System.currentTimeMillis();
-            long elapsedTime = currentTime - time;
+        // Setup Group to have canvas
+        Group group = new Group();
+        group.getChildren().add(canvas);
 
-            text.setText("Time: " + elapsedTime);
-        });
-        gameLoop.start();
+        // Setup Scene
+        Scene scene = new Scene(group);
+        scene.setFill(Color.BLACK);
+
+        // Set Current Scene
+        this.currentScene = new PlayScene(scene, canvas);
+        this.currentScene.displayScene();
+    }
+
+    public void onTick() {
+
     }
 }
