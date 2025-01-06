@@ -1,22 +1,21 @@
+
 package dk.jjem.breakoutbasic.objects;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Ball {
+public class Paddle {
     private double posX;
     private double posY;
     private double velX;
-    private double velY;
     private final double size;
     private Image img;
     private ImageView imgView = new ImageView();
 
-    public Ball(double posX, double posY, double velX, double velY, double size, String imgPath){
+    public Paddle(double posX, double posY, double velX, double size, String imgPath){
         this.posX = posX;
         this.posY = posY;
         this.velX = velX;
-        this.velY = velY;
         this.size = size;
 
         this.img = new Image(imgPath, Math.round(posX), Math.round(posY), false, false);
@@ -26,13 +25,14 @@ public class Ball {
         imgView.setFitHeight(size);
     }
 
-    public void updatePosX() {
+    public void updatePosXRight() {
         posX += velX;
     }
 
-    public void updatePosY() {
-        posY += velY;
+    public void updatePosXLeft() {
+        posX -= velX;
     }
+
 
     public void setPosX(int newPosX){
         posX = newPosX;
@@ -54,17 +54,6 @@ public class Ball {
         return velX;
     }
 
-    public double getVelY(){
-        return velY;
-    }
-
-    public void flipVelX(){
-        velX = -velX;
-    }
-    public void flipVelY(){
-        velY = -velY;
-    }
-
     public double getSize() {
         return size;
     }
@@ -83,3 +72,4 @@ public class Ball {
     }
 
 }
+

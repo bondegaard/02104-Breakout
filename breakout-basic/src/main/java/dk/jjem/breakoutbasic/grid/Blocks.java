@@ -1,17 +1,19 @@
 package dk.jjem.breakoutbasic.grid;
 
-public class Rectangles {
+public class Blocks {
     private int posX;
     private int posY;
     private int longSideSize;
     private int shortSideSize;
     public boolean alive;
 
-    public Rectangles(int posX, int posY, int longSideSize, int shortSideSize) {
+    public Blocks (int posX, int posY, int longSideSize, int shortSideSize) {
         this.posX = posX;
         this.posY = posY;
         this.longSideSize = longSideSize;
         this.shortSideSize = shortSideSize;
+        this.alive = true;
+
 
     }
 

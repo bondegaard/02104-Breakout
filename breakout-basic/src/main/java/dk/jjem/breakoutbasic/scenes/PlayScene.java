@@ -1,18 +1,26 @@
 package dk.jjem.breakoutbasic.scenes;
 
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
+import dk.jjem.breakoutbasic.grid.Grid;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 public class PlayScene extends AbstractScene {
-    private Canvas canvas;
+
+    private Grid grid;
 
 
-    public PlayScene(Scene scene, Canvas canvas) {
-        super(scene);
-        this.canvas = canvas;
+    public PlayScene(int n, int m) {
+        this.getScene().setFill(Color.BLACK);
+        this.grid = new Grid(this, n, m);
+
+        Text text = new Text();
+        text.setText("Hello World");
+        text.setFill(Color.WHITE);
+
+        this.getStackPane().getChildren().add(text);
     }
 
-    public Canvas getCanvas() {
-        return canvas;
+    public Grid getGrid() {
+        return grid;
     }
 }
