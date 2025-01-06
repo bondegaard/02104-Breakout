@@ -32,7 +32,7 @@ public class PlayScene extends AbstractScene {
         // Create ball and paddle
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2, WindowUtils.getWindowHeight()/20, 1.0, 8.0, 64.0);
         this.ball = new Ball(this, this.paddle.getPosX()/2, this.paddle.getPosY() + 20.0, random.nextDouble(0.5,1.0) , 1.0, 8.0);
-        
+
         // Add start or pause text
         addStartOrPauseText();
 
