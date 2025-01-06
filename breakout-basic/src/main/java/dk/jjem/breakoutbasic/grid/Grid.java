@@ -10,8 +10,6 @@ public class Grid {
     private Rectangle[][] grid;
 
     public Grid (PlayScene playScene, int n, int m) {
-      //  playScene.getStackPane().getChildren().add(...);
-
         grid = new Rectangle[n][m];
 
         // Long side of the rectangle's length, based on window size
