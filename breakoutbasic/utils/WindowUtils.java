@@ -1,4 +1,4 @@
-package dk.jjem.breakoutbasic.utils;
+package breakoutbasic.utils;
 
 import javafx.stage.Stage;
 

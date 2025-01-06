@@ -1,7 +1,7 @@
-package dk.jjem.breakoutbasic.grid;
+package breakoutbasic.grid;
 
-import dk.jjem.breakoutbasic.scenes.PlayScene;
-import dk.jjem.breakoutbasic.utils.WindowUtils;
+import breakoutbasic.scenes.PlayScene;
+import breakoutbasic.utils.WindowUtils;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 

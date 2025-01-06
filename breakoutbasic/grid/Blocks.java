@@ -1,4 +1,4 @@
-package dk.jjem.breakoutbasic.grid;
+package breakoutbasic.grid;
 
 public class Blocks {
     private int posX;

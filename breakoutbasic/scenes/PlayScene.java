@@ -1,9 +1,9 @@
-package dk.jjem.breakoutbasic.scenes;
+package breakoutbasic.scenes;
 
-import dk.jjem.breakoutbasic.grid.Grid;
-import dk.jjem.breakoutbasic.objects.Ball;
-import dk.jjem.breakoutbasic.objects.Paddle;
-import dk.jjem.breakoutbasic.utils.WindowUtils;
+import breakoutbasic.grid.Grid;
+import breakoutbasic.objects.Ball;
+import breakoutbasic.objects.Paddle;
+import breakoutbasic.utils.WindowUtils;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;

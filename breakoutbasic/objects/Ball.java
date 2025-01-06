@@ -1,47 +1,45 @@
+package breakoutbasic.objects;
 
-package dk.jjem.breakoutbasic.objects;
-
-import dk.jjem.breakoutbasic.scenes.PlayScene;
+import breakoutbasic.scenes.PlayScene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Circle;
 
-public class Paddle {
+public class Ball {
     private double posX;
     private double posY;
     private double velX;
-    private final double height;
-    private final double width;
+    private double velY;
+    private final double size;
     private Image img;
     private ImageView imgView = new ImageView();
 
-    public Paddle(PlayScene playScene, double posX, double posY, double velX, double height, double width /*, String imgPath*/){
+    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double size/*, String imgPath*/){
         this.posX = posX;
         this.posY = posY;
         this.velX = velX;
-        this.width = width;
-        this.height = height;
+        this.velY = velY;
+        this.size = size;
 
         /*this.img = new Image(imgPath, Math.round(posX), Math.round(posY), false, false);
 
         imgView.setImage(img);
-        imgView.setFitHeight(height);
-        imgView.setFitWidth(width);*/
+        imgView.setFitHeight(size);
+        imgView.setFitWidth(size);*/
 
-        Rectangle paddle = new Rectangle(this.posX, this.posY, this.width, this.height);
-        paddle.setFill(Color.RED);
-        playScene.getPane().getChildren().add(paddle);
+        Circle ball = new Circle(this.posX, this.posY, this.size);
+        ball.setFill(Color.RED);
+        playScene.getPane().getChildren().add(ball);
     }
 
-    public void updatePosXRight() {
+    public void updatePosX() {
         posX += velX;
     }
 
-    public void updatePosXLeft() {
-        posX -= velX;
+    public void updatePosY() {
+        posY += velY;
     }
-
 
     public void setPosX(int newPosX){
         posX = newPosX;
@@ -63,12 +61,19 @@ public class Paddle {
         return velX;
     }
 
-    public double getHeight() {
-        return height;
+    public double getVelY(){
+        return velY;
     }
 
-    public double getWidth() {
-        return width;
+    public void flipVelX(){
+        velX = -velX;
+    }
+    public void flipVelY(){
+        velY = -velY;
+    }
+
+    public double getSize() {
+        return size;
     }
 
     public void setImg(String newImgPath){
@@ -85,4 +90,3 @@ public class Paddle {
     }
 
 }
-

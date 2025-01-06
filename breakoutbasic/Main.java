@@ -1,4 +1,4 @@
-package dk.jjem.breakoutbasic;
+package breakoutbasic;
 
 public class Main {
     public static void main(String[] args) {

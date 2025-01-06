@@ -1,4 +1,4 @@
-package dk.jjem.breakoutbasic.loop;
+package breakoutbasic.loop;
 
 import javafx.application.Platform;
 

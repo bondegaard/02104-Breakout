@@ -1,9 +1,8 @@
-package dk.jjem.breakoutbasic.scenes;
+package breakoutbasic.scenes;
 
-import dk.jjem.breakoutbasic.utils.WindowUtils;
+import breakoutbasic.utils.WindowUtils;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 
 public abstract class AbstractScene {
     private Scene scene;

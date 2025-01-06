@@ -1,4 +1,4 @@
-package dk.jjem.breakoutbasic.states;
+package breakoutbasic.states;
 
 public enum GameState {
     UNKNOWN,

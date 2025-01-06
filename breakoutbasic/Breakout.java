@@ -1,15 +1,11 @@
-package dk.jjem.breakoutbasic;
+package breakoutbasic;
 
-import dk.jjem.breakoutbasic.loop.GameLoop;
-import dk.jjem.breakoutbasic.scenes.AbstractScene;
-import dk.jjem.breakoutbasic.scenes.PlayScene;
-import dk.jjem.breakoutbasic.states.GameState;
-import dk.jjem.breakoutbasic.utils.WindowUtils;
+import breakoutbasic.loop.GameLoop;
+import breakoutbasic.scenes.AbstractScene;
+import breakoutbasic.scenes.PlayScene;
+import breakoutbasic.states.GameState;
+import breakoutbasic.utils.WindowUtils;
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
