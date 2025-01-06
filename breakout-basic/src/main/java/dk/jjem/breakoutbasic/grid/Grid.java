@@ -30,15 +30,19 @@ public class Grid {
                 double posX = posXStart + col * lSize; // Horizontal position for each rectangle
                 double posY = posYStart + row * sSize; // Vertical position for each rectangle
 
-                Rectangle rectangle = new Rectangle(posX, posY, lSize, sSize);
-
-                System.out.println("posX: " + posX + " posY: " + posY + " lSize: " + lSize + " sSize: " + sSize);
+                int tempOffset = 3;
+                Rectangle rectangle = new Rectangle(posX, posY, lSize - tempOffset, sSize - tempOffset);
+                rectangle.setX(posX);
+                rectangle.setY(posY);
 
                 grid[row][col] = rectangle;
 
                 rectangle.setFill(Color.BLUE);
 
-                playScene.getStackPane().getChildren().add(rectangle);
+                playScene.getPane().getChildren().add(rectangle);
+
+                //playScene.getPane().getChildren().remove(rectangle);
+                // Fjern fra grid[][]
             }
         }
     }

@@ -23,7 +23,7 @@ public class Ball {
 
         imgView.setImage(img);
         imgView.setFitHeight(size);
-        imgView.setFitHeight(size);
+        imgView.setFitWidth(size);
     }
 
     public void updatePosX() {

@@ -2,18 +2,19 @@ package dk.jjem.breakoutbasic.scenes;
 
 import dk.jjem.breakoutbasic.utils.WindowUtils;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public abstract class AbstractScene {
     private Scene scene;
 
-    private StackPane stackPane;
+    private Pane pane;
 
     public AbstractScene() {
-        this.stackPane = new StackPane();
-        this.scene = new Scene(this.stackPane);
+        this.pane = new Pane();
+        this.scene = new Scene(this.pane);
 
-        scene.setRoot(stackPane);
+        scene.setRoot(pane);
 
         displayScene();
     }
@@ -22,8 +23,8 @@ public abstract class AbstractScene {
         return scene;
     }
 
-    public StackPane getStackPane() {
-        return stackPane;
+    public Pane getPane() {
+        return pane;
     }
 
     public void displayScene() {

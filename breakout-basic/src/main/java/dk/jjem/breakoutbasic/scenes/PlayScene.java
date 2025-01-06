@@ -12,12 +12,6 @@ public class PlayScene extends AbstractScene {
     public PlayScene(int n, int m) {
         this.getScene().setFill(Color.BLACK);
         this.grid = new Grid(this, n, m);
-
-        Text text = new Text();
-        text.setText("Hello World");
-        text.setFill(Color.WHITE);
-
-        this.getStackPane().getChildren().add(text);
     }
 
     public Grid getGrid() {
