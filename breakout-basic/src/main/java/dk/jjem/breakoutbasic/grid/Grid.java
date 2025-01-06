@@ -13,13 +13,13 @@ public class Grid {
         grid = new Rectangle[n][m];
 
         // Long side of the rectangle's length, based on window size
-        double lSize = (WindowUtils.getWindowWidth() * (10.0 / 12.0) / m); // 2/12 is left for blank space
+        double lSize = (WindowUtils.getWindowWidth() / m);
 
         // Short side of the rectangle's length, based on window size
         double sSize = ((WindowUtils.getWindowHeight() / 20.0) / n);
 
         // Starting positions, where blank space is calculated
-        double posXStart = (WindowUtils.getWindowWidth() * (1.0 / 15.0));
+        double posXStart = WindowUtils.getWindowWidth() * (1/50);
         double posYStart = posXStart;
 
         for (int row = 0; row < n; row++) {
