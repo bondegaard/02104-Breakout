@@ -32,4 +32,6 @@ public abstract class AbstractScene {
         WindowUtils.getPrimaryStage().setScene(scene);
         WindowUtils.getPrimaryStage().show();
     }
+
+    public abstract void onTick();
 }

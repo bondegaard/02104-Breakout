@@ -59,7 +59,9 @@ public class Breakout extends Application {
     }
 
     public void onTick() {
-
+        if (currentScene != null) {
+            currentScene.onTick();
+        }
     }
 
     public static Breakout getInstance() {
