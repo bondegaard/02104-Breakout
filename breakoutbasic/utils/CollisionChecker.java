@@ -13,30 +13,55 @@ public class CollisionChecker {
                 entity1.getPosY() + entity1.getWidth() >= entity2.getPosY();
     }
 
-    public static EdgeHit checkCollison(Entity entity, Ball ball) {
+    public static EdgeHit checkCollision(Entity entity, Ball ball) {
         double[][] ballEdges = ballCollision(ball, 8);
 
         for (double[] ballEdge : ballEdges) {
+            // Check if this ballEdge is inside the entity bounds
             if (ballEdge[0] >= entity.getPosX() && ballEdge[0] <= entity.getPosX() + entity.getWidth()
                     && ballEdge[1] >= entity.getPosY() && ballEdge[1] <= entity.getPosY() + entity.getHeight()) {
-                double[] entityCenter = new double[] {entity.getPosX()+ entity.getWidth()/2, entity.getPosY()+ entity.getHeight()/2};
-                double[] ballCenter = new double[] {ball.getPosX()+ball.getWidth()/2, ball.getPosY()+ball.getWidth()/2};
 
-                double distanceToTop = ballEdge[1]-entity.getPosY();
-                double distanceToBotton = entity.getPosY()+entity.getHeight()-ballEdge[1];
-                double distanceToLeft = ballEdge[0]-entity.getPosX();
-                double distanceToRight = entity.getPosX()+entity.getWidth()-ballEdge[0];
+                // Calculate centers
+                double entityCenterX = entity.getPosX() + entity.getWidth() / 2.0;
+                double entityCenterY = entity.getPosY() + entity.getHeight() / 2.0;
+                double ballCenterX   = ball.getPosX() + ball.getWidth() / 2.0;
+                double ballCenterY   = ball.getPosY() + ball.getWidth() / 2.0;
 
-                if (ballCenter[0] < entityCenter[0]) {
-                    if (ballCenter[1] < entityCenter[1]) {
+                // Distances to each edge
+                double distanceToTop    = ballEdge[1] - entity.getPosY();
+                double distanceToBottom = (entity.getPosY() + entity.getHeight()) - ballEdge[1];
+                double distanceToLeft   = ballEdge[0] - entity.getPosX();
+                double distanceToRight  = (entity.getPosX() + entity.getWidth()) - ballEdge[0];
+
+                // Determine quadrant
+                boolean ballLeft  = ballCenterX < entityCenterX;
+                boolean ballAbove = ballCenterY < entityCenterY;
+
+                if (ballLeft) {
+                    // LEFT side
+                    if (ballAbove) {
+                        // TOP-LEFT
                         if (distanceToTop < distanceToLeft) {
-                            return EdgeHit.YAXIS;
+                            return EdgeHit.YAXIS; // Collided with top edge
                         } else if (distanceToTop == distanceToLeft) {
+                            return EdgeHit.BOTH;  // Perfect corner
+                        } else {
+                            return EdgeHit.XAXIS; // Collided with left edge
+                        }
+                    } else {
+                        // BOTTOM-LEFT
+                        if (distanceToBottom < distanceToLeft) {
+                            return EdgeHit.YAXIS;
+                        } else if (distanceToBottom == distanceToLeft) {
                             return EdgeHit.BOTH;
                         } else {
                             return EdgeHit.XAXIS;
                         }
-                    } else {
+                    }
+                } else {
+                    // RIGHT side
+                    if (ballAbove) {
+                        // TOP-RIGHT
                         if (distanceToTop < distanceToRight) {
                             return EdgeHit.YAXIS;
                         } else if (distanceToTop == distanceToRight) {
@@ -44,20 +69,11 @@ public class CollisionChecker {
                         } else {
                             return EdgeHit.XAXIS;
                         }
-                    }
-                } else {
-                    if (ballCenter[1] < entityCenter[1]) {
-                        if (distanceToBotton < distanceToLeft) {
-                            return EdgeHit.YAXIS;
-                        } else if (distanceToBotton == distanceToLeft) {
-                            return EdgeHit.BOTH;
-                        } else {
-                            return EdgeHit.XAXIS;
-                        }
                     } else {
-                        if (distanceToBotton < distanceToRight) {
+                        // BOTTOM-RIGHT
+                        if (distanceToBottom < distanceToRight) {
                             return EdgeHit.YAXIS;
-                        } else if (distanceToBotton == distanceToRight) {
+                        } else if (distanceToBottom == distanceToRight) {
                             return EdgeHit.BOTH;
                         } else {
                             return EdgeHit.XAXIS;
@@ -70,6 +86,7 @@ public class CollisionChecker {
         return EdgeHit.NONE;
     }
 
+
     /**
      *
      * @param Ball ball
@@ -80,8 +97,8 @@ public class CollisionChecker {
         double[][] ballEdges = new double[ballEdgesToCheck][2];
 
         for (int i = 0; i < ballEdgesToCheck; i++) {
-            double x = ball.getPosX()+ball.getWidth()/2+ball.getWidth()*Math.cos(((double) i*Math.PI*2/ballEdgesToCheck));
-            double y = ball.getPosY()+ball.getWidth()/2+ball.getWidth()*Math.sin(((double) i*Math.PI*2/ballEdgesToCheck));
+            double x = ball.getPosX()+ball.getWidth()+ball.getWidth()*Math.cos(((double) i*Math.PI*2/ballEdgesToCheck));
+            double y = ball.getPosY()+ball.getWidth()+ball.getWidth()*Math.sin(((double) i*Math.PI*2/ballEdgesToCheck));
 
             ballEdges[i][0] = x;
             ballEdges[i][1] = y;

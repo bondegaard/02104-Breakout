@@ -37,8 +37,8 @@ public class PlayScene extends AbstractScene {
         this.grid = new Grid(this, n, m);
 
         // Create ball and paddle
-        int width = 128;
-        int height = width/8;
+        int width = 2560;
+        int height = 16;
         int radius = 16;
 
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
@@ -152,7 +152,7 @@ public class PlayScene extends AbstractScene {
         }
 
         // Check Collisions for paddle and ball
-        EdgeHit ballPaddleHit = CollisionChecker.checkCollison(this.paddle, this.ball);
+        EdgeHit ballPaddleHit = CollisionChecker.checkCollision(this.paddle, this.ball);
         if(ballPaddleHit == EdgeHit.YAXIS) {
             this.ball.setPosY(this.paddle.getPosY()-this.ball.getHeight()*2);
             this.ball.setVelY(-Math.abs(this.ball.getVelY()));
@@ -170,7 +170,7 @@ public class PlayScene extends AbstractScene {
                     continue;
                 }
 
-                EdgeHit ballBlockHit = CollisionChecker.checkCollison(block, this.ball);
+                EdgeHit ballBlockHit = CollisionChecker.checkCollision(block, this.ball);
 
                 if (ballBlockHit == EdgeHit.XAXIS){
                     flipX = true;
