@@ -7,25 +7,29 @@ public class CollisionChecker {
 
     public static boolean checkCollision(Entity entity1, Entity entity2) {
 
-        if(entity1.getPosX() <= entity2.getPosX() + entity2.getWidth() &&
-            entity1.getPosX() + entity1.getWidth() >= entity2.getPosX() &&
-            entity1.getPosY() <= entity2.getPosY() + entity2.getWidth() &&
-            entity1.getPosY() + entity1.getWidth() >= entity2.getPosY())
-        {
-            return true;
-        }
-        return false;
+        return entity1.getPosX() <= entity2.getPosX() + entity2.getWidth() &&
+                entity1.getPosX() + entity1.getWidth() >= entity2.getPosX() &&
+                entity1.getPosY() <= entity2.getPosY() + entity2.getWidth() &&
+                entity1.getPosY() + entity1.getWidth() >= entity2.getPosY();
     }
 
-    public static boolean checkCollison(Entity entity, Ball ball) {
+    public static EdgeHit checkCollison(Entity entity, Ball ball) {
         double[][] ballEdges = ballCollision(ball, 8);
-        double[] entityEdges = {entity.getPosX(), entity.getPosY()};
 
-        for (int i = 0; i < ballEdges.length; i++) {
-
+        for (double[] ballEdge : ballEdges) {
+            if (ballEdge[0] >= entity.getPosX() && ballEdge[0] <= entity.getPosX() + entity.getWidth()
+                    && ballEdge[1] >= entity.getPosY() && ballEdge[1] <= entity.getPosY() + entity.getHeight()) {
+                if (Math.abs(ball.getPosX()) - Math.abs(entity.getPosX()) < Math.abs(ball.getPosY()) - Math.abs(entity.getPosY())) {
+                    return EdgeHit.XAXIS;
+                } else if (Math.abs(ball.getPosX()) - Math.abs(entity.getPosX()) == Math.abs(ball.getPosY()) - Math.abs(entity.getPosY())) {
+                    return EdgeHit.BOTH;
+                } else {
+                    return EdgeHit.YAXIS;
+                }
+            }
         }
 
-        return false;
+        return EdgeHit.NONE;
     }
 
     /**
@@ -37,24 +41,13 @@ public class CollisionChecker {
         double[][] ballEdges = new double[ballEdgesToCheck][2];
 
         for (int i = 0; i < ballEdgesToCheck; i++) {
-            double x = ball.getPosX()+ball.getWidth()*Math.cos(((double) i*Math.PI*2/ballEdgesToCheck));
-            double y = ball.getPosY()+ball.getWidth()*Math.sin(((double) i*Math.PI*2/ballEdgesToCheck));
+            double x = ball.getPosX()+ball.getWidth()/2+ball.getWidth()*Math.cos(((double) i*Math.PI*2/ballEdgesToCheck));
+            double y = ball.getPosY()+ball.getWidth()/2+ball.getWidth()*Math.sin(((double) i*Math.PI*2/ballEdgesToCheck));
 
             ballEdges[i][0] = x;
             ballEdges[i][1] = y;
         }
 
         return ballEdges;
-    }
-
-    public static double[][] entityCollision(Entity entity) {
-        double[][] entityEdges = new double[4][2];
-
-        entityEdges[0] = new double[]{entity.getPosX() - entity.getWidth() / 2, entity.getPosY() - entity.getHeight() / 2};
-        entityEdges[1] = new double[]{entity.getPosX() + entity.getWidth() / 2, entity.getPosY() - entity.getHeight() / 2};
-        entityEdges[2] = new double[]{entity.getPosX() - entity.getWidth() / 2, entity.getPosY() + entity.getHeight() / 2};
-        entityEdges[3] = new double[]{entity.getPosX() + entity.getWidth() / 2, entity.getPosY() + entity.getHeight() / 2};
-
-        return entityEdges;
     }
 }

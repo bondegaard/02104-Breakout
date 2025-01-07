@@ -31,20 +31,29 @@ public class Ball extends Entity {
         this.setNode(ball);
     }
 
-    public void updatePosX() {
-        if(this.getPosX() + velX <= WindowUtils.getWindowHeight() - this.getWidth()){
+    public void updateX() {
+        if(this.getPosX() + velX >= WindowUtils.getWindowWidth() - this.getWidth()*2){
             this.flipVelX();
-        } else if(this.getPosX() + WindowUtils.get + velX <= WindowUtils.getWindowHeight() - this.getWidth()){
+        } else if(this.getPosX() +  velX <= 0){
             this.flipVelX();
         }
     }
 
-    public void updatePosY() {
-        if(this.getPosY() + velY <= WindowUtils.getWindowWidth() - this.getHeight()){
+    public void updateY() {
+        if(this.getPosY() + velY >= WindowUtils.getWindowHeight() - this.getHeight()*2){
+            return;
+        } else if (this.getPosY() + velY <= 0){
             this.flipVelY();
         }
-
     }
+
+    public void updatePosition() {
+        this.setPosX(this.getPosX() + velX);
+        this.setPosY(this.getPosY() + velY);
+        this.getNode().relocate(this.getPosX(), this.getPosY());
+    }
+
+
 
 
     public double getVelX(){
@@ -53,6 +62,14 @@ public class Ball extends Entity {
 
     public double getVelY(){
         return velY;
+    }
+
+    public void setVelY(double velY) {
+        this.velY = velY;
+    }
+
+    public void setVelX(double velX) {
+        this.velX = velX;
     }
 
     public void flipVelX(){
@@ -77,7 +94,8 @@ public class Ball extends Entity {
 
 
     public void onTick() {
-        this.updatePosX();
-        this.updatePosY();this.velX++;
+        this.updateX();
+        this.updateY();
+        this.updatePosition();
     }
 }

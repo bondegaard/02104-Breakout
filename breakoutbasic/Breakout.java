@@ -3,7 +3,6 @@ package breakoutbasic;
 import breakoutbasic.loop.GameLoop;
 import breakoutbasic.scenes.AbstractScene;
 import breakoutbasic.scenes.PlayScene;
-import breakoutbasic.states.GameState;
 import breakoutbasic.utils.WindowUtils;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -19,16 +18,14 @@ public class Breakout extends Application {
 
     private GameLoop gameLoop;
 
-    private GameState gameState = GameState.UNKNOWN;
-
     public Breakout run() {
-        instance = this;
         launch();
         return this;
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        instance = this;
         // Setup Stage
         primaryStage.setTitle("Breakout");
         
@@ -54,21 +51,16 @@ public class Breakout extends Application {
         gameLoop = new GameLoop(this::onTick);
         gameLoop.start();
         WindowUtils.getPrimaryStage().setOnCloseRequest(event -> { if (gameLoop != null) gameLoop.stop();});
-
-        if (currentScene instanceof PlayScene playScene) {
-           // playScene.getCanvas();
-        }
     }
 
     private void setupPlayScene() {
         // Set Current Scene
         this.currentScene = new PlayScene(10, 15);
-        this.gameState = GameState.PLAY;
     }
 
     public void onTick() {
-        if (currentScene != null) {
-            currentScene.onTick();
+        if (this.currentScene != null) {
+            this.currentScene.onTick();
         }
     }
 
@@ -80,11 +72,11 @@ public class Breakout extends Application {
         return currentScene;
     }
 
-    public GameLoop getGameLoop() {
-        return gameLoop;
+    public void setCurrentScene(AbstractScene currentScene) {
+        this.currentScene = currentScene;
     }
 
-    public GameState getGameState() {
-        return gameState;
+    public GameLoop getGameLoop() {
+        return gameLoop;
     }
 }

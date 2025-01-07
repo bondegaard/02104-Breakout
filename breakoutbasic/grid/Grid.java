@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 
 public class Grid {
 
+    private final PlayScene playScene;
+
     private Block[][] grid;
 
     private int offset = 3;
@@ -14,6 +16,7 @@ public class Grid {
     private Color[] colors = {Color.RED, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.BURLYWOOD};
 
     public Grid (PlayScene playScene, int n, int m) {
+        this.playScene = playScene;
         grid = new Block[n][m];
 
         // Long side of the rectangle's length, based on window size
@@ -41,5 +44,17 @@ public class Grid {
                 playScene.getPane().getChildren().add(block.getNode());
             }
         }
+    }
+
+    public void removeBlock(int n, int m) {
+        Block block = this.grid[n][m];
+        if (block == null) return;
+
+        playScene.getPane().getChildren().remove(block.getNode());
+        this.grid[n][m] = null;
+    }
+
+    public Block[][] getGrid(){
+        return grid;
     }
 }

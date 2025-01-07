@@ -1,16 +1,17 @@
 package breakoutbasic.scenes;
 
+import breakoutbasic.Breakout;
 import breakoutbasic.grid.Grid;
 import breakoutbasic.objects.Ball;
+import breakoutbasic.objects.Block;
 import breakoutbasic.objects.Paddle;
 import breakoutbasic.utils.CollisionChecker;
+import breakoutbasic.utils.EdgeHit;
 import breakoutbasic.utils.WindowUtils;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.awt.*;
-import java.util.Arrays;
 import java.util.Random;
 
 public class PlayScene extends AbstractScene {
@@ -38,9 +39,10 @@ public class PlayScene extends AbstractScene {
         // Create ball and paddle
         int width = 128;
         int height = width/8;
+        int radius = 16;
 
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
-        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 , this.paddle.getPosY()  - 2*paddle.getHeight() , 0 , -.25, 16.0);
+        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , .5 , -.25, radius);
 
         //Create solid collision area around ball
         //solidArea = new Rectangle(0, 0, (int) ball.getSize(), (int) ball.getSize());
@@ -125,6 +127,11 @@ public class PlayScene extends AbstractScene {
         startOrPauseText.setVisible(false);
         infoText.setVisible(false);
 
+        if (this.ball.getPosY() >= WindowUtils.getWindowHeight()) {
+            Breakout.getInstance().setCurrentScene(new GameOverScene());
+            return;
+        }
+
         if (paddle.isMoveLeft()) {
             paddle.updatePosXLeft();
         }
@@ -136,6 +143,40 @@ public class PlayScene extends AbstractScene {
         this.ball.onTick();
 
         // Check Collisions
+        EdgeHit ballPaddleHit = CollisionChecker.checkCollison(this.paddle, this.ball);
+        if(ballPaddleHit == EdgeHit.YAXIS) {
+            this.ball.setVelY(-Math.abs(this.ball.getVelY()));
+        } else  if(ballPaddleHit == EdgeHit.XAXIS || ballPaddleHit == EdgeHit.BOTH) {
+            this.ball.setVelY(-Math.abs(this.ball.getVelY()));
+            this.ball.flipVelX();
+        }
+
+        boolean flipX = false;
+        boolean flipY = false;
+        for (int i = 0; i < grid.getGrid().length; i++){
+            for (int j = 0; j < grid.getGrid()[i].length; j++){
+                Block block = grid.getGrid()[i][j];
+
+                if(block == null){
+                    continue;
+                }
+
+                EdgeHit ballBlockHit = CollisionChecker.checkCollison(block, this.ball);
+
+                if (ballBlockHit == EdgeHit.XAXIS){
+                    flipX = true;
+                    grid.removeBlock(i,j);
+                } else if ( ballBlockHit == EdgeHit.YAXIS){
+                    flipY = true;
+                    grid.removeBlock(i,j);
+                } else if (ballBlockHit == EdgeHit.BOTH){
+                    flipX = true;
+                    flipY = true;
+                }
+            }
+        }
+        if (flipX)ball.flipVelX();
+        if (flipY)ball.flipVelY();
 
     }
 }

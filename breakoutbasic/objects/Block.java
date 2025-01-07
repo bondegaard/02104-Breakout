@@ -5,7 +5,7 @@ import javafx.scene.shape.Rectangle;
 
 
 public class Block extends Entity{
-    public Block(double posX, double posY, double height, double width, Color color) {
+    public Block(double posX, double posY, double width, double height, Color color) {
         super(posX, posY, height, width);
 
         Rectangle rectangle = new Rectangle(posX, posY, width, height);
