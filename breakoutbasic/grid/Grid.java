@@ -5,8 +5,6 @@ import breakoutbasic.utils.WindowUtils;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.sql.SQLOutput;
-
 public class Grid {
 
     private Rectangle[][] grid;
@@ -42,8 +40,6 @@ public class Grid {
                 
                 // Adding it to grid
                 grid[row][col] = rectangle;
-
-                System.out.print(5*m);
 
                 // Adding it to the scene
                 playScene.getPane().getChildren().add(rectangle);

@@ -24,6 +24,8 @@ public class PlayScene extends AbstractScene {
 
     private Text startOrPauseText;
 
+    private Text infoText;
+
     private Random random = new Random();
 
 
@@ -40,7 +42,7 @@ public class PlayScene extends AbstractScene {
         this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(0.5,1.0) , 1.0, 16.0);
 
         //Create solid collision area around ball
-        solidArea = new Rectangle(0, 0, (int) ball.getSize(), (int) ball.getSize());
+        //solidArea = new Rectangle(0, 0, (int) ball.getSize(), (int) ball.getSize());
 
         CollisionChecker cChecker = new CollisionChecker(this);
 
@@ -80,6 +82,13 @@ public class PlayScene extends AbstractScene {
         this.startOrPauseText.setFill(Color.WHITE);
         this.getPane().getChildren().add(this.startOrPauseText);
 
+        // Text to display controls
+        this.infoText = new Text("Press 'a' to move left and 'd' to move right");
+        this.infoText.setStyle("-fx-font-size: 32px;");
+        this.infoText.setFill(Color.WHITE);
+        this.getPane().getChildren().add(this.infoText);
+
+
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
         this.startOrPauseText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
@@ -87,6 +96,13 @@ public class PlayScene extends AbstractScene {
             double textHeight = newValue.getHeight();
             this.startOrPauseText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
             this.startOrPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
+        });
+
+        this.infoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.infoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.infoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
         });
     }
 
@@ -98,10 +114,12 @@ public class PlayScene extends AbstractScene {
     public void onTick() {
         if (!playing) {
             startOrPauseText.setVisible(true);
+            infoText.setVisible(true);
             return;
         }
 
         startOrPauseText.setVisible(false);
+        infoText.setVisible(false);
 
         if (paddle.isMoveLeft()) {
             paddle.updatePosXLeft();
