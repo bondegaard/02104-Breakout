@@ -5,6 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 public class Ball {
     private double posX;
@@ -14,6 +15,9 @@ public class Ball {
     private final double size;
     private Image img;
     private ImageView imgView = new ImageView();
+
+    public Rectangle solidArea;
+    public boolean collision = false;
 
     public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double size/*, String imgPath*/){
         this.posX = posX;
@@ -31,6 +35,8 @@ public class Ball {
         Circle ball = new Circle(this.posX, this.posY, this.size);
         ball.setFill(Color.RED);
         playScene.getPane().getChildren().add(ball);
+
+
     }
 
     public void updatePosX() {
@@ -88,5 +94,7 @@ public class Ball {
     public ImageView getImgView() {
         return imgView;
     }
+
+
 
 }

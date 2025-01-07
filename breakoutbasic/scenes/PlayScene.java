@@ -3,10 +3,13 @@ package breakoutbasic.scenes;
 import breakoutbasic.grid.Grid;
 import breakoutbasic.objects.Ball;
 import breakoutbasic.objects.Paddle;
+import breakoutbasic.utils.CollisionChecker;
 import breakoutbasic.utils.WindowUtils;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+import java.awt.*;
 import java.util.Random;
 
 public class PlayScene extends AbstractScene {
@@ -30,8 +33,17 @@ public class PlayScene extends AbstractScene {
         this.grid = new Grid(this, n, m);
 
         // Create ball and paddle
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2, WindowUtils.getWindowHeight()/20, 1.0, 8.0, 64.0);
-        this.ball = new Ball(this, this.paddle.getPosX()/2, this.paddle.getPosY() + 20.0, random.nextDouble(0.5,1.0) , 1.0, 8.0);
+        int width = 128;
+        int height = width/8;
+
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
+        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(0.5,1.0) , 1.0, 16.0);
+
+        //Create solid collision area around ball
+        solidArea = new Rectangle(0, 0, (int) ball.getSize(), (int) ball.getSize());
+
+        CollisionChecker cChecker = new CollisionChecker(this);
+
 
         // Add start or pause text
         addStartOrPauseText();
