@@ -16,22 +16,22 @@ public class Ball extends Entity {
     public Rectangle solidArea;
     public boolean collision = false;
 
-    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double size/*, String imgPath*/){
-        super(posX, posY, size, size);
+    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius/*, String imgPath*/){
+        super(posX, posY, radius, radius);
         this.velX = velX;
         this.velY = velY;
 
         /*this.img = new Image(imgPath, Math.round(posX), Math.round(posY), false, false);
 
         imgView.setImage(img);
-        imgView.setFitHeight(size);
-        imgView.setFitWidth(size);*/
+        imgView.setFitHeight(radius);
+        imgView.setFitWidth(radius);*/
 
         Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight());
         ball.setFill(Color.RED);
         playScene.getPane().getChildren().add(ball);
 
-
+        this.setNode(ball);
     }
 
     public void updatePosX() {

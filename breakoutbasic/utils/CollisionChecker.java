@@ -1,20 +1,38 @@
 package breakoutbasic.utils;
 
-import breakoutbasic.scenes.PlayScene;
-
-import javax.swing.text.html.parser.Entity;
-import java.util.Objects;
+import breakoutbasic.objects.Ball;
+import breakoutbasic.objects.Entity;
 
 public class CollisionChecker {
 
-    PlayScene ps;
+    public static boolean checkCollision(Entity entity1, Entity entity2) {
 
-    public CollisionChecker(PlayScene ps){
-        this.ps = ps;
-
+        if(entity1.getPosX() <= entity2.getPosX() + entity2.getWidth() &&
+            entity1.getPosX() + entity1.getWidth() >= entity2.getPosX() &&
+            entity1.getPosY() <= entity2.getPosY() + entity2.getWidth() &&
+            entity1.getPosY() + entity1.getWidth() >= entity2.getPosY())
+        {
+            return true;
+        }
+        return false;
     }
 
-    public void entityChecker(Entity entity){
+    /**
+     *
+     * @param the object ball.
+     * @return
+     */
+    public static double[][] ballCollision(Ball ball, int ballEdgesToCheck) {
+        double[][] ballEdges = new double[ballEdgesToCheck][2];
 
+        for (int i = 0; i < ballEdgesToCheck; i++) {
+            double x = ball.getPosX()+ball.getWidth()*Math.cos(((double) i*Math.PI*2/ballEdgesToCheck));
+            double y = ball.getPosY()+ball.getWidth()*Math.sin(((double) i*Math.PI*2/ballEdgesToCheck));
+
+            ballEdges[i][0] = x;
+            ballEdges[i][1] = y;
+        }
+
+        return ballEdges;
     }
 }

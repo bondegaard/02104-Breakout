@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
 
 public class PlayScene extends AbstractScene {
@@ -44,9 +45,6 @@ public class PlayScene extends AbstractScene {
         //Create solid collision area around ball
         //solidArea = new Rectangle(0, 0, (int) ball.getSize(), (int) ball.getSize());
 
-        CollisionChecker cChecker = new CollisionChecker(this);
-
-
         // Add start or pause text
         addStartOrPauseText();
 
@@ -63,13 +61,19 @@ public class PlayScene extends AbstractScene {
             }
             if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
                 this.paddle.setMoveLeft(true);
-            } else {
-                this.paddle.setMoveLeft(false);
             }
 
             if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT|| event.getCode() == KeyCode.D) {
                 this.paddle.setMoveRight(true);
-            } else {
+            }
+        });
+
+        this.getScene().setOnKeyReleased( event -> {
+            if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
+                this.paddle.setMoveLeft(false);
+            }
+
+            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT|| event.getCode() == KeyCode.D) {
                 this.paddle.setMoveRight(false);
             }
         });
