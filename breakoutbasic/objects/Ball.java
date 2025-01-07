@@ -7,12 +7,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
-public class Ball {
-    private double posX;
-    private double posY;
+public class Ball extends Entity {
     private double velX;
     private double velY;
-    private final double size;
     private Image img;
     private ImageView imgView = new ImageView();
 
@@ -20,11 +17,9 @@ public class Ball {
     public boolean collision = false;
 
     public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double size/*, String imgPath*/){
-        this.posX = posX;
-        this.posY = posY;
+        super(posX, posY, size, size);
         this.velX = velX;
         this.velY = velY;
-        this.size = size;
 
         /*this.img = new Image(imgPath, Math.round(posX), Math.round(posY), false, false);
 
@@ -32,7 +27,7 @@ public class Ball {
         imgView.setFitHeight(size);
         imgView.setFitWidth(size);*/
 
-        Circle ball = new Circle(this.posX, this.posY, this.size);
+        Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight());
         ball.setFill(Color.RED);
         playScene.getPane().getChildren().add(ball);
 
@@ -40,27 +35,11 @@ public class Ball {
     }
 
     public void updatePosX() {
-        posX += velX;
+        this.setPosX(this.getPosX() + velX);
     }
 
     public void updatePosY() {
-        posY += velY;
-    }
-
-    public void setPosX(int newPosX){
-        posX = newPosX;
-    }
-
-    public void setPosY(int newPosY){
-        posY = newPosY;
-    }
-
-    public double getPosX(){
-        return posX;
-    }
-
-    public double getPosY(){
-        return posY;
+        this.setPosY(this.getPosY() + velY);
     }
 
     public double getVelX(){
@@ -78,12 +57,8 @@ public class Ball {
         velY = -velY;
     }
 
-    public double getSize() {
-        return size;
-    }
-
     public void setImg(String newImgPath){
-        img = new Image(newImgPath, Math.round(posX), Math.round(posY), false, false);
+        img = new Image(newImgPath, Math.round(this.getPosX()), Math.round(this.getPosY()), false, false);
         imgView.setImage(img);
     }
 
