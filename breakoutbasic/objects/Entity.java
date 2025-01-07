@@ -1,6 +1,10 @@
 package breakoutbasic.objects;
 
+import javafx.scene.Node;
+
 public abstract class Entity {
+
+    protected Node node;
 
     protected double posX;
     protected double posY;
@@ -13,6 +17,14 @@ public abstract class Entity {
         this.posY = posY;
         this.height = height;
         this.width = width;
+    }
+
+    public Node getNode() {
+        return node;
+    }
+
+    public void setNode(Node node) {
+        this.node = node;
     }
 
     public double getPosX() {

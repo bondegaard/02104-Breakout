@@ -2,6 +2,7 @@
 package breakoutbasic.objects;
 
 import breakoutbasic.scenes.PlayScene;
+import breakoutbasic.utils.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -28,14 +29,22 @@ public class Paddle extends Entity {
         Rectangle paddle = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
         paddle.setFill(Color.RED);
         playScene.getPane().getChildren().add(paddle);
+
+        // Update position
+        this.setNode(paddle);
     }
 
     public void updatePosXRight() {
-        this.setPosX(this.getPosX() + velX);
+        if (this.getPosX() + velX < WindowUtils.getWindowWidth()-this.getWidth())
+            this.setPosX(this.getPosX() + velX);
+        this.getNode().relocate(this.getPosX(), this.getPosY());
+        System.out.println(this.getPosX());
     }
 
     public void updatePosXLeft() {
-        this.setPosX(this.getPosX() - velX);
+        if (this.getPosX() - velX > 0)
+            this.setPosX(this.getPosX() - velX);
+        this.getNode().relocate(this.getPosX(), this.getPosY());
     }
 
     public double getVelX(){
