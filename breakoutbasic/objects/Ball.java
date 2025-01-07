@@ -1,20 +1,17 @@
 package breakoutbasic.objects;
 
 import breakoutbasic.scenes.PlayScene;
+import breakoutbasic.utils.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 
 public class Ball extends Entity {
     private double velX;
     private double velY;
     private Image img;
     private ImageView imgView = new ImageView();
-
-    public Rectangle solidArea;
-    public boolean collision = false;
 
     public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius/*, String imgPath*/){
         super(posX, posY, radius, radius);
@@ -35,12 +32,20 @@ public class Ball extends Entity {
     }
 
     public void updatePosX() {
-        this.setPosX(this.getPosX() + velX);
+        if(this.getPosX() + velX <= WindowUtils.getWindowHeight() - this.getWidth()){
+            this.flipVelX();
+        } else if(this.getPosX() + WindowUtils.get + velX <= WindowUtils.getWindowHeight() - this.getWidth()){
+            this.flipVelX();
+        }
     }
 
     public void updatePosY() {
-        this.setPosY(this.getPosY() + velY);
+        if(this.getPosY() + velY <= WindowUtils.getWindowWidth() - this.getHeight()){
+            this.flipVelY();
+        }
+
     }
+
 
     public double getVelX(){
         return velX;
@@ -71,5 +76,8 @@ public class Ball extends Entity {
     }
 
 
-
+    public void onTick() {
+        this.updatePosX();
+        this.updatePosY();this.velX++;
+    }
 }

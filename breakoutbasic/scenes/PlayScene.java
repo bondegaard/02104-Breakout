@@ -40,7 +40,7 @@ public class PlayScene extends AbstractScene {
         int height = width/8;
 
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
-        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(0.5,1.0) , 1.0, 16.0);
+        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 , this.paddle.getPosY()  - 2*paddle.getHeight() , 0 , -.25, 16.0);
 
         //Create solid collision area around ball
         //solidArea = new Rectangle(0, 0, (int) ball.getSize(), (int) ball.getSize());
@@ -132,5 +132,10 @@ public class PlayScene extends AbstractScene {
         if (paddle.isMoveRight()) {
             paddle.updatePosXRight();
         }
+
+        this.ball.onTick();
+
+        // Check Collisions
+
     }
 }
