@@ -38,7 +38,6 @@ public class Paddle extends Entity {
         if (this.getPosX() + velX < WindowUtils.getWindowWidth()-this.getWidth())
             this.setPosX(this.getPosX() + velX);
         this.getNode().relocate(this.getPosX(), this.getPosY());
-        System.out.println(this.getPosX());
     }
 
     public void updatePosXLeft() {
