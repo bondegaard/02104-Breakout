@@ -11,6 +11,8 @@ public class Grid {
 
     private int offset = 3;
 
+    private Color[] colors = {Color.RED, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.BURLYWOOD};
+
     public Grid (PlayScene playScene, int n, int m) {
         grid = new Rectangle[n][m];
 
@@ -18,7 +20,7 @@ public class Grid {
         double lSize = (WindowUtils.getWindowWidth() * (97.5/100.0) / m);
 
         // Short side of the rectangle's length, based on window size
-        double sSize = ((WindowUtils.getWindowHeight() / 12.5) / n);
+        double sSize = ((WindowUtils.getWindowHeight() / 97.5));
 
         // Starting positions, where blank space is calculated
         double posXStart = WindowUtils.getWindowWidth() * (1.0/100.0);
@@ -32,7 +34,9 @@ public class Grid {
 
                 // Defining the rectangle
                 Rectangle rectangle = new Rectangle(posX, posY, lSize - offset, sSize - offset);
-                rectangle.setFill(Color.BLUE);
+
+                // For every second row, a new color will appear, based on the colors[] array
+                rectangle.setFill(colors[(int) Math.floor(row/2)]);
                 
                 // Adding it to grid
                 grid[row][col] = rectangle;

@@ -40,8 +40,8 @@ public class Breakout extends Application {
         // Set the window size to the screen size (windowed fullscreen)
         primaryStage.setX(screenBounds.getMinX());
         primaryStage.setY(screenBounds.getMinY());
-        primaryStage.setWidth(screenBounds.getWidth());
-        primaryStage.setHeight(screenBounds.getHeight());
+        primaryStage.setWidth(screenBounds.getMaxX());
+        primaryStage.setHeight(screenBounds.getMaxY());
 
         // Disable resizing
         primaryStage.setResizable(false);
@@ -64,7 +64,7 @@ public class Breakout extends Application {
 
     private void setupPlayScene() {
         // Set Current Scene
-        this.currentScene = new PlayScene(3, 15);
+        this.currentScene = new PlayScene(10, 20);
         this.gameState = GameState.PLAY;
     }
 
