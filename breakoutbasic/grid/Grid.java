@@ -20,11 +20,11 @@ public class Grid {
         double lSize = (WindowUtils.getWindowWidth() * (97.5/100.0) / m);
 
         // Short side of the rectangle's length, based on window size
-        double sSize = ((WindowUtils.getWindowHeight() / 97.5));
+        double sSize = ((WindowUtils.getWindowHeight() / 30.0));
 
         // Starting positions, where blank space is calculated
         double posXStart = WindowUtils.getWindowWidth() * (1.0/100.0);
-        double posYStart = posXStart;
+        double posYStart = WindowUtils.getWindowWidth() * (3.0/100.0);
 
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < m; col++) {
