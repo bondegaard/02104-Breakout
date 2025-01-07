@@ -2,16 +2,27 @@ package breakoutbasic.objects;
 
 import javafx.scene.Node;
 
+/**
+ * Abstract class used to create an entity on the screen.
+ */
 public abstract class Entity {
 
+    // JavaFX node on the screen
     protected Node node;
 
-    protected double posX;
-    protected double posY;
+    protected double posX; // x position on screen
+    protected double posY; // y position on screen
 
-    protected double height;
-    protected double width;
+    protected double height; // Height of the entity
+    protected double width; // Width of the entity
 
+    /**
+     * Basic setup for an entity
+     * @param posX x position
+     * @param posY y position
+     * @param height height of entity
+     * @param width width of entity
+     */
     public Entity(double posX, double posY, double height, double width) {
         this.posX = posX;
         this.posY = posY;

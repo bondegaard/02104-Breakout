@@ -13,16 +13,11 @@ public class Ball extends Entity {
     private Image img;
     private ImageView imgView = new ImageView();
 
+    //Ball constructor
     public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius/*, String imgPath*/){
         super(posX, posY, radius, radius);
         this.velX = velX;
         this.velY = velY;
-
-        /*this.img = new Image(imgPath, Math.round(posX), Math.round(posY), false, false);
-
-        imgView.setImage(img);
-        imgView.setFitHeight(radius);
-        imgView.setFitWidth(radius);*/
 
         Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight());
         ball.setFill(Color.RED);
@@ -31,26 +26,33 @@ public class Ball extends Entity {
         this.setNode(ball);
     }
 
+    /**
+     * Update x postion of the ball
+     */
     public void updateX() {
         if(this.getPosX() + velX >= WindowUtils.getWindowWidth() - this.getWidth()*2){
-            this.flipVelX();
+            this.flipVelX(); //flip velocity if ball goes out of bounds (sides)
         } else if(this.getPosX() +  velX <= 0){
-            this.flipVelX();
+            this.flipVelX(); //flip velocity if ball goes out of bounds (sides)
         }
     }
 
+    /**
+     * Update y postion of the ball
+     */
     public void updateY() {
         if(this.getPosY() + velY >= WindowUtils.getWindowHeight() - this.getHeight()*2){
-            return;
+            return; // Do nothing as the ball hits the bottom of the screen.
         } else if (this.getPosY() + velY <= 0){
-            this.flipVelY();
+            this.flipVelY(); //flip velocity if ball goes out of bounds (top)
         }
     }
 
+    //sets new X , Y position
     public void updatePosition() {
         this.setPosX(this.getPosX() + velX);
         this.setPosY(this.getPosY() + velY);
-        this.getNode().relocate(this.getPosX(), this.getPosY());
+        this.getNode().relocate(this.getPosX(), this.getPosY()); //relocates points in scene
     }
 
 
@@ -72,13 +74,21 @@ public class Ball extends Entity {
         this.velX = velX;
     }
 
+    /**
+     * Flip the direction of the x velocity
+     */
     public void flipVelX(){
         velX = -velX;
     }
+
+    /**
+     * Flip the direction of the y velocity
+     */
     public void flipVelY(){
         velY = -velY;
     }
 
+    //-----------------------no usages --------------------
     public void setImg(String newImgPath){
         img = new Image(newImgPath, Math.round(this.getPosX()), Math.round(this.getPosY()), false, false);
         imgView.setImage(img);
@@ -92,7 +102,11 @@ public class Ball extends Entity {
         return imgView;
     }
 
+    //updates ball position
 
+    /**
+     * Function called every tick which updates the position of the ball.
+     */
     public void onTick() {
         this.updateX();
         this.updateY();

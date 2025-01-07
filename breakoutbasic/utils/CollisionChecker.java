@@ -19,12 +19,50 @@ public class CollisionChecker {
         for (double[] ballEdge : ballEdges) {
             if (ballEdge[0] >= entity.getPosX() && ballEdge[0] <= entity.getPosX() + entity.getWidth()
                     && ballEdge[1] >= entity.getPosY() && ballEdge[1] <= entity.getPosY() + entity.getHeight()) {
-                if (Math.abs(ball.getPosX()) - Math.abs(entity.getPosX()) < Math.abs(ball.getPosY()) - Math.abs(entity.getPosY())) {
-                    return EdgeHit.XAXIS;
-                } else if (Math.abs(ball.getPosX()) - Math.abs(entity.getPosX()) == Math.abs(ball.getPosY()) - Math.abs(entity.getPosY())) {
-                    return EdgeHit.BOTH;
+                double[] entityCenter = new double[] {entity.getPosX()+ entity.getWidth()/2, entity.getPosY()+ entity.getHeight()/2};
+                double[] ballCenter = new double[] {ball.getPosX()+ball.getWidth()/2, ball.getPosY()+ball.getWidth()/2};
+
+                double distanceToTop = ballEdge[1]-entity.getPosY();
+                double distanceToBotton = entity.getPosY()+entity.getHeight()-ballEdge[1];
+                double distanceToLeft = ballEdge[0]-entity.getPosX();
+                double distanceToRight = entity.getPosX()+entity.getWidth()-ballEdge[0];
+
+                if (ballCenter[0] < entityCenter[0]) {
+                    if (ballCenter[1] < entityCenter[1]) {
+                        if (distanceToTop < distanceToLeft) {
+                            return EdgeHit.YAXIS;
+                        } else if (distanceToTop == distanceToLeft) {
+                            return EdgeHit.BOTH;
+                        } else {
+                            return EdgeHit.XAXIS;
+                        }
+                    } else {
+                        if (distanceToTop < distanceToRight) {
+                            return EdgeHit.YAXIS;
+                        } else if (distanceToTop == distanceToRight) {
+                            return EdgeHit.BOTH;
+                        } else {
+                            return EdgeHit.XAXIS;
+                        }
+                    }
                 } else {
-                    return EdgeHit.YAXIS;
+                    if (ballCenter[1] < entityCenter[1]) {
+                        if (distanceToBotton < distanceToLeft) {
+                            return EdgeHit.YAXIS;
+                        } else if (distanceToBotton == distanceToLeft) {
+                            return EdgeHit.BOTH;
+                        } else {
+                            return EdgeHit.XAXIS;
+                        }
+                    } else {
+                        if (distanceToBotton < distanceToRight) {
+                            return EdgeHit.YAXIS;
+                        } else if (distanceToBotton == distanceToRight) {
+                            return EdgeHit.BOTH;
+                        } else {
+                            return EdgeHit.XAXIS;
+                        }
+                    }
                 }
             }
         }
@@ -34,8 +72,9 @@ public class CollisionChecker {
 
     /**
      *
-     * @param Ball ball, int ballEdgesToCheck
-     * @return double[ballEdgesToCheck][2] : foreach there are an x and y coordinat at double[i][0] = x, and double[i][1] = y
+     * @param Ball ball
+     * @param int ballEdgesToCheck
+     * @return double[ballEdgesToCheck][2] : foreach there are an x and y coordinate at double[i][0] = x, and double[i][1] = y
      */
     public static double[][] ballCollision(Ball ball, int ballEdgesToCheck) {
         double[][] ballEdges = new double[ballEdgesToCheck][2];

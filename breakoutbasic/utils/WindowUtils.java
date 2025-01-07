@@ -2,6 +2,9 @@ package breakoutbasic.utils;
 
 import javafx.stage.Stage;
 
+/**
+ * Utils to handle the primary stage
+ */
 public class WindowUtils {
     private static Stage primaryStage;
 

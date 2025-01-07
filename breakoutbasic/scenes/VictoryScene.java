@@ -7,17 +7,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 /**
- * This class is used to display the game is over scene
- * You can also restart the game after the game has been lost
+ * This class is used to display the victory screen scene
+ * You can also restart the game after the game has been won
  */
-public class GameOverScene extends AbstractScene{
-
+public class VictoryScene extends AbstractScene {
     // Text for scene
-    private Text GameOver;
+    private Text victoryText;
     private Text additionalInfo;
 
-    public GameOverScene() {
-        // Screen color
+    public VictoryScene() {
+        // Setting screen color to black
         this.getScene().setFill(Color.BLACK);
 
         // Adding game over text
@@ -36,10 +35,10 @@ public class GameOverScene extends AbstractScene{
 
     public void addGameOverText() {
         // Game over text
-        this.GameOver = new Text("Game over!");
-        this.GameOver.setStyle("-fx-font-size: 100px;");
-        this.GameOver.setFill(Color.DARKRED);
-        this.getPane().getChildren().add(this.GameOver);
+        this.victoryText = new Text("Victory!");
+        this.victoryText.setStyle("-fx-font-size: 100px;");
+        this.victoryText.setFill(Color.GREEN);
+        this.getPane().getChildren().add(this.victoryText);
 
         // Additional info text
         this.additionalInfo = new Text("Press ENTER to play again");
@@ -49,11 +48,11 @@ public class GameOverScene extends AbstractScene{
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
-        this.GameOver.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+        this.victoryText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
             double textWidth = newValue.getWidth();
             double textHeight = newValue.getHeight();
-            this.GameOver.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.GameOver.setY((WindowUtils.getWindowHeight() - textHeight) / 3);
+            this.victoryText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.victoryText.setY((WindowUtils.getWindowHeight() - textHeight) / 3);
         });
 
         this.additionalInfo.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {

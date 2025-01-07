@@ -12,11 +12,11 @@ import java.io.IOException;
 
 public class Breakout extends Application {
 
-    public static Breakout instance;
+    public static Breakout instance; // Instance of breakout
 
-    private AbstractScene currentScene;
+    private AbstractScene currentScene; // Current displayed scene
 
-    private GameLoop gameLoop;
+    private GameLoop gameLoop; // Gameloop which calls the onTick function.
 
     public Breakout run() {
         launch();
@@ -53,11 +53,17 @@ public class Breakout extends Application {
         WindowUtils.getPrimaryStage().setOnCloseRequest(event -> { if (gameLoop != null) gameLoop.stop();});
     }
 
+    /**
+     * Setup starting PlayScene
+     */
     private void setupPlayScene() {
         // Set Current Scene
-        this.currentScene = new PlayScene(10, 15);
+        this.currentScene = new PlayScene(1, 1);
     }
 
+    /**
+     * Called every tick from the gameLoop
+     */
     public void onTick() {
         if (this.currentScene != null) {
             this.currentScene.onTick();

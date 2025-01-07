@@ -118,40 +118,49 @@ public class PlayScene extends AbstractScene {
 
     @Override
     public void onTick() {
+        // Handle unstarted or paused game
         if (!playing) {
             startOrPauseText.setVisible(true);
             infoText.setVisible(true);
             return;
         }
 
+        // Dont display info text
         startOrPauseText.setVisible(false);
         infoText.setVisible(false);
 
+        // Check for Victory
+        if (this.grid.getAliveAmount() <= 0) {
+            Breakout.getInstance().setCurrentScene(new VictoryScene());
+            return;
+        }
+
+        // Check for GameOver
         if (this.ball.getPosY() >= WindowUtils.getWindowHeight()) {
             Breakout.getInstance().setCurrentScene(new GameOverScene());
             return;
         }
 
+        // Move paddle left2
         if (paddle.isMoveLeft()) {
             paddle.updatePosXLeft();
         }
 
+        // Move paddle right
         if (paddle.isMoveRight()) {
             paddle.updatePosXRight();
         }
 
-        this.ball.onTick();
-
-        // Check Collisions
+        // Check Collisions for paddle and ball
         EdgeHit ballPaddleHit = CollisionChecker.checkCollison(this.paddle, this.ball);
         if(ballPaddleHit == EdgeHit.YAXIS) {
+            this.ball.setPosY(this.paddle.getPosY()-this.ball.getHeight()*2);
             this.ball.setVelY(-Math.abs(this.ball.getVelY()));
-        } else  if(ballPaddleHit == EdgeHit.XAXIS || ballPaddleHit == EdgeHit.BOTH) {
-            this.ball.setVelY(-Math.abs(this.ball.getVelY()));
-            this.ball.flipVelX();
         }
 
-        boolean flipX = false;
+
+        // Check Collisions between ball and any blocks on the screen
+        boolean flipX = false; // Should X direction be flippped
         boolean flipY = false;
         for (int i = 0; i < grid.getGrid().length; i++){
             for (int j = 0; j < grid.getGrid()[i].length; j++){
@@ -178,5 +187,8 @@ public class PlayScene extends AbstractScene {
         if (flipX)ball.flipVelX();
         if (flipY)ball.flipVelY();
 
+
+        // Call the ball onTick function for it to move.
+        this.ball.onTick();
     }
 }

@@ -42,7 +42,9 @@ public class GameLoop {
         }, 0, 1, TimeUnit.MILLISECONDS); // 1 ms interval
     }
 
-    // Stop the loop if it is running
+    /**
+     * Stop the loop if it is running
+     */
     public void stop() {
         if (!isRunning) return;
         isRunning = false;

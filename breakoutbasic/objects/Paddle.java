@@ -8,24 +8,31 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/**
+ * Used to create a paddle on the screen
+ */
 public class Paddle extends Entity {
-    private double velX;
+    private double velX; // Current directional velocity
     private Image img;
     private ImageView imgView = new ImageView();
 
-    private boolean moveLeft = false;
-    private boolean moveRight = false;
+    private boolean moveLeft = false; // Is paddle set to move left?
+    private boolean moveRight = false; // Is paddle set to move right?
 
+    /**
+     * Create a paddle
+     * @param playScene current instance of playScene
+     * @param posX x position
+     * @param posY y position
+     * @param velX Starting velocity in the x direction
+     * @param height height of the paddle
+     * @param width width of the paddle
+     */
     public Paddle(PlayScene playScene, double posX, double posY, double velX, double height, double width /*, String imgPath*/){
         super(posX, posY, height, width);
         this.velX = velX;
 
-        /*this.img = new Image(imgPath, Math.round(posX), Math.round(posY), false, false);
-
-        imgView.setImage(img);
-        imgView.setFitHeight(height);
-        imgView.setFitWidth(width);*/
-
+        // Create Rectangle as the paddle
         Rectangle paddle = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
         paddle.setFill(Color.RED);
         playScene.getPane().getChildren().add(paddle);
@@ -34,12 +41,18 @@ public class Paddle extends Entity {
         this.setNode(paddle);
     }
 
+    /**
+     * Prevent paddle from going out of the screen and update postion visibility.
+     */
     public void updatePosXRight() {
         if (this.getPosX() + velX < WindowUtils.getWindowWidth()-this.getWidth())
             this.setPosX(this.getPosX() + velX);
         this.getNode().relocate(this.getPosX(), this.getPosY());
     }
 
+    /**
+     * Prevent paddle from going out of the screen and update postion visibility.
+     */
     public void updatePosXLeft() {
         if (this.getPosX() - velX > 0)
             this.setPosX(this.getPosX() - velX);
