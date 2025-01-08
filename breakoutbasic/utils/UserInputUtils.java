@@ -9,17 +9,21 @@ public class UserInputUtils {
 
     /**
      * Get a number from the user in the terminal
-     * @return a number or -1 if the number was invalid
+     * @param textStatement what kind of text
+     * @return a number or run it again if the number was invalid
      */
-    public static int getUserInputInteger() {
-        try (Scanner scan = new Scanner(System.in)) {
-            return Integer.parseInt(scan.nextLine());
 
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
+    public static Scanner scan = new Scanner(System.in);
+
+    public static int getUserInputInteger(String textStatement) {
+        try {
+            System.out.print(textStatement);
+            return scan.nextInt();
+
+        } catch (Exception e) {
+            scan.next();
+            return getUserInputInteger(textStatement);
         }
-
-        return -1;
     }
 
 }
