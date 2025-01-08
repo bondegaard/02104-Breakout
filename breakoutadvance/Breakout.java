@@ -104,4 +104,8 @@ public class Breakout extends Application {
     public GameLoop getGameLoop() {
         return gameLoop;
     }
+
+    public DataManager getDataManager() {
+        return dataManager;
+    }
 }

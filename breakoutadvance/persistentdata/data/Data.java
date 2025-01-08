@@ -1,14 +1,19 @@
 package breakoutadvance.persistentdata.data;
 
 import java.util.Arrays;
+import javafx.scene.paint.Color;
 
 public class Data {
 
     private int highscore = 0;
 
-    private double volume = 0.5;
+    private double volume = 50;
 
     private boolean mute = false;
+
+    private BallColor ballColor = BallColor.GREY;
+
+    private PaddleColor paddleColor = PaddleColor.GREY;
 
     private Game[] previousGames = new Game[0];
 
@@ -49,6 +54,22 @@ public class Data {
 
     public void setMute(boolean mute) {
         this.mute = mute;
+    }
+
+    public BallColor getBallColor() {
+        return ballColor;
+    }
+
+    public void setBallColor(BallColor ballColor) {
+        this.ballColor = ballColor;
+    }
+
+    public PaddleColor getPaddleColor() {
+        return paddleColor;
+    }
+
+    public void setPaddleColor(PaddleColor paddleColor) {
+        this.paddleColor = paddleColor;
     }
 
     public void setPreviousGames(Game[] previousGames) {
