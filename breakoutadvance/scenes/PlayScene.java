@@ -53,7 +53,7 @@ public class PlayScene extends AbstractScene {
         int height = 16;
         int radius = 16;
 
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) width /2), WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
 
         Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
         balls.add(ball);
