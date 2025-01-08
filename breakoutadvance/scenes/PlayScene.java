@@ -297,10 +297,9 @@ public class PlayScene extends AbstractScene {
 
     public void resetBallAndPaddle(){
         //reset ball position and velocity
-        ball.setPosX(WindowUtils.getWindowWidth()/2 - 64);
-        ball.setPosY(WindowUtils.getWindowHeight() * 0.8 );
-        ball.setVelX(.5);
-        ball.setVelY(-.25);
+        int radius = 16;
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
+        balls.add(ball);
 
         //reset paddle
         paddle.setPosX(WindowUtils.getWindowWidth()/2 - 64);
