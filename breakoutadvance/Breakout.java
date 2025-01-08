@@ -77,7 +77,7 @@ public class Breakout extends Application {
     private void setupPlayScene(Stage primaryStage) {
         // Set Current Scene
         // this.currentScene = new PlayScene(5, 10); // Uncomment to skip MainMenu scene
-        this.currentScene = new MainMenu(primaryStage);
+        this.currentScene = new MainMenu();
     }
 
     /**

@@ -7,44 +7,33 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 /**
- * Main Menu screen for Breakout.
+ * Main menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.
  */
 public class MainMenu extends AbstractMenu {
 
     private int selectedBtn = 0;
     private Text[] textItems;
 
-    public MainMenu(Stage primaryStage) {
-        super(primaryStage);
+    public MainMenu() {
+        super();  // uses WindowUtils.getPrimaryStage() internally
 
-        // Create a centered VBox to hold the menu items
         VBox vbox = createVBox(Pos.CENTER, 10);
 
-        // Create text items
         Text startText = createText("Start", 64, Color.WHITE);
         Text settingsText = createText("Settings", 64, Color.WHITE);
         Text quitText = createText("Quit", 64, Color.WHITE);
 
-        // Put them in an array for easy highlighting
-        textItems = new Text[]{startText, settingsText, quitText};
+        textItems = new Text[] { startText, settingsText, quitText };
 
-        // Add them to the layout, then add the layout to the pane
         vbox.getChildren().addAll(textItems);
         pane.getChildren().add(vbox);
 
-        // Highlight the first option
         selectText(selectedBtn);
-
-        // Handle arrow/enter keys
         setupKeyPressedEvents();
     }
 
-    /**
-     * Changes the color of the currently selected menu item.
-     */
     private void selectText(int btnIndex) {
         for (Text text : textItems) {
             text.setFill(Color.WHITE);
@@ -52,9 +41,6 @@ public class MainMenu extends AbstractMenu {
         textItems[btnIndex].setFill(Color.YELLOW);
     }
 
-    /**
-     * Called when ENTER is pressed on the selected menu item.
-     */
     private void btnEnter() {
         switch (selectedBtn) {
             case 0:
@@ -63,21 +49,17 @@ public class MainMenu extends AbstractMenu {
                 break;
             case 1:
                 // Open settings
-                Breakout.getInstance().setCurrentScene(new SettingsMenu(primaryStage));
+                Breakout.getInstance().setCurrentScene(new SettingsMenu());
                 break;
             case 2:
-                // Quit application
+                // Quit
                 System.exit(0);
                 break;
-            default:
-                System.out.println("Unknown selection: " + selectedBtn);
         }
     }
 
-    /**
-     * Set up input for navigating the menu with arrow/WASD keys and Enter.
-     */
     private void setupKeyPressedEvents() {
+        // 'scene' is inherited from AbstractScene
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 btnEnter();
@@ -93,6 +75,6 @@ public class MainMenu extends AbstractMenu {
 
     @Override
     public void onTick() {
-        // If you don’t need periodic updates in the menu, leave it empty
+        // No periodic behavior for the main menu
     }
 }
