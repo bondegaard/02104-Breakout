@@ -37,7 +37,7 @@ public class PlayScene extends AbstractScene {
         this.grid = new Grid(this, n, m);
 
         // Create ball and paddle
-        int width = 2560;
+        int width = 256;
         int height = 16;
         int radius = 16;
 

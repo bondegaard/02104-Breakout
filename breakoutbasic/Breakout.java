@@ -58,7 +58,7 @@ public class Breakout extends Application {
      */
     private void setupPlayScene() {
         // Set Current Scene
-        this.currentScene = new PlayScene(1, 1);
+        this.currentScene = new PlayScene(5, 10);
     }
 
     /**
