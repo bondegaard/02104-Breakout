@@ -23,7 +23,6 @@ public class Ball extends Entity {
         // Adding radius (this.getHeight()) to accomodate how a circle is drawn
         Circle ball = new Circle(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight(), this.getHeight());
         
-        
         ball.setFill(Color.RED);
         playScene.getPane().getChildren().add(ball);
 
