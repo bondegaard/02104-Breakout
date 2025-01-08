@@ -1,10 +1,9 @@
 package breakoutadvance;
 
-import breakoutadvance.UI.mainmenu.MainMenu;
+import breakoutadvance.UI.menus.MainMenu;
 import breakoutadvance.loop.GameLoop;
 import breakoutadvance.persistentdata.DataManager;
 import breakoutadvance.scenes.AbstractScene;
-import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
 import javafx.application.Application;
