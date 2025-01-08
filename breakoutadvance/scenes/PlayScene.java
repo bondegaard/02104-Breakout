@@ -23,6 +23,7 @@ import java.util.Random;
 
 public class PlayScene extends AbstractScene {
 
+
     private boolean playing = false;
 
     private Grid grid;
@@ -40,8 +41,9 @@ public class PlayScene extends AbstractScene {
     private int lives = 3;
     private Text deathPauseText;
     private Text deathInfoText;
-
     private boolean died = false;
+
+    public int score = 0;
 
 
     public PlayScene(int n, int m) {
@@ -53,7 +55,8 @@ public class PlayScene extends AbstractScene {
         int height = 16;
         int radius = 16;
 
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
+
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - (int) (width/2) , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
 
         Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
         balls.add(ball);
@@ -223,10 +226,10 @@ public class PlayScene extends AbstractScene {
                 iterator.remove();
                 this.getPane().getChildren().remove(ball.getNode());
 
-                // Check for GameOver
+                // Check for lives
                 if (balls.isEmpty()) {
                     lives--;
-                    this.deathPauseText.setText("You Died. You have " + lives + " left.");
+                    this.deathPauseText.setText("You Died. You have " + lives + " lives left.");
                     died = true;
                     playing = !playing;
                     resetBallAndPaddle();
@@ -276,10 +279,15 @@ public class PlayScene extends AbstractScene {
                         flipX = true;
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
+                        //add pointValue to score
+                        score++;
                     } else if (ballBlockHit == EdgeHit.YAXIS) {
                         flipY = true;
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
+                        //add pointValue to score
+
+
                     } else if (ballBlockHit == EdgeHit.BOTH) {
                         flipX = true;
                         flipY = true;
@@ -296,14 +304,18 @@ public class PlayScene extends AbstractScene {
     }
 
     public void resetBallAndPaddle(){
+        //relocate paddle
+        this.paddle.setPosX(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2);
+        this.paddle.getNode().relocate(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2, WindowUtils.getWindowHeight() * 0.8);
+
         //reset ball position and velocity
         int radius = 16;
         Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
         balls.add(ball);
+    }
 
-        //reset paddle
-        paddle.setPosX(WindowUtils.getWindowWidth()/2 - 64);
-        paddle.setPosY(WindowUtils.getWindowHeight() * 0.8);
+    public int getScore(){
+        return score;
     }
 
 }

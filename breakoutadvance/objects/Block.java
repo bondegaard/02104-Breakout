@@ -16,7 +16,7 @@ public class Block extends Entity {
      * @param color
      */
     public Block(double posX, double posY, double width, double height, Color color) {
-        super(posX, posY, height, width); // getting coordinates and height/width from parentclass
+        super(posX, posY, height, width); // getting coordinates and height/width from parent class
 
         //creates new rectangle
         Rectangle rectangle = new Rectangle(posX, posY, width, height);
