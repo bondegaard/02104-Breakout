@@ -3,6 +3,7 @@ package breakoutadvance;
 import breakoutadvance.loop.GameLoop;
 import breakoutadvance.scenes.AbstractScene;
 import breakoutadvance.scenes.PlayScene;
+import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -27,6 +28,10 @@ public class Breakout extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         instance = this;
+
+        // Load Sounds
+        Sound.load();
+
         // Setup Stage
         primaryStage.setTitle("Breakout");
         

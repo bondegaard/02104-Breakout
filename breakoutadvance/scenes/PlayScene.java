@@ -7,6 +7,7 @@ import breakoutadvance.objects.Block;
 import breakoutadvance.objects.Paddle;
 import breakoutadvance.utils.CollisionChecker;
 import breakoutadvance.utils.EdgeHit;
+import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -132,12 +133,14 @@ public class PlayScene extends AbstractScene {
         // Check for Victory
         if (this.grid.getAliveAmount() <= 0) {
             Breakout.getInstance().setCurrentScene(new VictoryScene());
+            Sound.playSound(Sound.WON);
             return;
         }
 
         // Check for GameOver
         if (this.ball.getPosY() >= WindowUtils.getWindowHeight()) {
             Breakout.getInstance().setCurrentScene(new GameOverScene());
+            Sound.playSound(Sound.LOSE);
             return;
         }
 
@@ -156,6 +159,7 @@ public class PlayScene extends AbstractScene {
         if(ballPaddleHit == EdgeHit.YAXIS) {
             this.ball.setPosY(this.paddle.getPosY()-this.ball.getHeight()*2);
             this.ball.setVelY(-Math.abs(this.ball.getVelY()));
+            Sound.playSound(Sound.PADDLE);
         }
 
 
@@ -175,9 +179,11 @@ public class PlayScene extends AbstractScene {
                 if (ballBlockHit == EdgeHit.XAXIS){
                     flipX = true;
                     grid.removeBlock(i,j);
+                    Sound.playSound(Sound.getRandomHitSound());
                 } else if ( ballBlockHit == EdgeHit.YAXIS){
                     flipY = true;
                     grid.removeBlock(i,j);
+                    Sound.playSound(Sound.getRandomHitSound());
                 } else if (ballBlockHit == EdgeHit.BOTH){
                     flipX = true;
                     flipY = true;
