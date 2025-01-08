@@ -7,11 +7,18 @@ import breakoutadvance.objects.Block;
 import breakoutadvance.objects.Paddle;
 import breakoutadvance.utils.CollisionChecker;
 import breakoutadvance.utils.EdgeHit;
+import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class PlayScene extends AbstractScene {
@@ -20,7 +27,7 @@ public class PlayScene extends AbstractScene {
 
     private Grid grid;
 
-    private Ball ball;
+    private List<Ball> balls = new ArrayList<>();
 
     private Paddle paddle;
 
@@ -38,7 +45,7 @@ public class PlayScene extends AbstractScene {
 
 
     public PlayScene(int n, int m) {
-        this.getScene().setFill(Color.BLACK);
+        this.addBackgroundImage();
         this.grid = new Grid(this, n, m);
 
         // Create ball and paddle
@@ -47,8 +54,9 @@ public class PlayScene extends AbstractScene {
         int radius = 16;
 
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
-        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , .5 , -.25, radius);
 
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
+        balls.add(ball);
 
 
         // Add start or pause text
@@ -60,6 +68,26 @@ public class PlayScene extends AbstractScene {
         // Setup Keyboard events
         setupKeyPressedEvents();
 
+    }
+
+    public void addBackgroundImage(){
+        this.getScene().setFill(Color.BLACK);
+        try {
+            FileInputStream input = new FileInputStream("assets/img/background.jpg");
+            Image image = new Image(input);
+
+            BackgroundImage backgroundimage = new BackgroundImage(image,
+                    BackgroundRepeat.REPEAT,
+                    BackgroundRepeat.REPEAT,
+                    BackgroundPosition.CENTER,
+                    BackgroundSize.DEFAULT);
+
+            Background background = new Background(backgroundimage);
+
+            this.getPane().setBackground(background);
+        } catch (Exception ex) {
+            System.err.println("Error loading background image");
+        }
     }
 
     public void setupKeyPressedEvents() {
@@ -183,27 +211,31 @@ public class PlayScene extends AbstractScene {
         // Check for Victory
         if (this.grid.getAliveAmount() <= 0) {
             Breakout.getInstance().setCurrentScene(new VictoryScene());
+            Sound.playSound(Sound.WON);
             return;
         }
 
-        // Check for out of bounds Decrease lives count
-        if (this.ball.getPosY() >= WindowUtils.getWindowHeight()) {
-            //decrease lives
-            lives--;
+        // Check if eah ball is out of bounds
+        Iterator<Ball> iterator = balls.iterator();
+        while (iterator.hasNext()) {
+            Ball ball = iterator.next();
+            if (ball.getPosY() >= WindowUtils.getWindowHeight()) {
+                iterator.remove();
+                this.getPane().getChildren().remove(ball.getNode());
 
-            this.deathPauseText.setText("You Died. You have " + lives + " left.");
-
-            died = true;
-
-            playing = !playing;
-
-            resetBallAndPaddle();
-
-            {
-                if (lives <= 0) {
-                    Breakout.getInstance().setCurrentScene(new GameOverScene());
-                    return;
+                // Check for GameOver
+                if (balls.isEmpty()) {
+                    lives--;
+                    this.deathPauseText.setText("You Died. You have " + lives + " left.");
+                    died = true;
+                    playing = !playing;
+                    resetBallAndPaddle();
+                    if (lives <= 0) {
+                      Breakout.getInstance().setCurrentScene(new GameOverScene());
+                      Sound.playSound(Sound.LOSE);
+                    }
                 }
+                return;
             }
         }
 
@@ -218,44 +250,49 @@ public class PlayScene extends AbstractScene {
         }
 
         // Check Collisions for paddle and ball
-        EdgeHit ballPaddleHit = CollisionChecker.checkCollision(this.paddle, this.ball);
-        if(ballPaddleHit == EdgeHit.YAXIS) {
-            this.ball.setPosY(this.paddle.getPosY()-this.ball.getHeight()*2);
-            this.ball.setVelY(-Math.abs(this.ball.getVelY()));
-        }
+        for (Ball ball : balls) {
+            EdgeHit ballPaddleHit = CollisionChecker.checkCollision(this.paddle, ball);
+            if (ballPaddleHit == EdgeHit.YAXIS) {
+                ball.setPosY(this.paddle.getPosY() - ball.getHeight() * 2);
+                ball.setVelY(-Math.abs(ball.getVelY()));
+                Sound.playSound(Sound.PADDLE);
+            }
 
 
-        // Check Collisions between ball and any blocks on the screen
-        boolean flipX = false; // Should X direction be flippped
-        boolean flipY = false;
-        for (int i = 0; i < grid.getGrid().length; i++){
-            for (int j = 0; j < grid.getGrid()[i].length; j++){
-                Block block = grid.getGrid()[i][j];
+            // Check Collisions between ball and any blocks on the screen
+            boolean flipX = false; // Should X direction be flippped
+            boolean flipY = false;
+            for (int i = 0; i < grid.getGrid().length; i++) {
+                for (int j = 0; j < grid.getGrid()[i].length; j++) {
+                    Block block = grid.getGrid()[i][j];
 
-                if(block == null){
-                    continue;
-                }
+                    if (block == null) {
+                        continue;
+                    }
 
-                EdgeHit ballBlockHit = CollisionChecker.checkCollision(block, this.ball);
+                    EdgeHit ballBlockHit = CollisionChecker.checkCollision(block, ball);
 
-                if (ballBlockHit == EdgeHit.XAXIS){
-                    flipX = true;
-                    grid.removeBlock(i,j);
-                } else if ( ballBlockHit == EdgeHit.YAXIS){
-                    flipY = true;
-                    grid.removeBlock(i,j);
-                } else if (ballBlockHit == EdgeHit.BOTH){
-                    flipX = true;
-                    flipY = true;
+                    if (ballBlockHit == EdgeHit.XAXIS) {
+                        flipX = true;
+                        grid.removeBlock(i, j);
+                        Sound.playSound(Sound.getRandomHitSound());
+                    } else if (ballBlockHit == EdgeHit.YAXIS) {
+                        flipY = true;
+                        grid.removeBlock(i, j);
+                        Sound.playSound(Sound.getRandomHitSound());
+                    } else if (ballBlockHit == EdgeHit.BOTH) {
+                        flipX = true;
+                        flipY = true;
+                    }
                 }
             }
+            if (flipX) ball.flipVelX();
+            if (flipY) ball.flipVelY();
+
+
+            // Call the ball onTick function for it to move.
+            ball.onTick();
         }
-        if (flipX)ball.flipVelX();
-        if (flipY)ball.flipVelY();
-
-
-        // Call the ball onTick function for it to move.
-        this.ball.onTick();
     }
 
     public void resetBallAndPaddle(){

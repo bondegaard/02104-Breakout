@@ -8,6 +8,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.io.FileInputStream;
+
 /**
  * Used to create a paddle on the screen
  */
@@ -32,13 +34,24 @@ public class Paddle extends Entity {
         super(posX, posY, height, width);
         this.velX = velX;
 
-        // Create Rectangle as the paddle
-        Rectangle paddle = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
-        paddle.setFill(Color.RED);
-        playScene.getPane().getChildren().add(paddle);
+        try {
+            Image image = new Image(new FileInputStream("assets/img/paddle.png"));
+            imgView = new ImageView(image);
+            imgView.relocate(this.getPosX(), this.getPosY());
+            imgView.setFitHeight(this.getHeight());
+            imgView.setFitWidth(this.getWidth());
 
-        // Update position
-        this.setNode(paddle);
+            playScene.getPane().getChildren().add(imgView);
+            this.setNode(imgView);
+        } catch (Exception e) {
+            // Create Rectangle as the paddle
+            Rectangle paddle = new Rectangle(this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight());
+            paddle.setFill(Color.RED);
+            playScene.getPane().getChildren().add(paddle);
+
+            // Update position
+            this.setNode(paddle);
+        }
     }
 
     /**

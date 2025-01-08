@@ -7,6 +7,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.io.FileInputStream;
+
 public class Ball extends Entity {
     private double velX;
     private double velY;
@@ -19,11 +21,22 @@ public class Ball extends Entity {
         this.velX = velX;
         this.velY = velY;
 
-        Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight());
-        ball.setFill(Color.RED);
-        playScene.getPane().getChildren().add(ball);
+        try {
+            Image image = new Image(new FileInputStream("assets/img/ball.png"));
+            imgView = new ImageView(image);
+            imgView.relocate(this.getPosX(), this.getPosY());
+            imgView.setFitHeight(this.getHeight()*2);
+            imgView.setFitWidth(this.getWidth()*2);
 
-        this.setNode(ball);
+            playScene.getPane().getChildren().add(imgView);
+            this.setNode(imgView);
+        } catch (Exception e) {
+            Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight());
+            ball.setFill(Color.RED);
+            playScene.getPane().getChildren().add(ball);
+
+            this.setNode(ball);
+        }
     }
 
     /**
