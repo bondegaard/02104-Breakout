@@ -22,4 +22,36 @@ public class Data {
                 ", previousGames=" + Arrays.toString(previousGames) +
                 '}';
     }
+
+    public int getHighscore() {
+        return highscore;
+    }
+
+    public double getVolume() {
+        return volume;
+    }
+
+    public boolean isMute() {
+        return mute;
+    }
+
+    public Game[] getPreviousGames() {
+        return previousGames;
+    }
+
+    public void setHighscore(int highscore) {
+        this.highscore = highscore;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
+    }
+
+    public void setMute(boolean mute) {
+        this.mute = mute;
+    }
+
+    public void setPreviousGames(Game[] previousGames) {
+        this.previousGames = previousGames;
+    }
 }
