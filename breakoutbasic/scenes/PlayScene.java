@@ -28,6 +28,8 @@ public class PlayScene extends AbstractScene {
 
     private Text infoText;
 
+    private Text addInfoText;
+
     private Random random = new Random();
 
 
@@ -41,12 +43,20 @@ public class PlayScene extends AbstractScene {
         int height = 16;
         int radius = 16;
 
+        // Creating a random angle
+        // Interval for velX is 0.2 to 0.75, and it varies from negative to positive number
+        // velY is calculated based on (maxAddedVel - velX)
+        boolean positiveNumber = random.nextBoolean();
+        double maxAddedVel = 1.0;
+        double velX = random.nextDouble(0.2,0.75);
+        double velY = maxAddedVel - velX;
+        velX = (positiveNumber) ? velX : -velX;
+
+
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
-        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , .5 , -.25, radius);
+        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d, this.paddle.getPosY() - 2*paddle.getHeight(), velX , velY, radius);
 
-        //Create solid collision area around ball
-        //solidArea = new Rectangle(0, 0, (int) ball.getSize(), (int) ball.getSize());
-
+        // Max X = -.7
         // Add start or pause text
         addStartOrPauseText();
 
@@ -58,6 +68,7 @@ public class PlayScene extends AbstractScene {
         this.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                playing = !playing;
+               addInfoText.setVisible(false);
 
                if (!playing) this.startOrPauseText.setText("Press ENTER to continue");
             }
@@ -94,6 +105,12 @@ public class PlayScene extends AbstractScene {
         this.infoText.setFill(Color.WHITE);
         this.getPane().getChildren().add(this.infoText);
 
+        // Text to inform user that you can pause the game
+        this.addInfoText = new Text("When started, you can press ENTER to pause the game");
+        this.addInfoText.setStyle("-fx-font-size: 32px;");
+        this.addInfoText.setFill(Color.WHITE);
+        this.getPane().getChildren().add(this.addInfoText);
+
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
@@ -109,6 +126,13 @@ public class PlayScene extends AbstractScene {
             double textHeight = newValue.getHeight();
             this.infoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
             this.infoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
+        });
+
+        this.addInfoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.addInfoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.addInfoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.6);
         });
     }
 

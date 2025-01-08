@@ -3,6 +3,7 @@ package breakoutbasic;
 import breakoutbasic.loop.GameLoop;
 import breakoutbasic.scenes.AbstractScene;
 import breakoutbasic.scenes.PlayScene;
+import breakoutbasic.utils.UserInputUtils;
 import breakoutbasic.utils.WindowUtils;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -17,6 +18,10 @@ public class Breakout extends Application {
     private AbstractScene currentScene; // Current displayed scene
 
     private GameLoop gameLoop; // Gameloop which calls the onTick function.
+
+    public int n; // Amount of rows
+
+    public int m; // Amount of columns
 
     public Breakout run() {
         launch();
@@ -57,8 +62,20 @@ public class Breakout extends Application {
      * Setup starting PlayScene
      */
     private void setupPlayScene() {
+        // Getting values from user
+        do {
+            this.n = UserInputUtils.getUserInputInteger("Enter number of rows: (must be between 1 and 10): ");
+        } while (this.n < 1 || this.n > 10); // Keep asking until n is between 1 and 10 (inclusive)
+
+        do {
+            this.m = UserInputUtils.getUserInputInteger("Enter number of columns: (must be between 5 and 20): ");
+        } while (this.m < 5 || this.m > 20); // Keep asking until m is between 5 and 20 (inclusive)
+
+        // Closing the scanner
+        UserInputUtils.scan.close();
+
         // Set Current Scene
-        this.currentScene = new PlayScene(5, 10);
+        this.currentScene = new PlayScene(n, m);
     }
 
     /**
