@@ -64,7 +64,12 @@ public class Breakout extends Application {
         // Start Game Loop
         gameLoop = new GameLoop(this::onTick);
         gameLoop.start();
-        WindowUtils.getPrimaryStage().setOnCloseRequest(event -> { if (gameLoop != null) gameLoop.stop();});
+
+        // Save data and save game on close
+        WindowUtils.getPrimaryStage().setOnCloseRequest(event -> {
+            if (dataManager!= null && dataManager.getData() != null) dataManager.saveData();
+            if (gameLoop != null) gameLoop.stop();
+        });
     }
 
     /**
