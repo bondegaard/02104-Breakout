@@ -1,5 +1,6 @@
 package breakoutadvance;
 
+import breakoutadvance.UI.mainmenu.MainMenu;
 import breakoutadvance.loop.GameLoop;
 import breakoutadvance.persistentdata.DataManager;
 import breakoutadvance.scenes.AbstractScene;
@@ -58,7 +59,7 @@ public class Breakout extends Application {
         WindowUtils.setPrimaryStage(primaryStage);
 
         // Setup Play Scene for Game
-        setupPlayScene();
+        setupPlayScene(primaryStage);
 
         // Start Game Loop
         gameLoop = new GameLoop(this::onTick);
@@ -69,9 +70,10 @@ public class Breakout extends Application {
     /**
      * Setup starting PlayScene
      */
-    private void setupPlayScene() {
+    private void setupPlayScene(Stage primaryStage) {
         // Set Current Scene
-        this.currentScene = new PlayScene(5, 10);
+        // this.currentScene = new PlayScene(5, 10); // Uncomment to skip MainMenu scene
+        this.currentScene = new MainMenu(primaryStage);
     }
 
     /**
