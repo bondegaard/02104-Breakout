@@ -37,6 +37,11 @@ public class PlayScene extends AbstractScene {
 
     private Random random = new Random();
 
+    private int lives = 3;
+    private Text deathPauseText;
+    private Text deathInfoText;
+
+    private boolean died = false;
 
 
     public PlayScene(int n, int m) {
@@ -54,12 +59,15 @@ public class PlayScene extends AbstractScene {
         balls.add(ball);
 
 
-
         // Add start or pause text
         addStartOrPauseText();
 
+        // add death note text
+        addDeathPauseText();
+
         // Setup Keyboard events
         setupKeyPressedEvents();
+
     }
 
     public void addBackgroundImage(){
@@ -140,6 +148,39 @@ public class PlayScene extends AbstractScene {
         });
     }
 
+    public void addDeathPauseText() {
+        // Text to display start or pause information
+        this.deathPauseText = new Text("You Died. You have " + lives + " left.");
+        this.deathPauseText.setStyle("-fx-font-size: 48px;");
+        this.deathPauseText.setFill(Color.WHITE);
+        this.getPane().getChildren().add(this.deathPauseText);
+        this.deathPauseText.setVisible(false);
+
+        // Text to display controls
+        this.deathInfoText = new Text("Press Enter to start again");
+        this.deathInfoText.setStyle("-fx-font-size: 32px;");
+        this.deathInfoText.setFill(Color.WHITE);
+        this.getPane().getChildren().add(this.deathInfoText);
+        this.deathInfoText.setVisible(false);
+
+
+        // Center the text after it is added to the scene as it needs to be visible and text changes
+        // This makes sure that it is centered no matter what
+        this.deathPauseText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.deathPauseText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.deathPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
+        });
+
+        this.deathInfoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.deathInfoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.deathInfoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
+        });
+    }
+
     public Grid getGrid() {
         return grid;
     }
@@ -148,14 +189,24 @@ public class PlayScene extends AbstractScene {
     public void onTick() {
         // Handle unstarted or paused game
         if (!playing) {
-            startOrPauseText.setVisible(true);
-            infoText.setVisible(true);
+            if (died) {
+                deathPauseText.setVisible(true);
+                deathInfoText.setVisible(true);
+            }
+            else {
+                startOrPauseText.setVisible(true);
+                infoText.setVisible(true);
+            }
             return;
         }
 
         // Dont display info text
         startOrPauseText.setVisible(false);
         infoText.setVisible(false);
+
+        died = false;
+        deathPauseText.setVisible(false);
+        deathInfoText.setVisible(false);
 
         // Check for Victory
         if (this.grid.getAliveAmount() <= 0) {
@@ -174,14 +225,21 @@ public class PlayScene extends AbstractScene {
 
                 // Check for GameOver
                 if (balls.isEmpty()) {
-                    Breakout.getInstance().setCurrentScene(new GameOverScene());
-                    Sound.playSound(Sound.LOSE);
+                    lives--;
+                    this.deathPauseText.setText("You Died. You have " + lives + " left.");
+                    died = true;
+                    playing = !playing;
+                    resetBallAndPaddle();
+                    if (lives <= 0) {
+                      Breakout.getInstance().setCurrentScene(new GameOverScene());
+                      Sound.playSound(Sound.LOSE);
+                    }
                 }
                 return;
             }
         }
 
-        // Move paddle left2
+        // Move paddle left
         if (paddle.isMoveLeft()) {
             paddle.updatePosXLeft();
         }
@@ -236,4 +294,17 @@ public class PlayScene extends AbstractScene {
             ball.onTick();
         }
     }
+
+    public void resetBallAndPaddle(){
+        //reset ball position and velocity
+        ball.setPosX(WindowUtils.getWindowWidth()/2 - 64);
+        ball.setPosY(WindowUtils.getWindowHeight() * 0.8 );
+        ball.setVelX(.5);
+        ball.setVelY(-.25);
+
+        //reset paddle
+        paddle.setPosX(WindowUtils.getWindowWidth()/2 - 64);
+        paddle.setPosY(WindowUtils.getWindowHeight() * 0.8);
+    }
+
 }
