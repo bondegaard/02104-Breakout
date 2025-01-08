@@ -61,7 +61,7 @@ public class PlayScene extends AbstractScene {
     public void addBackgroundImage(){
         this.getScene().setFill(Color.BLACK);
         try {
-            FileInputStream input = new FileInputStream("assets/background.jpg");
+            FileInputStream input = new FileInputStream("assets/img/background.jpg");
             Image image = new Image(input);
 
             BackgroundImage backgroundimage = new BackgroundImage(image,
