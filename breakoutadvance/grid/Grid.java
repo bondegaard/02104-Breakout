@@ -67,15 +67,12 @@ public class Grid {
         Block block = this.grid[n][m];
         if (block == null) return;
 
-        // Remove from screen
-        playScene.getPane().getChildren().remove(block.getNode());
-        this.grid[n][m] = null;
+        /*
+        //debugging---
         System.out.print(n);
-        //
-        //
-        // System.out.print(m);
+        System.out.print(m);
         System.out.println("--" + playScene.score + "--" + grid.length);
-
+         */
 
         int length = grid.length;
 
@@ -97,6 +94,14 @@ public class Grid {
         } else if (length - 1== n){
             playScene.score += 100;
         }
+        // scorecounter virker næsten rigtig nok.
+        // dog bliver blockværdiens værdi først opdateret i score, ved næste kollision. derfor skal den sidst ramte blocks blockværdi hentes og lægges til score, når man dør.
+        // ellers mangler man det sidste point til sin score.
+
+        // Remove from screen
+        playScene.getPane().getChildren().remove(block.getNode());
+        this.grid[n][m] = null;
+
     }
 
     //get amount of blocks alive
