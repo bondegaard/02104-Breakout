@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="02104-Breakout-advance">
+    <output-path>$PROJECT_DIR$/out/artifacts/02104_Breakout_advance</output-path>
+    <root id="archive" name="02104-Breakout-advance.jar">
+      <element id="module-output" name="02104-Breakout" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/production/02104-Breakout/assets/deppendencies/gson-2.11.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/assets/deppendencies/gson-2.11.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/out/artifacts/02104_Breakout_advance/02104-Breakout-advance.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
