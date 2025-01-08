@@ -44,19 +44,19 @@ public class PlayScene extends AbstractScene {
         int radius = 16;
 
         // Creating a random angle
-        // Interval for velX is 0.2 to 0.75, and it varies from negative to positive number
+        // Interval for velX is 0.3 to 0.6, and it varies from a negative and a positive number
         // velY is calculated based on (maxAddedVel - velX)
         boolean positiveNumber = random.nextBoolean();
         double maxAddedVel = 1.0;
-        double velX = random.nextDouble(0.2,0.75);
+        double velX = random.nextDouble(0.3,0.6);
         double velY = maxAddedVel - velX;
         velX = (positiveNumber) ? velX : -velX;
 
 
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
+
         this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d, this.paddle.getPosY() - 2*paddle.getHeight(), velX , velY, radius);
 
-        // Max X = -.7
         // Add start or pause text
         addStartOrPauseText();
 

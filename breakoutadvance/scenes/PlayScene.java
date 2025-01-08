@@ -55,19 +55,35 @@ public class PlayScene extends AbstractScene {
 
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) width /2), WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
 
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
+
+        // Calculating angle/velocity
+        double[] vel = calculateStartVelForBall();
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d, this.paddle.getPosY() - 2*paddle.getHeight(), vel[0] , vel[1], radius);
         balls.add(ball);
 
 
         // Add start or pause text
         addStartOrPauseText();
 
-        // add death note text
+        // Add death note text
         addDeathPauseText();
 
         // Setup Keyboard events
         setupKeyPressedEvents();
 
+    }
+
+    public double[] calculateStartVelForBall() {
+        // Creating a random angle to start from
+        // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
+        // velY is calculated based on (maxAddedVel - velX)
+        boolean positiveNumber = random.nextBoolean();
+        double maxAddedVel = 1.0;
+        double velX = random.nextDouble(0.2,0.75);
+        double velY = maxAddedVel - velX;
+        velX = (positiveNumber) ? velX : -velX;
+
+        return new double[]{velX,velY};
     }
 
     public void addBackgroundImage(){
@@ -296,9 +312,11 @@ public class PlayScene extends AbstractScene {
     }
 
     public void resetBallAndPaddle(){
-        //reset ball position and velocity
+        // Reset ball position and velocity
         int radius = 16;
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
+        double[] vel = calculateStartVelForBall();
+
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , vel[0], vel[1], radius);
         balls.add(ball);
 
         //reset paddle

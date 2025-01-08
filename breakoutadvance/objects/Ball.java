@@ -24,14 +24,16 @@ public class Ball extends Entity {
         try {
             Image image = new Image(new FileInputStream("assets/img/ball.png"));
             imgView = new ImageView(image);
-            imgView.relocate(this.getPosX(), this.getPosY());
+            imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
             imgView.setFitHeight(this.getHeight()*2);
             imgView.setFitWidth(this.getWidth()*2);
 
             playScene.getPane().getChildren().add(imgView);
             this.setNode(imgView);
         } catch (Exception e) {
-            Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight());
+            // Drawing ball
+            // Adding radius (this.getHeight()) to accomodate how a circle is drawn
+            Circle ball = new Circle(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight(), this.getHeight());
             ball.setFill(Color.RED);
             playScene.getPane().getChildren().add(ball);
 
@@ -67,9 +69,6 @@ public class Ball extends Entity {
         this.setPosY(this.getPosY() + velY);
         this.getNode().relocate(this.getPosX(), this.getPosY()); //relocates points in scene
     }
-
-
-
 
     public double getVelX(){
         return velX;
