@@ -1,4 +1,4 @@
-package breakoutadvance.UI.mainmenu;
+package breakoutadvance.UI.menus;
 
 public enum MainMenuSelectedBtn {
     START,

@@ -1,10 +1,9 @@
-package breakoutadvance.UI.mainmenu;
+package breakoutadvance.UI.menus;
 
 import breakoutadvance.Breakout;
 import breakoutadvance.scenes.AbstractScene;
 
 import breakoutadvance.scenes.PlayScene;
-import breakoutbasic.utils.WindowUtils;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -21,12 +20,14 @@ public class MainMenu extends AbstractScene {
     private Pane pane;
     private Font currentFont;
     private Scene scene;
+    private Stage primaryStage;
 
     private int selectedBtn = 0;
 
     private Text[] textItems;
 
     public MainMenu(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         pane = new Pane();
         loadFont();
 
@@ -58,7 +59,7 @@ public class MainMenu extends AbstractScene {
 
         scene = new Scene(pane);
 
-        primaryStage.setScene(scene);
+        this.primaryStage.setScene(scene);
 
         setupKeyPressedEvents();
     }
@@ -112,6 +113,7 @@ public class MainMenu extends AbstractScene {
                 break;
             case 1:
                 System.out.println("Settings is yet to be implemented");
+                Breakout.getInstance().setCurrentScene(new SettingsMenu(this.primaryStage));
                 break;
             case 2:
                 System.exit(0);
