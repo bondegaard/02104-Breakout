@@ -9,26 +9,42 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class MainMenu extends BaseMenuScene {
+/**
+ * Main Menu screen for Breakout.
+ */
+public class MainMenu extends AbstractMenu {
+
     private int selectedBtn = 0;
     private Text[] textItems;
 
     public MainMenu(Stage primaryStage) {
         super(primaryStage);
+
+        // Create a centered VBox to hold the menu items
         VBox vbox = createVBox(Pos.CENTER, 10);
 
+        // Create text items
         Text startText = createText("Start", 64, Color.WHITE);
         Text settingsText = createText("Settings", 64, Color.WHITE);
         Text quitText = createText("Quit", 64, Color.WHITE);
 
+        // Put them in an array for easy highlighting
         textItems = new Text[]{startText, settingsText, quitText};
-        vbox.getChildren().addAll(startText, settingsText, quitText);
+
+        // Add them to the layout, then add the layout to the pane
+        vbox.getChildren().addAll(textItems);
         pane.getChildren().add(vbox);
 
+        // Highlight the first option
         selectText(selectedBtn);
+
+        // Handle arrow/enter keys
         setupKeyPressedEvents();
     }
 
+    /**
+     * Changes the color of the currently selected menu item.
+     */
     private void selectText(int btnIndex) {
         for (Text text : textItems) {
             text.setFill(Color.WHITE);
@@ -36,23 +52,31 @@ public class MainMenu extends BaseMenuScene {
         textItems[btnIndex].setFill(Color.YELLOW);
     }
 
+    /**
+     * Called when ENTER is pressed on the selected menu item.
+     */
     private void btnEnter() {
         switch (selectedBtn) {
             case 0:
+                // Start game
                 Breakout.getInstance().setCurrentScene(new PlayScene(5, 10));
                 break;
             case 1:
+                // Open settings
                 Breakout.getInstance().setCurrentScene(new SettingsMenu(primaryStage));
                 break;
             case 2:
+                // Quit application
                 System.exit(0);
                 break;
             default:
-                System.out.println("Invalid selection");
-                break;
+                System.out.println("Unknown selection: " + selectedBtn);
         }
     }
 
+    /**
+     * Set up input for navigating the menu with arrow/WASD keys and Enter.
+     */
     private void setupKeyPressedEvents() {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -69,6 +93,6 @@ public class MainMenu extends BaseMenuScene {
 
     @Override
     public void onTick() {
-        // No periodic actions needed for the main menu
+        // If you don’t need periodic updates in the menu, leave it empty
     }
 }

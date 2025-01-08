@@ -8,9 +8,9 @@ import javafx.scene.layout.Pane;
  * Abstract class to handle different kinds of scenes
  */
 public abstract class AbstractScene {
-    private Scene scene; // Scene that is displayed
+    protected Scene scene; // Scene that is displayed
 
-    private Pane pane; // Pane which spands the full screen.
+    protected Pane pane; // Pane which spands the full screen.
 
     /**
      * Create a basic Scene
@@ -33,7 +33,7 @@ public abstract class AbstractScene {
     }
 
     /**
-     * Display screne on the current stage
+     * Display scene on the current stage
      */
     public void displayScene() {
         // Adding Scene to Stage
