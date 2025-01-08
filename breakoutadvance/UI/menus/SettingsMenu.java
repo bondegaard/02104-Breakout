@@ -1,147 +1,98 @@
 package breakoutadvance.UI.menus;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.scenes.AbstractScene;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import breakoutadvance.UI.menus.components.UIComponentFactory;
+import breakoutadvance.persistentdata.data.BallColor;
+import breakoutadvance.persistentdata.data.PaddleColor;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Slider;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
+import java.util.Arrays;
+import java.util.List;
 
-public class SettingsMenu extends AbstractScene {
-    private Pane pane;
-    private Scene scene;
-    private Stage primaryStage;
+public class SettingsMenu extends BaseMenuScene {
+    private List<BallColor> ballColors = Arrays.asList(BallColor.values());
+    private List<PaddleColor> paddleColors = Arrays.asList(PaddleColor.values());
+    private int currentBallColorIndex;
+    private int currentPaddleColorIndex;
+    private Text ballColorText;
+    private Text paddleColorText;
 
     public SettingsMenu(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-        this.pane = new Pane();
-
-        // Vertical box
-        VBox vbox = new VBox();
-        vbox.setSpacing(10);
+        super(primaryStage);
+        VBox vbox = createVBox(Pos.CENTER, 10);
         vbox.setStyle("-fx-padding: 20;");
-        vbox.setAlignment(Pos.CENTER);
 
-        vbox.layoutXProperty().bind(this.pane.widthProperty().subtract(vbox.widthProperty()).divide(2));
-        vbox.layoutYProperty().bind(this.pane.heightProperty().subtract(vbox.heightProperty()).divide(2));
+        Text title = UIComponentFactory.createText("Settings", 64, Color.YELLOW, currentFont);
 
-        Text title = new Text("Settings");
-        title.getStyleClass().add("title");
-        title.setFont(Font.loadFont(getFont(), 64));
-        title.setFill(Color.YELLOW);
-
-        // HBox with volume
-        HBox hboxVolume = new HBox();
-        hboxVolume.setSpacing(10);
-
-        // Checkbox
-        CheckBox checkBox = new CheckBox();
-        Label checkBoxLabel = new Label("Mute");
-        checkBoxLabel.setFont(Font.loadFont(getFont(), 32));
-        checkBoxLabel.setTextFill(Color.WHITE);
-        checkBox.setStyle("-fx-font-size: 20px; -fx-padding: 10;");
-        checkBox.setSelected(Breakout.getInstance().getDataManager().getData().isMute());
-        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                Breakout.getInstance().getDataManager().getData().setMute(checkBox.isSelected());
-                Breakout.getInstance().getDataManager().saveData();
-            }
-        });
-
-        HBox hCheckBox = new HBox(10, checkBox, checkBoxLabel);
+        currentBallColorIndex = ballColors.indexOf(Breakout.getInstance().getDataManager().getData().getBallColor());
+        currentPaddleColorIndex = paddleColors.indexOf(Breakout.getInstance().getDataManager().getData().getPaddleColor());
 
         // Volume slider
-        Slider volumeSlider = new Slider(0, 100, Breakout.getInstance().getDataManager().getData().getVolume());
-        volumeSlider.setPrefWidth(300);
-        Label volumeSliderLabel = new Label("Volume: " + String.format("%.0f", Breakout.getInstance().getDataManager().getData().getVolume()) + " %");
-        volumeSliderLabel.setFont(Font.loadFont(getFont(), 32));
-        volumeSliderLabel.setTextFill(Color.WHITE);
-        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() { // Add listener to the slider
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                volumeSliderLabel.setText("Volume: " + String.format("%.0f", newValue) + "%");
-                Breakout.getInstance().getDataManager().getData().setVolume(newValue.intValue());
-                Breakout.getInstance().getDataManager().saveData();
-            }
+        Slider volumeSlider = UIComponentFactory.createSlider(0, 100, Breakout.getInstance().getDataManager().getData().getVolume(), 300);
+        Label volumeLabel = UIComponentFactory.createLabel("Volume: " + (int) volumeSlider.getValue() + " %", 32, currentFont);
+
+        volumeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            volumeLabel.setText("Volume: " + String.format("%.0f", newValue) + "%");
+            Breakout.getInstance().getDataManager().getData().setVolume(newValue.intValue());
+            Breakout.getInstance().getDataManager().saveData();
         });
 
-        VBox vVolumeBox = new VBox(10, volumeSlider, volumeSliderLabel);
+        VBox volumeBox = new VBox(10, volumeSlider, volumeLabel);
 
-        hboxVolume.getChildren().addAll(vVolumeBox, hCheckBox);
+        // Mute checkbox
+        CheckBox muteCheckBox = UIComponentFactory.createCheckBox("Mute", Breakout.getInstance().getDataManager().getData().isMute(), currentFont);
+        muteCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            Breakout.getInstance().getDataManager().getData().setMute(newValue);
+            Breakout.getInstance().getDataManager().saveData();
+        });
 
-        // Ball styling
-        HBox hboxBall = new HBox();
-        Text left = new Text("<"); // Left arrow
-        Text ballColour = new Text("Blue"); // Colours or images
-        Text right = new Text(">"); // Right arrow
+        // Ball color selection
+        HBox hboxBall = createColorSelector("Ball Color", ballColors, currentBallColorIndex, true);
 
-        hboxBall.getChildren().addAll(left, ballColour, right);
+        // Paddle color selection
+        HBox hboxPaddle = createColorSelector("Paddle Color", paddleColors, currentPaddleColorIndex, false);
 
-        // Paddle styling
-        HBox hboxPaddle = new HBox();
-        Text paddleColour = new Text("Blue"); // Colours or images
-        hboxPaddle.getChildren().addAll(left, paddleColour, right);
-
-        vbox.getChildren().addAll(title, hboxVolume, hboxBall, hboxPaddle);
-
-        this.pane.getChildren().add(vbox);
-
-        this.scene = new Scene(this.pane);
-
-        this.addBackgroundImage();
-
-        this.primaryStage.setScene(scene);
-
-//        Breakout.getInstance().getDataManager().getData().setHighscore(7);
-//        Breakout.getInstance().getDataManager().saveData();
+        vbox.getChildren().addAll(title, volumeBox, muteCheckBox, hboxBall, hboxPaddle);
+        pane.getChildren().add(vbox);
     }
 
-    public void addBackgroundImage(){
-        this.getScene().setFill(Color.BLACK);
-        try {
-            FileInputStream input = new FileInputStream("assets/img/cobblestoneWallWithDoor.png");
-            Image image = new Image(input);
+    private <T> HBox createColorSelector(String label, List<T> colors, int currentIndex, boolean isBall) {
+        Text leftArrow = UIComponentFactory.createText("<", 48, Color.WHITE, currentFont);
+        Text colorText = UIComponentFactory.createText(colors.get(currentIndex).toString(), 48, Color.YELLOW, currentFont);
+        Text rightArrow = UIComponentFactory.createText(">", 48, Color.WHITE, currentFont);
 
-            BackgroundImage backgroundimage = new BackgroundImage(image,
-                    BackgroundRepeat.REPEAT,
-                    BackgroundRepeat.REPEAT,
-                    BackgroundPosition.CENTER,
-                    BackgroundSize.DEFAULT);
+        leftArrow.setOnMouseClicked(event -> changeColor(colorText, colors, -1, isBall));
+        rightArrow.setOnMouseClicked(event -> changeColor(colorText, colors, 1, isBall));
 
-            Background background = new Background(backgroundimage);
-
-            pane.setBackground(background);
-        } catch (Exception ex) {
-            System.err.println("Error loading background image");
+        if (isBall) {
+            ballColorText = colorText;
+        } else {
+            paddleColorText = colorText;
         }
+
+        return UIComponentFactory.createHBox(20, leftArrow, colorText, rightArrow);
     }
 
-    public FileInputStream getFont() {
-
-        try {
-            FileInputStream fontStream = new FileInputStream("assets/fonts/BLACEB__.ttf");
-            return fontStream;
-        } catch (Exception e) {
-            System.out.println("Font file not found!");
+    private <T> void changeColor(Text colorText, List<T> colors, int direction, boolean isBall) {
+        if (isBall) {
+            currentBallColorIndex = (currentBallColorIndex + direction + colors.size()) % colors.size();
+            Breakout.getInstance().getDataManager().getData().setBallColor((BallColor) colors.get(currentBallColorIndex));
+        } else {
+            currentPaddleColorIndex = (currentPaddleColorIndex + direction + colors.size()) % colors.size();
+            Breakout.getInstance().getDataManager().getData().setPaddleColor((PaddleColor) colors.get(currentPaddleColorIndex));
         }
-
-        return null;
+        colorText.setText(colors.get(isBall ? currentBallColorIndex : currentPaddleColorIndex).toString());
+        Breakout.getInstance().getDataManager().saveData();
     }
 
     @Override
-    public void onTick() {
-
-    }
+    public void onTick() {}
 }
