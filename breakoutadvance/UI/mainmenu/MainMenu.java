@@ -1,10 +1,12 @@
 package breakoutadvance.UI.mainmenu;
 
+import breakoutadvance.Breakout;
 import breakoutadvance.scenes.AbstractScene;
 
+import breakoutadvance.scenes.PlayScene;
+import breakoutbasic.utils.WindowUtils;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.Scene;
@@ -14,11 +16,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 public class MainMenu extends AbstractScene {
     private Pane pane;
     private Font currentFont;
+    private Scene scene;
+
+    private int selectedBtn = 0;
+
+    private Text[] textItems;
 
     public MainMenu(Stage primaryStage) {
         pane = new Pane();
@@ -33,7 +39,7 @@ public class MainMenu extends AbstractScene {
         Text settingsText = new Text("Settings");
         Text quitText = new Text("Quit");
 
-        Text[] textItems = {startText, settingsText, quitText};
+        textItems = new Text[]{startText, settingsText, quitText};
 
         // Add the buttons to the VBox
         vbox.getChildren().addAll(startText, settingsText, quitText);
@@ -47,10 +53,10 @@ public class MainMenu extends AbstractScene {
         vbox.layoutXProperty().bind(pane.widthProperty().subtract(vbox.widthProperty()).divide(2));
         vbox.layoutYProperty().bind(pane.heightProperty().subtract(vbox.heightProperty()).divide(2));
 
-        selectText(startText, textItems);
+        selectText(selectedBtn, textItems);
         this.addBackgroundImage();
 
-        Scene scene = new Scene(pane);
+        scene = new Scene(pane);
 
         primaryStage.setScene(scene);
 
@@ -86,7 +92,9 @@ public class MainMenu extends AbstractScene {
         }
     }
 
-    public void selectText(Text selectedText, Text[] textItems) {
+    public void selectText(int btnIndex, Text[] textItems) {
+        Text selectedText = textItems[btnIndex];
+
         for (Text text : textItems) {
             text.setFont(currentFont);
             text.setFill(Color.WHITE);
@@ -97,18 +105,48 @@ public class MainMenu extends AbstractScene {
 
     }
 
+    public void btnEnter() {
+        switch (selectedBtn) {
+            case 0:
+                Breakout.getInstance().setCurrentScene(new PlayScene(5, 10));
+                break;
+            case 1:
+                System.out.println("Settings is yet to be implemented");
+                break;
+            case 2:
+                System.exit(0);
+                break;
+            default:
+                System.out.println("Something went wrong");
+                break;
+        }
+    }
+
     public void setupKeyPressedEvents() {
-        this.getScene().setOnKeyPressed(event -> {
+        scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 // Load selected
                 System.out.println("You pressed Enter!");
+                btnEnter();
             }
             if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.KP_UP || event.getCode() == KeyCode.W) {
                 System.out.println("UP");
+                selectedBtn--;
+
+                if (selectedBtn < 0) {
+                    selectedBtn = textItems.length - 1;
+                }
+
+                selectText(selectedBtn, textItems);
             }
 
             if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.KP_DOWN|| event.getCode() == KeyCode.S) {
                 System.out.println("DOWN");
+                selectedBtn++;
+
+                selectedBtn = selectedBtn % textItems.length;
+
+                selectText(selectedBtn, textItems);
             }
         });
     }
