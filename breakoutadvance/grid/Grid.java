@@ -70,24 +70,33 @@ public class Grid {
         // Remove from screen
         playScene.getPane().getChildren().remove(block.getNode());
         this.grid[n][m] = null;
-        System.out.println(n);
-        System.out.println(playScene.score);
+        System.out.print(n);
+        //
+        //
+        // System.out.print(m);
+        System.out.println("--" + playScene.score + "--" + grid.length);
+
+
+        int length = grid.length;
 
         //add blockValue to score
-        switch(n){
-            case 1 ->playScene.score += 1000;
-            case 2 -> playScene.score += 700;
-            case 3 -> playScene.score += 700;
-            case 4 -> playScene.score += 500;
-            case 5 -> playScene.score += 500;
-            case 6 -> playScene.score += 300;
-            case 7 -> playScene.score += 300;
-            case 8 -> playScene.score += 100;
-            case 9 -> playScene.score += 100;
+        if (length - 8 == n){
+            playScene.score += 700;
+        } else if (length - 7 == n){
+            playScene.score += 700;
+        } else if (length - 6 == n){
+            playScene.score += 500 ;
+        } else if (length - 5== n){
+            playScene.score += 500;
+        } else if (length - 4== n){
+            playScene.score += 300;
+        } else if (length - 3== n){
+            playScene.score += 300;
+        } else if (length - 2== n){
+            playScene.score += 100;
+        } else if (length - 1== n){
+            playScene.score += 100;
         }
-        System.out.println(n);
-        System.out.println(playScene.score);
-
     }
 
     //get amount of blocks alive

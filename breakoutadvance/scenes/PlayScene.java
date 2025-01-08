@@ -42,12 +42,12 @@ public class PlayScene extends AbstractScene {
     private Text deathInfoText;
     private boolean died = false;
 
-    public int score = 0;
+    public int score = 100;
 
 
     public PlayScene(int n, int m) {
         this.addBackgroundImage();
-        this.grid = new Grid(this, n, m);
+        this.grid = new Grid(this, 8, 10);
 
         // Create ball and paddle
         int width = 256;
@@ -58,8 +58,12 @@ public class PlayScene extends AbstractScene {
 
         // Calculating angle/velocity
         double[] vel = calculateStartVelForBall();
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d, this.paddle.getPosY() - 2*paddle.getHeight(), vel[0] , vel[1], radius);
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2), this.paddle.getPosY() - 2*paddle.getHeight(), vel[0] , vel[1], radius);
         balls.add(ball);
+        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2), this.paddle.getPosY() - 2*paddle.getHeight());
+
+
+
 
 
         // Add start or pause text
@@ -322,12 +326,10 @@ public class PlayScene extends AbstractScene {
         int radius = 16;
         double[] vel = calculateStartVelForBall();
 
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , vel[0], vel[1], radius);
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2)  , this.paddle.getPosY() - 3* paddle.getHeight() , vel[0], vel[1], radius);
         balls.add(ball);
+        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
 
-        //reset paddle
-        paddle.setPosX(WindowUtils.getWindowWidth()/2 - 64);
-        paddle.setPosY(WindowUtils.getWindowHeight() * 0.8);
     }
 
 }
