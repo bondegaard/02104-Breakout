@@ -9,10 +9,13 @@ import breakoutadvance.utils.CollisionChecker;
 import breakoutadvance.utils.EdgeHit;
 import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import java.io.FileInputStream;
 import java.util.Random;
 
 public class PlayScene extends AbstractScene {
@@ -34,7 +37,7 @@ public class PlayScene extends AbstractScene {
 
 
     public PlayScene(int n, int m) {
-        this.getScene().setFill(Color.BLACK);
+        this.addBackgroundImage();
         this.grid = new Grid(this, n, m);
 
         // Create ball and paddle
@@ -53,6 +56,26 @@ public class PlayScene extends AbstractScene {
 
         // Setup Keyboard events
         setupKeyPressedEvents();
+    }
+
+    public void addBackgroundImage(){
+        this.getScene().setFill(Color.BLACK);
+        try {
+            FileInputStream input = new FileInputStream("assets/background.jpg");
+            Image image = new Image(input);
+
+            BackgroundImage backgroundimage = new BackgroundImage(image,
+                    BackgroundRepeat.REPEAT,
+                    BackgroundRepeat.REPEAT,
+                    BackgroundPosition.CENTER,
+                    BackgroundSize.DEFAULT);
+
+            Background background = new Background(backgroundimage);
+
+            this.getPane().setBackground(background);
+        } catch (Exception ex) {
+            System.err.println("Error loading background image");
+        }
     }
 
     public void setupKeyPressedEvents() {
