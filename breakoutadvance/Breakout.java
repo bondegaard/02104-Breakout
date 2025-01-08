@@ -1,6 +1,7 @@
 package breakoutadvance;
 
 import breakoutadvance.loop.GameLoop;
+import breakoutadvance.persistentdata.DataManager;
 import breakoutadvance.scenes.AbstractScene;
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Sound;
@@ -20,6 +21,8 @@ public class Breakout extends Application {
 
     private GameLoop gameLoop; // Gameloop which calls the onTick function.
 
+    private DataManager dataManager; // Manager to handle persistent data
+
     public Breakout run() {
         launch();
         return this;
@@ -31,6 +34,10 @@ public class Breakout extends Application {
 
         // Load Sounds
         Sound.load();
+
+        // Load data manager
+        this.dataManager = new DataManager();
+        this.dataManager.load();
 
         // Setup Stage
         primaryStage.setTitle("Breakout");
