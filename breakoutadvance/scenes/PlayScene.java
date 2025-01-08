@@ -30,6 +30,11 @@ public class PlayScene extends AbstractScene {
 
     private Random random = new Random();
 
+    private int lives = 3;
+    private Text deathPauseText;
+    private Text deathInfoText;
+
+    private boolean died = false;
 
 
     public PlayScene(int n, int m) {
@@ -44,14 +49,17 @@ public class PlayScene extends AbstractScene {
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
         this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , .5 , -.25, radius);
 
-        //Create solid collision area around ball
-        //solidArea = new Rectangle(0, 0, (int) ball.getSize(), (int) ball.getSize());
+
 
         // Add start or pause text
         addStartOrPauseText();
 
+        // add death note text
+        addDeathPauseText();
+
         // Setup Keyboard events
         setupKeyPressedEvents();
+
     }
 
     public void setupKeyPressedEvents() {
@@ -112,6 +120,39 @@ public class PlayScene extends AbstractScene {
         });
     }
 
+    public void addDeathPauseText() {
+        // Text to display start or pause information
+        this.deathPauseText = new Text("You Died. You have " + lives + " left.");
+        this.deathPauseText.setStyle("-fx-font-size: 48px;");
+        this.deathPauseText.setFill(Color.WHITE);
+        this.getPane().getChildren().add(this.deathPauseText);
+        this.deathPauseText.setVisible(false);
+
+        // Text to display controls
+        this.deathInfoText = new Text("Press Enter to start again");
+        this.deathInfoText.setStyle("-fx-font-size: 32px;");
+        this.deathInfoText.setFill(Color.WHITE);
+        this.getPane().getChildren().add(this.deathInfoText);
+        this.deathInfoText.setVisible(false);
+
+
+        // Center the text after it is added to the scene as it needs to be visible and text changes
+        // This makes sure that it is centered no matter what
+        this.deathPauseText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.deathPauseText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.deathPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
+        });
+
+        this.deathInfoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.deathInfoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.deathInfoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
+        });
+    }
+
     public Grid getGrid() {
         return grid;
     }
@@ -120,8 +161,14 @@ public class PlayScene extends AbstractScene {
     public void onTick() {
         // Handle unstarted or paused game
         if (!playing) {
-            startOrPauseText.setVisible(true);
-            infoText.setVisible(true);
+            if (died) {
+                deathPauseText.setVisible(true);
+                deathInfoText.setVisible(true);
+            }
+            else {
+                startOrPauseText.setVisible(true);
+                infoText.setVisible(true);
+            }
             return;
         }
 
@@ -129,19 +176,38 @@ public class PlayScene extends AbstractScene {
         startOrPauseText.setVisible(false);
         infoText.setVisible(false);
 
+        died = false;
+        deathPauseText.setVisible(false);
+        deathInfoText.setVisible(false);
+
         // Check for Victory
         if (this.grid.getAliveAmount() <= 0) {
             Breakout.getInstance().setCurrentScene(new VictoryScene());
             return;
         }
 
-        // Check for GameOver
+        // Check for out of bounds Decrease lives count
         if (this.ball.getPosY() >= WindowUtils.getWindowHeight()) {
-            Breakout.getInstance().setCurrentScene(new GameOverScene());
-            return;
+            //decrease lives
+            lives--;
+
+            this.deathPauseText.setText("You Died. You have " + lives + " left.");
+
+            died = true;
+
+            playing = !playing;
+
+            resetBallAndPaddle();
+
+            {
+                if (lives <= 0) {
+                    Breakout.getInstance().setCurrentScene(new GameOverScene());
+                    return;
+                }
+            }
         }
 
-        // Move paddle left2
+        // Move paddle left
         if (paddle.isMoveLeft()) {
             paddle.updatePosXLeft();
         }
@@ -191,4 +257,17 @@ public class PlayScene extends AbstractScene {
         // Call the ball onTick function for it to move.
         this.ball.onTick();
     }
+
+    public void resetBallAndPaddle(){
+        //reset ball position and velocity
+        ball.setPosX(WindowUtils.getWindowWidth()/2 - 64);
+        ball.setPosY(WindowUtils.getWindowHeight() * 0.8 );
+        ball.setVelX(.5);
+        ball.setVelY(-.25);
+
+        //reset paddle
+        paddle.setPosX(WindowUtils.getWindowWidth()/2 - 64);
+        paddle.setPosY(WindowUtils.getWindowHeight() * 0.8);
+    }
+
 }
