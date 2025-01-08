@@ -19,7 +19,10 @@ public class Ball extends Entity {
         this.velX = velX;
         this.velY = velY;
 
-        Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight());
+        // Drawing ball
+        // Adding radius (this.getHeight()) to accomodate how a circle is drawn
+        Circle ball = new Circle(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight(), this.getHeight());
+        
         ball.setFill(Color.RED);
         playScene.getPane().getChildren().add(ball);
 
@@ -52,11 +55,8 @@ public class Ball extends Entity {
     public void updatePosition() {
         this.setPosX(this.getPosX() + velX);
         this.setPosY(this.getPosY() + velY);
-        this.getNode().relocate(this.getPosX(), this.getPosY()); //relocates points in scene
+        this.getNode().relocate(this.getPosX(), this.getPosY()); // Relocates points in scene
     }
-
-
-
 
     public double getVelX(){
         return velX;

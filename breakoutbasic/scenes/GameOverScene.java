@@ -30,7 +30,10 @@ public class GameOverScene extends AbstractScene{
     public void setupKeyPressedEvents() {
         // IF ENTER key is pressed, change the scene to playScene
         this.getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) Breakout.getInstance().setCurrentScene(new PlayScene(10,15));
+            int n = Breakout.getInstance().n;
+            int m = Breakout.getInstance().m;
+            if (n <= 10 && m <= 20)
+                if (event.getCode() == KeyCode.ENTER) Breakout.getInstance().setCurrentScene(new PlayScene(n, m));
         });
     }
 

@@ -1,8 +1,9 @@
 package breakoutadvance;
 
+import breakoutadvance.UI.menus.MainMenu;
 import breakoutadvance.loop.GameLoop;
+import breakoutadvance.persistentdata.DataManager;
 import breakoutadvance.scenes.AbstractScene;
-import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
 import javafx.application.Application;
@@ -20,6 +21,8 @@ public class Breakout extends Application {
 
     private GameLoop gameLoop; // Gameloop which calls the onTick function.
 
+    private DataManager dataManager; // Manager to handle persistent data
+
     public Breakout run() {
         launch();
         return this;
@@ -31,6 +34,10 @@ public class Breakout extends Application {
 
         // Load Sounds
         Sound.load();
+
+        // Load data manager
+        this.dataManager = new DataManager();
+        this.dataManager.load();
 
         // Setup Stage
         primaryStage.setTitle("Breakout");
@@ -51,20 +58,26 @@ public class Breakout extends Application {
         WindowUtils.setPrimaryStage(primaryStage);
 
         // Setup Play Scene for Game
-        setupPlayScene();
+        setupPlayScene(primaryStage);
 
         // Start Game Loop
         gameLoop = new GameLoop(this::onTick);
         gameLoop.start();
-        WindowUtils.getPrimaryStage().setOnCloseRequest(event -> { if (gameLoop != null) gameLoop.stop();});
+
+        // Save data and save game on close
+        WindowUtils.getPrimaryStage().setOnCloseRequest(event -> {
+            if (dataManager!= null && dataManager.getData() != null) dataManager.saveData();
+            if (gameLoop != null) gameLoop.stop();
+        });
     }
 
     /**
      * Setup starting PlayScene
      */
-    private void setupPlayScene() {
+    private void setupPlayScene(Stage primaryStage) {
         // Set Current Scene
-        this.currentScene = new PlayScene(5, 10);
+        // this.currentScene = new PlayScene(5, 10); // Uncomment to skip MainMenu scene
+        this.currentScene = new MainMenu(primaryStage);
     }
 
     /**

@@ -23,7 +23,6 @@ import java.util.Random;
 
 public class PlayScene extends AbstractScene {
 
-
     private boolean playing = false;
 
     private Grid grid;
@@ -55,22 +54,36 @@ public class PlayScene extends AbstractScene {
         int height = 16;
         int radius = 16;
 
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) width /2), WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
 
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - (int) (width/2) , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
-
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
+        // Calculating angle/velocity
+        double[] vel = calculateStartVelForBall();
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d, this.paddle.getPosY() - 2*paddle.getHeight(), vel[0] , vel[1], radius);
         balls.add(ball);
 
 
         // Add start or pause text
         addStartOrPauseText();
 
-        // add death note text
+        // Add death note text
         addDeathPauseText();
 
         // Setup Keyboard events
         setupKeyPressedEvents();
 
+    }
+
+    public double[] calculateStartVelForBall() {
+        // Creating a random angle to start from
+        // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
+        // velY is calculated based on (maxAddedVel - velX)
+        boolean positiveNumber = random.nextBoolean();
+        double maxAddedVel = 1.0;
+        double velX = random.nextDouble(0.2,0.75);
+        double velY = maxAddedVel - velX;
+        velX = (positiveNumber) ? velX : -velX;
+
+        return new double[]{velX,velY};
     }
 
     public void addBackgroundImage(){
@@ -279,14 +292,11 @@ public class PlayScene extends AbstractScene {
                         flipX = true;
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
-                        //add pointValue to score
-                        score++;
+
                     } else if (ballBlockHit == EdgeHit.YAXIS) {
                         flipY = true;
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
-                        //add pointValue to score
-
 
                     } else if (ballBlockHit == EdgeHit.BOTH) {
                         flipX = true;
@@ -308,14 +318,16 @@ public class PlayScene extends AbstractScene {
         this.paddle.setPosX(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2);
         this.paddle.getNode().relocate(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2, WindowUtils.getWindowHeight() * 0.8);
 
-        //reset ball position and velocity
+        // Reset ball position and velocity
         int radius = 16;
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , random.nextDouble(-2, 2) , -.25, radius);
-        balls.add(ball);
-    }
+        double[] vel = calculateStartVelForBall();
 
-    public int getScore(){
-        return score;
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d  , this.paddle.getPosY()  - 2*paddle.getHeight() , vel[0], vel[1], radius);
+        balls.add(ball);
+
+        //reset paddle
+        paddle.setPosX(WindowUtils.getWindowWidth()/2 - 64);
+        paddle.setPosY(WindowUtils.getWindowHeight() * 0.8);
     }
 
 }
