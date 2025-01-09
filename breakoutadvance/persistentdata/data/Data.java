@@ -10,9 +10,9 @@ public class Data {
 
     private boolean mute = false;
 
-    private BallColor ballColor = BallColor.GREY;
+    private String ballColor = "grey";
 
-    private PaddleColor paddleColor = PaddleColor.GREY;
+    private String paddleColor = "grey";
 
     private Game[] previousGames = new Game[0];
 
@@ -56,19 +56,19 @@ public class Data {
         this.mute = mute;
     }
 
-    public BallColor getBallColor() {
+    public String getBallColor() {
         return ballColor;
     }
 
-    public void setBallColor(BallColor ballColor) {
+    public void setBallColor(String ballColor) {
         this.ballColor = ballColor;
     }
 
-    public PaddleColor getPaddleColor() {
+    public String getPaddleColor() {
         return paddleColor;
     }
 
-    public void setPaddleColor(PaddleColor paddleColor) {
+    public void setPaddleColor(String paddleColor) {
         this.paddleColor = paddleColor;
     }
 
