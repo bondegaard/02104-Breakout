@@ -55,7 +55,7 @@ public class PlayScene extends AbstractScene {
 
     public PlayScene(int n, int m) {
         this.addBackgroundImage();
-        this.grid = new Grid(this, 8, 10);
+        this.grid = new Grid(this, 4, 6);
 
         // Create ball and paddle
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) Constants.PADDLE_WIDTH /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, Constants.PADDLE_WIDTH);
@@ -250,9 +250,16 @@ public class PlayScene extends AbstractScene {
                 if (balls.isEmpty()) {
                     lives--;
 
+                    //reset and update paddle width of paddle when die
+                    Constants.PADDLE_WIDTH = 200;
+                    this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
+                    this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
+                    this.paddle.setWidth(Constants.PADDLE_WIDTH);
+
+
                     // Prettier
                     if (lives == 1)
-                        this.deathPauseText.setText("You Died! You have " + lives + " live left.");
+                        this.deathPauseText.setText("You Died! You have " + lives + " life left.");
                     else
                         this.deathPauseText.setText("You Died! You have " + lives + " lives left.");
 
@@ -408,9 +415,17 @@ public class PlayScene extends AbstractScene {
         ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
     }
 
-    public void setPaddleWidth(){
-        //sets paddle Width
-        this.paddle.setWidth(Constants.PADDLE_WIDTH * 2);
+    public void increasePaddleWidth(){
+        if(Constants.PADDLE_WIDTH <= 414 ){
+
+            //increase and update paddle Width
+            Constants.PADDLE_WIDTH *= 1.2;
+
+            //sets paddle Width
+            this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
+            this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
+            this.paddle.setWidth(Constants.PADDLE_WIDTH);
+        }
     }
 
     public double[] calculateStartVelForBall() {

@@ -1,9 +1,7 @@
 package breakoutadvance.objects.powerups;
 
 import breakoutadvance.objects.Powerup;
-import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.scenes.PlayScene;
-import breakoutadvance.utils.Constants;
 
 public class PlusWidthPowerUp extends Powerup {
     /**
@@ -18,13 +16,15 @@ public class PlusWidthPowerUp extends Powerup {
      * @param velY
      */
     public PlusWidthPowerUp(PlayScene playScene, double posX, double posY, double height, double width, double velX, double velY) {
-        super(playScene, PowerupType.PLUS_ONE, posX, posY, height, width, velX, velY);
+        super(playScene, PowerupType.PLUS_WIDTH, posX, posY, height, width, velX, velY);
     }
 
+    //method calls increasePaddleWidth on collisions between Power Ups and paddle
     @Override
     public void onCollision() {
         if (hasCollided) return;
         hasCollided = true;
-        this.playScene.setPaddleWidth();
+        this.playScene.increasePaddleWidth();
+
     }
 }

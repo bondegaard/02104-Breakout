@@ -32,7 +32,7 @@ public class Grid {
         double lSize = (WindowUtils.getWindowWidth() * (97.5/100.0) / m);
 
         // Short side of the rectangle's length, based on window size
-        double sSize = ((WindowUtils.getWindowHeight() / 30.0));
+        double sSize = ((WindowUtils.getWindowHeight() / 20.0));
 
         // Starting positions, where blank space is calculated
         double posXStart = WindowUtils.getWindowWidth() * (1.0/100.0);
@@ -99,10 +99,12 @@ public class Grid {
         playScene.getPane().getChildren().remove(block.getNode());
         this.grid[n][m] = null;
 
+        /*
         //debugging---
         System.out.print(n);
         System.out.print(m);
         System.out.println("--" + playScene.score + "--" + grid.length);
+         */
 
     }
 
