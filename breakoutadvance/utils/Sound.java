@@ -1,5 +1,6 @@
 package breakoutadvance.utils;
 
+import breakoutadvance.Breakout;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -55,12 +56,14 @@ public enum Sound {
      * @param sound The sound to play
      */
     public static void playSound(Sound sound) {
+        if (Breakout.getInstance().getDataManager().getData().isMute()) return;
         Media media = mediaMap.get(sound);
         if (media != null) {
             if (mediaPlayer != null) {
                 mediaPlayer.stop();
             }
             mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setVolume(Breakout.getInstance().getDataManager().getData().getVolume());
             mediaPlayer.play();
         }
     }

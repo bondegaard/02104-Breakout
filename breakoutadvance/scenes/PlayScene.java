@@ -318,13 +318,14 @@ public class PlayScene extends AbstractScene {
 
                     if (ballBlockHit == EdgeHit.XAXIS) {
                         flipX = true;
-                        attemptPowerupSpawn(block.getPosX(), block.getPosY());
+                        attemptPowerupSpawn(block.getPosX()+block.getWidth()/2, block.getPosY()+block.getHeight()/2);
 
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
                     } else if (ballBlockHit == EdgeHit.YAXIS) {
                         flipY = true;
-                        attemptPowerupSpawn(block.getPosX(), block.getPosY());
+                        attemptPowerupSpawn(block.getPosX()+block.getWidth()/2, block.getPosY()+block.getHeight()/2);
+
 
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
