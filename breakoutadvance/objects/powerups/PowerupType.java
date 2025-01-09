@@ -4,8 +4,8 @@ import breakoutadvance.objects.Powerup;
 import breakoutadvance.scenes.PlayScene;
 
 public enum PowerupType {
-    PLUS_ONE("./assets/img/powerup_plus_one.png", 50); // 1 is equal to 0.1%
-
+    PLUS_ONE("./assets/img/powerup_plus_one.png", 25), // 1 is equal to 0.1%
+    PLUS_WIDTH("./assets/img/plusPaddleWidthPowerUps.png", 500);
 
     private final String imgPath;
 
@@ -28,6 +28,8 @@ public enum PowerupType {
         switch (this) {
             case PLUS_ONE:
                 return new PlusOnePowerUp(playScene, posX, posY, height, width, velX, velY);
+            case PLUS_WIDTH:
+                return new PlusWidthPowerUp(playScene, posX, posY, height, width, velX, velY);
             default:
                 throw new IllegalArgumentException("Invalid powerup type");
         }

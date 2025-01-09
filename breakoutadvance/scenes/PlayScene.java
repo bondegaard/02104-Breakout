@@ -199,10 +199,6 @@ public class PlayScene extends AbstractScene {
         });
     }
 
-    public Grid getGrid() {
-        return grid;
-    }
-
     @Override
     public void onTick() {
         // Handle unstarted or paused game
@@ -387,6 +383,10 @@ public class PlayScene extends AbstractScene {
         spawnBall();
     }
 
+    public Grid getGrid() {
+        return grid;
+    }
+
     public void spawnBall() {
         // Reset ball position and velocity
         double[] vel = calculateStartVelForBall();
@@ -394,6 +394,11 @@ public class PlayScene extends AbstractScene {
         Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_SIZE/2)  , this.paddle.getPosY() - 3* paddle.getHeight() , vel[0], vel[1], Constants.BALL_SIZE);
         balls.add(ball);
         ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_SIZE/2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
+    }
+
+    public void setPaddleWidth(){
+        //sets paddle Width
+        this.paddle.setWidth(Constants.PADDLE_WIDTH * 2);
     }
 
     public double[] calculateStartVelForBall() {
