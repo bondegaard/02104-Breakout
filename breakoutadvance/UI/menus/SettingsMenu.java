@@ -2,6 +2,7 @@ package breakoutadvance.UI.menus;
 
 import breakoutadvance.Breakout;
 import breakoutadvance.UI.menus.components.UIComponentFactory;
+import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.SetSceneUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
@@ -19,8 +20,8 @@ import java.util.List;
 
 public class SettingsMenu extends AbstractMenu {
 
-    private final String[] ballColors = new String[]{"blue", "green", "grey", "orange", "pink", "red", "yellow"};
-    private final String[] paddleColors = new String[]{"blue", "green", "grey", "orange", "pink", "red", "yellow"};
+    private final String[] ballColors = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
+    private final String[] paddleColors = new String[]{"red"};
 
     private int currentBallColorIndex;
     private int currentPaddleColorIndex;
@@ -102,8 +103,6 @@ public class SettingsMenu extends AbstractMenu {
      * Creates a color selector UI: [<] [ImageView] [>]
      */
     private <T> HBox createColorSelector(T[] colors, int currentIndex, boolean isBall) {
-        int imageSize = 64;
-
         List<T> colorList = Arrays.asList(colors);
 
         Text leftArrow = UIComponentFactory.createText("<", 48, Color.WHITE, currentFont);
@@ -111,14 +110,16 @@ public class SettingsMenu extends AbstractMenu {
 
         // Initialize ImageView with the current color image
         ImageView colorImageView = createColorImageView(colorList.get(currentIndex).toString(), isBall);
-        colorImageView.setFitWidth(imageSize);
-        colorImageView.setFitHeight(imageSize);
 
         // Store references so we can update them in changeColor(...)
         if (isBall) {
             ballImageView = colorImageView;
+            colorImageView.setFitWidth(Constants.BALL_RADIUS*2);
+            colorImageView.setFitHeight(Constants.BALL_RADIUS*2);
         } else {
             paddleImageView = colorImageView;
+            colorImageView.setFitWidth(Constants.PADDLE_WIDTH);
+            colorImageView.setFitHeight(Constants.PADDLE_HEIGHT);
         }
 
         leftArrow.setOnMouseClicked(event -> changeColor(colorList, -1, isBall));
@@ -139,9 +140,9 @@ public class SettingsMenu extends AbstractMenu {
         // e.g. "assets/img/paddles/" + colorName + "_paddle.png" for paddles
         String imagePath;
         if (isBall) {
-            imagePath = "assets/img/balls/" + colorName + "_ball.png";
+            imagePath = "./assets/img/OpenGameArt/balls/" + colorName + ".png";
         } else {
-            imagePath = "assets/img/balls/" + colorName + "_ball.png"; // adjust for paddle if needed
+            imagePath = "./assets/img/OpenGameArt/paddles/" + colorName + ".png"; // adjust for paddle if needed
         }
         Image image = new Image(imagePath);
         return new ImageView(image);
@@ -160,7 +161,7 @@ public class SettingsMenu extends AbstractMenu {
 
             // Update the ImageView
             if (ballImageView != null) {
-                ballImageView.setImage(new Image("assets/img/balls/" + newBallColor + "_ball.png"));
+                ballImageView.setImage(new Image("./assets/img/OpenGameArt/balls/" + newBallColor + ".png"));
             }
         } else {
             currentPaddleColorIndex = (currentPaddleColorIndex + direction + colors.size()) % colors.size();
@@ -171,7 +172,7 @@ public class SettingsMenu extends AbstractMenu {
 
             // Update the ImageView
             if (paddleImageView != null) {
-                paddleImageView.setImage(new Image("assets/img/balls/" + newPaddleColor + "_ball.png"));
+                paddleImageView.setImage(new Image("./assets/img/OpenGameArt/paddles/" + newPaddleColor + ".png"));
             }
         }
     }

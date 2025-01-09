@@ -6,7 +6,6 @@ import breakoutadvance.objects.Ball;
 import breakoutadvance.objects.Block;
 import breakoutadvance.objects.Paddle;
 import breakoutadvance.objects.Powerup;
-import breakoutadvance.objects.powerups.PlusOnePowerUp;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
 import breakoutadvance.persistentdata.data.Game;
@@ -404,9 +403,9 @@ public class PlayScene extends AbstractScene {
         // Reset ball position and velocity
         double[] vel = calculateStartVelForBall();
 
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_SIZE/2)  , this.paddle.getPosY() - 3* paddle.getHeight() , vel[0], vel[1], Constants.BALL_SIZE);
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 3* paddle.getHeight() , vel[0], vel[1], Constants.BALL_RADIUS);
         balls.add(ball);
-        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_SIZE/2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
+        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
     }
 
     public void setPaddleWidth(){

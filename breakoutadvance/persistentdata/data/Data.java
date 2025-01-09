@@ -10,9 +10,9 @@ public class Data {
 
     private boolean mute = false;
 
-    private String ballColor = "grey";
+    private String ballColor = "beige";
 
-    private String paddleColor = "grey";
+    private String paddleColor = "red";
 
     private Game[] previousGames = new Game[0];
 
