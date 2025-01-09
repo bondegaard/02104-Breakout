@@ -75,4 +75,9 @@ public class Data {
     public void setPreviousGames(Game[] previousGames) {
         this.previousGames = previousGames;
     }
+
+    public void addGame(Game game) {
+        this.previousGames = Arrays.copyOf(this.previousGames, this.previousGames.length + 1);
+        this.previousGames[this.previousGames.length - 1] = game;
+    }
 }

@@ -9,6 +9,8 @@ import breakoutadvance.objects.Powerup;
 import breakoutadvance.objects.powerups.PlusOnePowerUp;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
+import breakoutadvance.persistentdata.data.Game;
+import breakoutadvance.persistentdata.data.GameOutCome;
 import breakoutadvance.utils.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -231,6 +233,8 @@ public class PlayScene extends AbstractScene {
             Data data = Breakout.getInstance().getDataManager().getData();
             if (data.getHighscore() < this.score)
                 data.setHighscore(this.score);
+
+            data.addGame(new Game(this.score, GameOutCome.WON));
             Breakout.getInstance().getDataManager().saveData();
             return;
         }
@@ -259,6 +263,14 @@ public class PlayScene extends AbstractScene {
                     if (lives <= 0) {
                       Breakout.getInstance().setCurrentScene(new GameOverScene());
                       Sound.playSound(Sound.LOSE);
+
+                        // Save new highscore
+                        Data data = Breakout.getInstance().getDataManager().getData();
+                        if (data.getHighscore() < this.score)
+                            data.setHighscore(this.score);
+
+                        data.addGame(new Game(this.score, GameOutCome.LOSE));
+                        Breakout.getInstance().getDataManager().saveData();
                     }
                 }
                 return;
