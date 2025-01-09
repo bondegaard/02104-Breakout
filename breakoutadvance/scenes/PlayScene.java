@@ -35,7 +35,11 @@ public class PlayScene extends AbstractScene {
 
     private Text infoText;
 
+    private Text addInfoText;
+
     private Random random = new Random();
+
+    private final double maxAddedVel = 1.0;
 
     private int lives = 3;
     private Text deathPauseText;
@@ -50,20 +54,17 @@ public class PlayScene extends AbstractScene {
         this.grid = new Grid(this, 8, 10);
 
         // Create ball and paddle
-        int width = 256;
+        int paddleWidth = 256;
         int height = 16;
         int radius = 16;
-
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) width /2), WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
+        
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) paddleWidth /2), WindowUtils.getWindowHeight() * 0.8, 1.0, height, paddleWidth);
 
         // Calculating angle/velocity
         double[] vel = calculateStartVelForBall();
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2), this.paddle.getPosY() - 2*paddle.getHeight(), vel[0] , vel[1], radius);
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2), this.paddle.getPosY() - 4*paddle.getHeight(), vel[0] , vel[1], radius);
         balls.add(ball);
-        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2), this.paddle.getPosY() - 2*paddle.getHeight());
-
-
-
+        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2), this.paddle.getPosY() - 4*paddle.getHeight());
 
 
         // Add start or pause text
@@ -82,12 +83,11 @@ public class PlayScene extends AbstractScene {
         // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
         // velY is calculated based on (maxAddedVel - velX)
         boolean positiveNumber = random.nextBoolean();
-        double maxAddedVel = 1.0;
         double velX = random.nextDouble(0.2,0.75);
         double velY = maxAddedVel - velX;
         velX = (positiveNumber) ? velX : -velX;
 
-        return new double[]{velX,velY};
+        return new double[]{velX,-velY};
     }
 
     public void addBackgroundImage(){
@@ -114,6 +114,7 @@ public class PlayScene extends AbstractScene {
         this.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                playing = !playing;
+               addInfoText.setVisible(false);
 
                if (!playing) this.startOrPauseText.setText("Press ENTER to continue");
             }
@@ -150,6 +151,11 @@ public class PlayScene extends AbstractScene {
         this.infoText.setFill(Color.WHITE);
         this.getPane().getChildren().add(this.infoText);
 
+        // Text to inform user that you can pause the game
+        this.addInfoText = new Text("When started, you can press ENTER to pause the game");
+        this.addInfoText.setStyle("-fx-font-size: 32px;");
+        this.addInfoText.setFill(Color.WHITE);
+        this.getPane().getChildren().add(this.addInfoText);
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
@@ -166,6 +172,14 @@ public class PlayScene extends AbstractScene {
             this.infoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
             this.infoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
         });
+
+        this.addInfoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.addInfoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.addInfoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.6);
+        });
+
     }
 
     public void addDeathPauseText() {
@@ -273,14 +287,19 @@ public class PlayScene extends AbstractScene {
         for (Ball ball : balls) {
             EdgeHit ballPaddleHit = CollisionChecker.checkCollision(this.paddle, ball);
             if (ballPaddleHit == EdgeHit.YAXIS) {
-                ball.setPosY(this.paddle.getPosY() - ball.getHeight() * 2);
-                ball.setVelY(-Math.abs(ball.getVelY()));
+                double[] vel = calculateNewXVelocityAfterPaddleHit(ball);
+
+                ball.setPosY(this.paddle.getPosY() - ball.getHeight() * 2); // Making sure the ball only hits the paddle once
+                //ball.setVelY(-Math.abs(ball.getVelY()));
+                ball.setVelX(vel[0]);
+                ball.setVelY(vel[1]);
+                System.out.println("y: " + ball.getVelY() + " x: " + ball.getVelX());
                 Sound.playSound(Sound.PADDLE);
             }
 
 
             // Check Collisions between ball and any blocks on the screen
-            boolean flipX = false; // Should X direction be flippped
+            boolean flipX = false; // Should X direction be flipped
             boolean flipY = false;
             for (int i = 0; i < grid.getGrid().length; i++) {
                 for (int j = 0; j < grid.getGrid()[i].length; j++) {
@@ -315,6 +334,22 @@ public class PlayScene extends AbstractScene {
             // Call the ball onTick function for it to move.
             ball.onTick();
         }
+    }
+
+    private double[] calculateNewXVelocityAfterPaddleHit(Ball ball) {
+        // Getting the middle of the paddle
+        double paddleMiddlePosX = this.paddle.getPosX() + paddle.getWidth()/2;
+        // Ball position when hitting the paddle
+        double ballHitPosX = ball.getPosX();
+
+        double decreaser = 182; // 0.7 * x = 128, where 128 = (paddle width)/2
+
+        double velX = (paddleMiddlePosX - ballHitPosX) / decreaser;
+        if (velX < 0 && velX > -0.1) velX -= 0.1;
+        else if (velX > 0 && velX < 0.1) velX += 1;
+        double velY = maxAddedVel - Math.abs(velX);
+
+        return new double[]{-velX, -velY};
     }
 
     public void resetBallAndPaddle(){
