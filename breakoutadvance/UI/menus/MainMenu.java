@@ -1,7 +1,6 @@
 package breakoutadvance.UI.menus;
 
-import breakoutadvance.Breakout;
-import breakoutadvance.scenes.PlayScene;
+import breakoutadvance.utils.SetSceneUtil;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
@@ -17,13 +16,19 @@ public class MainMenu extends AbstractMenu {
     private Text[] textItems;
 
     public MainMenu() {
-        super();  // uses WindowUtils.getPrimaryStage() internally
+        super();
 
         VBox vbox = createVBox(Pos.CENTER, 10);
 
+        // Text
         Text startText = createText("Start", 64, Color.WHITE);
         Text settingsText = createText("Settings", 64, Color.WHITE);
         Text quitText = createText("Quit", 64, Color.WHITE);
+
+        // Text onClick:
+        startText.setOnMouseClicked(event -> {new SetSceneUtil().playScene(5, 10);});
+        settingsText.setOnMouseClicked(event -> {new SetSceneUtil().settingsMenu();});
+        quitText.setOnMouseClicked(event -> {new SetSceneUtil().quitGame();});
 
         textItems = new Text[] { startText, settingsText, quitText };
 
@@ -45,15 +50,15 @@ public class MainMenu extends AbstractMenu {
         switch (selectedBtn) {
             case 0:
                 // Start game
-                Breakout.getInstance().setCurrentScene(new PlayScene(5, 10));
+                new SetSceneUtil().playScene(5, 10);
                 break;
             case 1:
                 // Open settings
-                Breakout.getInstance().setCurrentScene(new SettingsMenu());
+                new SetSceneUtil().settingsMenu();
                 break;
             case 2:
                 // Quit
-                System.exit(0);
+                new SetSceneUtil().quitGame();
                 break;
         }
     }
