@@ -73,7 +73,7 @@ public class GameOverScene extends AbstractScene {
     }
 
     protected void addBackgroundImage() {
-        try (FileInputStream input = new FileInputStream("02104-Breakout/assets/img/cobblestoneWallWithDoor.png")) {
+        try (FileInputStream input = new FileInputStream("./assets/img/cobblestoneWallWithDoor.png")) {
             Image image = new Image(input);
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,
