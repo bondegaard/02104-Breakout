@@ -24,8 +24,8 @@ public enum PowerupType {
         return spawnChance;
     }
 
-    public Powerup createPowerup(PlayScene playScene, double posX, double posY, double height, double width, double velX, double velY) {
-        switch (this) {
+    public Powerup createPowerup(PlayScene playScene, PowerupType type, double posX, double posY, double height, double width, double velX, double velY) {
+        switch (type) {
             case PLUS_ONE:
                 return new PlusOnePowerUp(playScene, posX, posY, height, width, velX, velY);
             case PLUS_WIDTH:

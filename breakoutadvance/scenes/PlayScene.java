@@ -417,7 +417,7 @@ public class PlayScene extends AbstractScene {
         for (PowerupType type : PowerupType.values()) {
             int randomNumber = random.nextInt(1000);
             if (randomNumber < type.getSpawnChance()) { // Convert spawn chance to a comparable value
-                Powerup powerup = type.createPowerup(this,xPos, yPos, 16, 16, 0, 0.01);
+                Powerup powerup = type.createPowerup(this, type,xPos, yPos, 16, 16, 0, 0.01);
                 powerups.add(powerup);
                 break;
             }
