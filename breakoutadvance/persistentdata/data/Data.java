@@ -1,7 +1,6 @@
 package breakoutadvance.persistentdata.data;
 
 import java.util.Arrays;
-import javafx.scene.paint.Color;
 
 public class Data {
 
@@ -17,13 +16,14 @@ public class Data {
 
     private Game[] previousGames = new Game[0];
 
-
     @Override
     public String toString() {
         return "Data{" +
                 "highscore=" + highscore +
                 ", volume=" + volume +
                 ", mute=" + mute +
+                ", ballColor=" + ballColor +
+                ", paddleColor=" + paddleColor +
                 ", previousGames=" + Arrays.toString(previousGames) +
                 '}';
     }
