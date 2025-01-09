@@ -5,6 +5,9 @@ import breakoutadvance.grid.Grid;
 import breakoutadvance.objects.Ball;
 import breakoutadvance.objects.Block;
 import breakoutadvance.objects.Paddle;
+import breakoutadvance.objects.Powerup;
+import breakoutadvance.objects.powerups.PlusOnePowerUp;
+import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
 import breakoutadvance.utils.CollisionChecker;
 import breakoutadvance.utils.EdgeHit;
@@ -29,6 +32,8 @@ public class PlayScene extends AbstractScene {
     private Grid grid;
 
     private List<Ball> balls = new ArrayList<>();
+
+    private List<Powerup> powerups = new ArrayList<>();
 
     private Paddle paddle;
 
@@ -62,11 +67,7 @@ public class PlayScene extends AbstractScene {
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) paddleWidth /2), WindowUtils.getWindowHeight() * 0.8, 1.0, height, paddleWidth);
 
         // Calculating angle/velocity
-        double[] vel = calculateStartVelForBall();
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2), this.paddle.getPosY() - 4*paddle.getHeight(), vel[0] , vel[1], radius);
-        balls.add(ball);
-        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2), this.paddle.getPosY() - 4*paddle.getHeight());
-
+        spawnBall();
 
         // Add start or pause text
         addStartOrPauseText();
@@ -77,18 +78,6 @@ public class PlayScene extends AbstractScene {
         // Setup Keyboard events
         setupKeyPressedEvents();
 
-    }
-
-    public double[] calculateStartVelForBall() {
-        // Creating a random angle to start from
-        // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
-        // velY is calculated based on (maxAddedVel - velX)
-        boolean positiveNumber = random.nextBoolean();
-        double velX = random.nextDouble(0.2,0.75);
-        double velY = maxAddedVel - velX;
-        velX = (positiveNumber) ? velX : -velX;
-
-        return new double[]{velX,-velY};
     }
 
     public void addBackgroundImage(){
@@ -320,14 +309,16 @@ public class PlayScene extends AbstractScene {
 
                     if (ballBlockHit == EdgeHit.XAXIS) {
                         flipX = true;
+                        attemptPowerupSpawn(block.getPosX(), block.getPosY());
+
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
-
                     } else if (ballBlockHit == EdgeHit.YAXIS) {
                         flipY = true;
+                        attemptPowerupSpawn(block.getPosX(), block.getPosY());
+
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
-
                     } else if (ballBlockHit == EdgeHit.BOTH) {
                         flipX = true;
                         flipY = true;
@@ -337,10 +328,28 @@ public class PlayScene extends AbstractScene {
             if (flipX) ball.flipVelX();
             if (flipY) ball.flipVelY();
 
-
             // Call the ball onTick function for it to move.
             ball.onTick();
         }
+
+
+        // Remove powerups under screen or collides with paddle
+        Iterator<Powerup> powerupIterator = powerups.iterator();
+        while (powerupIterator.hasNext()) {
+            Powerup powerup = powerupIterator.next();
+            if (powerup.getPosY() > WindowUtils.getWindowHeight()) {
+                this.getPane().getChildren().remove(powerup.getNode());
+                powerupIterator.remove();
+                continue;
+            }
+            if(CollisionChecker.checkCollision(this.paddle, powerup)) {
+                this.getPane().getChildren().remove(powerup.getNode());
+                powerupIterator.remove();
+                powerup.onCollision();
+            }
+        }
+
+        powerups.forEach(Powerup::onTick);
     }
 
     private double[] calculateNewXVelocityAfterPaddleHit(Ball ball) {
@@ -371,6 +380,10 @@ public class PlayScene extends AbstractScene {
         this.paddle.setPosX(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2);
         this.paddle.getNode().relocate(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2, WindowUtils.getWindowHeight() * 0.8);
 
+        spawnBall();
+    }
+
+    public void spawnBall() {
         // Reset ball position and velocity
         int radius = 16;
         double[] vel = calculateStartVelForBall();
@@ -378,7 +391,28 @@ public class PlayScene extends AbstractScene {
         Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2)  , this.paddle.getPosY() - 3* paddle.getHeight() , vel[0], vel[1], radius);
         balls.add(ball);
         ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
-
     }
 
+    public double[] calculateStartVelForBall() {
+        // Creating a random angle to start from
+        // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
+        // velY is calculated based on (maxAddedVel - velX)
+        boolean positiveNumber = random.nextBoolean();
+        double velX = random.nextDouble(0.2,0.75);
+        double velY = maxAddedVel - velX;
+        velX = (positiveNumber) ? velX : -velX;
+
+        return new double[]{velX,-velY};
+    }
+
+    public void attemptPowerupSpawn(double xPos, double yPos) {
+        for (PowerupType type : PowerupType.values()) {
+            int randomNumber = random.nextInt(1000);
+            if (randomNumber < type.getSpawnChance()) { // Convert spawn chance to a comparable value
+                Powerup powerup = type.createPowerup(this,xPos, yPos, 16, 16, 0, 0.01);
+                powerups.add(powerup);
+                break;
+            }
+        }
+    }
 }
