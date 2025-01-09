@@ -20,9 +20,10 @@ public class PaddleUtil {
      *   - totalWidth must be >= (leftWidth + rightWidth).
      */
     public static Image buildPaddleImage(int totalWidth) {
-        Image leftImg = new Image("./assets/img/OpenGameArt/paddles/" + Breakout.getInstance().getDataManager().getData().getPaddleColor() + "Left.png");
-        Image middleImg = new Image("./assets/img/OpenGameArt/paddles/" + Breakout.getInstance().getDataManager().getData().getPaddleColor() + "Middle.png");;
-        Image rightImg = new Image("./assets/img/OpenGameArt/paddles/" + Breakout.getInstance().getDataManager().getData().getPaddleColor() + "Right.png");;
+        String color = Breakout.getInstance().getDataManager().getData().getPaddleColor();
+        Image leftImg   = AssetManager.getInstance().getImage(color + "Left");
+        Image middleImg = AssetManager.getInstance().getImage(color + "Middle");
+        Image rightImg  = AssetManager.getInstance().getImage(color + "Right");
 
         int leftWidth = (int) leftImg.getWidth();
         int rightWidth = (int) rightImg.getWidth();

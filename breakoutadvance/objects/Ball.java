@@ -2,6 +2,7 @@ package breakoutadvance.objects;
 
 import breakoutadvance.Breakout;
 import breakoutadvance.scenes.PlayScene;
+import breakoutadvance.utils.AssetManager;
 import breakoutadvance.utils.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,7 +24,7 @@ public class Ball extends Entity {
         this.velY = velY;
 
         try {
-            Image image = new Image(new FileInputStream("./assets/img/OpenGameArt/balls/" + Breakout.getInstance().getDataManager().getData().getBallColor() + ".png"));
+            Image image = AssetManager.getInstance().getImage(Breakout.getInstance().getDataManager().getData().getBallColor()+"Ball");
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
             imgView.setFitHeight(this.getHeight()*2);
@@ -33,7 +34,7 @@ public class Ball extends Entity {
             this.setNode(imgView);
         } catch (Exception e) {
             // Drawing ball
-            // Adding radius (this.getHeight()) to accomodate how a circle is drawn
+            // Adding radius (this.getHeight()) to accommodate how a circle is drawn
             Circle ball = new Circle(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight(), this.getHeight());
             ball.setFill(Color.RED);
             playScene.getPane().getChildren().add(ball);
