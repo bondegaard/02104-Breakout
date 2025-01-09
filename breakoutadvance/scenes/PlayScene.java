@@ -349,17 +349,20 @@ public class PlayScene extends AbstractScene {
         // Ball position when hitting the paddle
         double ballHitPosX = ball.getPosX();
 
-        double decreaser = 182; // 0.7 * x = 128, where 128 = (paddle width)/2
+        double decrease = 182; // 0.7 * x = 128, where 128 = (paddle width)/2
 
+        //System.out.println("Before x: " + ball.getVelX() + " y: " + ball.getVelY() + " total: " + (Math.abs(ball.getVelX()) + Math.abs(ball.getVelY())));
         // Calculating velocities
-        double velX = (paddleMiddlePosX - ballHitPosX) / decreaser;
+        double velX = (paddleMiddlePosX - ballHitPosX) / decrease;
 
         // Prevent it from going too straight
-        if (velX < 0 && velX > -0.1) velX -= 0.1;
-        else if (velX > 0 && velX < 0.1) velX += 1;
+        double min = 0.25;
+        if (velX < 0 && velX > -min) velX -= min;
+        else if (velX > 0 && velX < min) velX += min;
 
         double velY = maxAddedVel - Math.abs(velX);
 
+        //System.out.println("After x: " + (-velX) + " y: " + (-velY) + " total: " + (velX+velY));
         return new double[]{-velX, -velY};
     }
 
