@@ -4,7 +4,7 @@ import breakoutadvance.objects.Powerup;
 import breakoutadvance.scenes.PlayScene;
 
 public enum PowerupType {
-    PLUS_ONE("assets/img/powerup_plus_one.png", 25); // 1 is equal to 0.1%
+    PLUS_ONE("assets/img/powerup_plus_one.png", 50); // 1 is equal to 0.1%
 
 
     private final String imgPath;
