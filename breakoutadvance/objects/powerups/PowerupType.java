@@ -4,8 +4,8 @@ import breakoutadvance.objects.Powerup;
 import breakoutadvance.scenes.PlayScene;
 
 public enum PowerupType {
-    PLUS_ONE("./assets/img/powerup_plus_one.png", 25), // 1 is equal to 0.1%
-    PLUS_WIDTH("./assets/img/plusPaddleWidthPowerUps.png", 500);
+    PLUS_ONE("./assets/img/powerup_plus_one.png", 100), // 1 is equal to 0.1%
+    PLUS_WIDTH("./assets/img/paddleWidthPowerUp.png", 1000);
 
     private final String imgPath;
 
