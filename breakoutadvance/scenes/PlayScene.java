@@ -52,7 +52,7 @@ public class PlayScene extends AbstractScene {
     private Text deathInfoText;
     private boolean died = false;
 
-    public int score = 100;
+    public int score = 0;
 
 
     public PlayScene(int n, int m) {

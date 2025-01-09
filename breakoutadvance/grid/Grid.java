@@ -67,12 +67,9 @@ public class Grid {
         Block block = this.grid[n][m];
         if (block == null) return;
 
-        /*
-        //debugging---
-        System.out.print(n);
-        System.out.print(m);
-        System.out.println("--" + playScene.score + "--" + grid.length);
-         */
+
+
+
 
         int length = grid.length;
 
@@ -101,6 +98,11 @@ public class Grid {
         // Remove from screen
         playScene.getPane().getChildren().remove(block.getNode());
         this.grid[n][m] = null;
+
+        //debugging---
+        System.out.print(n);
+        System.out.print(m);
+        System.out.println("--" + playScene.score + "--" + grid.length);
 
     }
 
