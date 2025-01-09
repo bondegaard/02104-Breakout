@@ -21,7 +21,8 @@ import java.util.List;
 public class SettingsMenu extends AbstractMenu {
 
     private final String[] ballColors = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
-    private final String[] paddleColors = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
+    //private final String[] paddleColors = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
+    private final String[] paddleColors = new String[]{"red"};
 
     private int currentBallColorIndex;
     private int currentPaddleColorIndex;
