@@ -2,9 +2,14 @@ package breakoutadvance.scenes;
 
 import breakoutadvance.Breakout;
 import breakoutadvance.utils.WindowUtils;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import java.io.FileInputStream;
 
 /**
  * This class is used to display the game is over scene
@@ -19,6 +24,9 @@ public class GameOverScene extends AbstractScene {
     public GameOverScene() {
         // Screen color
         this.getScene().setFill(Color.BLACK);
+
+        // Add background
+        addBackgroundImage();
 
         // Adding game over text
         addGameOverText();
@@ -37,7 +45,7 @@ public class GameOverScene extends AbstractScene {
     public void addGameOverText() {
         // Game over text
         this.GameOver = new Text("Game over!");
-        this.GameOver.setStyle("-fx-font-size: 100px;");
+        this.GameOver.setStyle("-fx-font-size: 64px;");
         this.GameOver.setFill(Color.DARKRED);
         this.getPane().getChildren().add(this.GameOver);
 
@@ -53,7 +61,7 @@ public class GameOverScene extends AbstractScene {
             double textWidth = newValue.getWidth();
             double textHeight = newValue.getHeight();
             this.GameOver.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.GameOver.setY((WindowUtils.getWindowHeight() - textHeight) / 3);
+            this.GameOver.setY((WindowUtils.getWindowHeight() - textHeight) / 2.5);
         });
 
         this.additionalInfo.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
@@ -62,6 +70,23 @@ public class GameOverScene extends AbstractScene {
             this.additionalInfo.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
             this.additionalInfo.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
         });
+    }
+
+    protected void addBackgroundImage() {
+        try (FileInputStream input = new FileInputStream("assets/img/cobblestoneWallWithDoor.png")) {
+            Image image = new Image(input);
+            BackgroundImage backgroundImage = new BackgroundImage(
+                    image,
+                    BackgroundRepeat.REPEAT,
+                    BackgroundRepeat.REPEAT,
+                    BackgroundPosition.CENTER,
+                    BackgroundSize.DEFAULT
+            );
+            pane.setBackground(new Background(backgroundImage));
+        } catch (Exception e) {
+            System.err.println("Error loading background image, using black background instead.");
+            pane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, null)));
+        }
     }
 
     public void onTick() {

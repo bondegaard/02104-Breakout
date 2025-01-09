@@ -51,6 +51,7 @@ public class Breakout extends Application {
         primaryStage.setWidth(screenBounds.getMaxX());
         primaryStage.setHeight(screenBounds.getMaxY());
 
+
         // Disable resizing
         primaryStage.setResizable(false);
 
