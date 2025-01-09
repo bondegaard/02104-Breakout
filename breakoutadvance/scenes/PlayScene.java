@@ -300,7 +300,7 @@ public class PlayScene extends AbstractScene {
                 //ball.setVelY(-Math.abs(ball.getVelY()));
                 ball.setVelX(vel[0]);
                 ball.setVelY(vel[1]);
-                System.out.println("y: " + ball.getVelY() + " x: " + ball.getVelX());
+
                 Sound.playSound(Sound.PADDLE);
             }
 
@@ -351,9 +351,13 @@ public class PlayScene extends AbstractScene {
 
         double decreaser = 182; // 0.7 * x = 128, where 128 = (paddle width)/2
 
+        // Calculating velocities
         double velX = (paddleMiddlePosX - ballHitPosX) / decreaser;
+
+        // Prevent it from going too straight
         if (velX < 0 && velX > -0.1) velX -= 0.1;
         else if (velX > 0 && velX < 0.1) velX += 1;
+
         double velY = maxAddedVel - Math.abs(velX);
 
         return new double[]{-velX, -velY};
