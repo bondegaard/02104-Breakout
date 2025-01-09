@@ -1,6 +1,7 @@
 package breakoutadvance.UI.menus;
 
 import breakoutadvance.Breakout;
+import breakoutadvance.Main;
 import breakoutadvance.UI.menus.components.UIComponentFactory;
 import breakoutadvance.persistentdata.data.BallColor;
 import breakoutadvance.persistentdata.data.PaddleColor;
@@ -80,7 +81,12 @@ public class SettingsMenu extends AbstractMenu {
         // Paddle color
         HBox hboxPaddle = createColorSelector(paddleColors, currentPaddleColorIndex, false);
 
-        vbox.getChildren().addAll(title, volumeBox, muteCheckBox, hboxBall, hboxPaddle);
+        // Back button
+        Text backBtn = UIComponentFactory.createText("Back", 64, Color.WHITE, currentFont);
+        backBtn.setOnMouseClicked(event -> {Breakout.getInstance().setCurrentScene(new MainMenu());});
+
+
+        vbox.getChildren().addAll(title, volumeBox, muteCheckBox, hboxBall, hboxPaddle, backBtn);
         pane.getChildren().add(vbox);
     }
 
@@ -92,7 +98,7 @@ public class SettingsMenu extends AbstractMenu {
         Text colorText = UIComponentFactory.createText(
                 String.format("%-6s", colors.get(currentIndex).toString()),
                 48,
-                Color.YELLOW,
+                Color.WHITE,
                 currentFont
         );
         Text rightArrow = UIComponentFactory.createText(">", 48, Color.WHITE, currentFont);
