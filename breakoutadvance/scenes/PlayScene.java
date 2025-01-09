@@ -77,9 +77,7 @@ public class PlayScene extends AbstractScene {
         this.getScene().setFill(Color.BLACK);
         try {
 
-            FileInputStream input = new FileInputStream("02104-Breakout/assets/img/Background2" +
-                    "" +
-                    ".png");
+            FileInputStream input = new FileInputStream("02104-Breakout/assets/img/Background2Færdig2.png");
             Image image = new Image(input);
 
             BackgroundImage backgroundimage = new BackgroundImage(image,
