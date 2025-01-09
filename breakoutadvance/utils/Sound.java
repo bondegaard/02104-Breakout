@@ -14,12 +14,12 @@ import java.util.concurrent.CompletableFuture;
 public enum Sound {
 
     // Sound files
-    HIT_1("assets/sound/hit1.wav"),
-    HIT_2("assets/sound/hit2.wav"),
-    HIT_3("assets/sound/hit3.wav"),
-    PADDLE("assets/sound/paddle.wav"),
-    WON("assets/sound/won.wav"),
-    LOSE("assets/sound/lose.wav");
+    HIT_1("02104-Breakout/assets/sound/hit1.wav"),
+    HIT_2("02104-Breakout/assets/sound/hit2.wav"),
+    HIT_3("02104-Breakout/assets/sound/hit3.wav"),
+    PADDLE("02104-Breakout/assets/sound/paddle.wav"),
+    WON("02104-Breakout/assets/sound/won.wav"),
+    LOSE("02104-Breakout/assets/sound/lose.wav");
 
     // File name of the sound
     private final String fileName;

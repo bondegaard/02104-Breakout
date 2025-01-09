@@ -29,7 +29,7 @@ public abstract class AbstractMenu extends AbstractScene {
     }
 
     protected void loadFont() {
-        try (FileInputStream fontStream = new FileInputStream("assets/fonts/BLACEB__.ttf")) {
+        try (FileInputStream fontStream = new FileInputStream("02104-Breakout/assets/fonts/BLACEB__.TTF")) {
             currentFont = Font.loadFont(fontStream, 64);
         } catch (Exception e) {
             System.err.println("Font file not found! Fallback to Arial.");
@@ -38,7 +38,7 @@ public abstract class AbstractMenu extends AbstractScene {
     }
 
     protected void addBackgroundImage() {
-        try (FileInputStream input = new FileInputStream("assets/img/cobblestoneWallWithDoor.png")) {
+        try (FileInputStream input = new FileInputStream("02104-Breakout/assets/img/cobblestoneWallWithDoor.png")) {
             Image image = new Image(input);
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,

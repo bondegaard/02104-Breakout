@@ -22,7 +22,7 @@ public class Ball extends Entity {
         this.velY = velY;
 
         try {
-            Image image = new Image(new FileInputStream("assets/img/ball.png"));
+            Image image = new Image(new FileInputStream("02104-Breakout/assets/img/ball.png"));
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
             imgView.setFitHeight(this.getHeight()*2);

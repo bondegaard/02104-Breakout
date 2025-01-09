@@ -94,7 +94,7 @@ public class PlayScene extends AbstractScene {
     public void addBackgroundImage(){
         this.getScene().setFill(Color.BLACK);
         try {
-            FileInputStream input = new FileInputStream("assets/img/background.jpg");
+            FileInputStream input = new FileInputStream("02104-Breakout/assets/img/background.jpg");
             Image image = new Image(input);
 
             BackgroundImage backgroundimage = new BackgroundImage(image,
@@ -267,7 +267,13 @@ public class PlayScene extends AbstractScene {
                 // Check for lives
                 if (balls.isEmpty()) {
                     lives--;
-                    this.deathPauseText.setText("You Died. You have " + lives + " lives left.");
+
+                    // Prettier
+                    if (lives == 1)
+                        this.deathPauseText.setText("You Died! You have " + lives + " live left.");
+                    else
+                        this.deathPauseText.setText("You Died! You have " + lives + " lives left.");
+
                     died = true;
                     playing = !playing;
                     resetBallAndPaddle();
@@ -294,10 +300,11 @@ public class PlayScene extends AbstractScene {
         for (Ball ball : balls) {
             EdgeHit ballPaddleHit = CollisionChecker.checkCollision(this.paddle, ball);
             if (ballPaddleHit == EdgeHit.YAXIS) {
-                double[] vel = calculateNewXVelocityAfterPaddleHit(ball);
+                //double[] vel = calculateNewXVelocityAfterPaddleHit(ball);
 
                 ball.setPosY(this.paddle.getPosY() - ball.getHeight() * 2); // Making sure the ball only hits the paddle once
                 //ball.setVelY(-Math.abs(ball.getVelY()));
+                double[] vel = calculateNewXVelocityAfterPaddleHit(ball);
                 ball.setVelX(vel[0]);
                 ball.setVelY(vel[1]);
 
@@ -355,10 +362,13 @@ public class PlayScene extends AbstractScene {
         // Calculating velocities
         double velX = (paddleMiddlePosX - ballHitPosX) / decrease;
 
-        // Prevent it from going too straight
+        // Prevent it from going too straight horizontally and vertically
         double min = 0.25;
+        double max = 0.75;
         if (velX < 0 && velX > -min) velX -= min;
         else if (velX > 0 && velX < min) velX += min;
+        else if (velX > max) velX -= (velX-max);
+        else if (velX < -max) velX += (velX-max);
 
         double velY = maxAddedVel - Math.abs(velX);
 
