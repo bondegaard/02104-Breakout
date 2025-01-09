@@ -1,6 +1,7 @@
 package breakoutadvance.scenes;
 
 import breakoutadvance.Breakout;
+import breakoutadvance.persistentdata.DataManager;
 import breakoutadvance.utils.WindowUtils;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;

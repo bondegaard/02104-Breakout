@@ -5,6 +5,7 @@ import breakoutadvance.grid.Grid;
 import breakoutadvance.objects.Ball;
 import breakoutadvance.objects.Block;
 import breakoutadvance.objects.Paddle;
+import breakoutadvance.persistentdata.data.Data;
 import breakoutadvance.utils.CollisionChecker;
 import breakoutadvance.utils.EdgeHit;
 import breakoutadvance.utils.Sound;
@@ -246,6 +247,12 @@ public class PlayScene extends AbstractScene {
         if (this.grid.getAliveAmount() <= 0) {
             Breakout.getInstance().setCurrentScene(new VictoryScene());
             Sound.playSound(Sound.WON);
+
+            // Save new highscore
+            Data data = Breakout.getInstance().getDataManager().getData();
+            if (data.getHighscore() < this.score)
+                data.setHighscore(this.score);
+            Breakout.getInstance().getDataManager().saveData();
             return;
         }
 
