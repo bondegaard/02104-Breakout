@@ -34,6 +34,7 @@ public class SettingsMenu extends AbstractMenu {
 
         VBox vbox = createVBox(Pos.CENTER, 10);
         vbox.setStyle("-fx-padding: 20;");
+        vbox.setAlignment(Pos.CENTER);
 
         Text title = UIComponentFactory.createText("Settings", 64, Color.YELLOW, currentFont);
 
@@ -56,10 +57,11 @@ public class SettingsMenu extends AbstractMenu {
         );
         Label volumeLabel = UIComponentFactory.createLabel(
                 String.format("Volume: %3d %%", (int) volumeSlider.getValue()),
-                24,
+                20,
                 currentFont
         );
-        volumeLabel.setMinWidth(200);
+        volumeLabel.setMaxWidth(400);
+        volumeLabel.setMinWidth(400);
 
         volumeSlider.valueProperty().addListener((observable, oldVal, newVal) -> {
             volumeLabel.setText(String.format("Volume: %3d %%", newVal.intValue()));
@@ -100,6 +102,8 @@ public class SettingsMenu extends AbstractMenu {
      * Creates a color selector UI: [<] [ImageView] [>]
      */
     private <T> HBox createColorSelector(T[] colors, int currentIndex, boolean isBall) {
+        int imageSize = 64;
+
         List<T> colorList = Arrays.asList(colors);
 
         Text leftArrow = UIComponentFactory.createText("<", 48, Color.WHITE, currentFont);
@@ -107,8 +111,8 @@ public class SettingsMenu extends AbstractMenu {
 
         // Initialize ImageView with the current color image
         ImageView colorImageView = createColorImageView(colorList.get(currentIndex).toString(), isBall);
-        colorImageView.setFitWidth(64);   // Example size: 64 width
-        colorImageView.setFitHeight(64);  // Example size: 64 height
+        colorImageView.setFitWidth(imageSize);
+        colorImageView.setFitHeight(imageSize);
 
         // Store references so we can update them in changeColor(...)
         if (isBall) {
@@ -120,7 +124,11 @@ public class SettingsMenu extends AbstractMenu {
         leftArrow.setOnMouseClicked(event -> changeColor(colorList, -1, isBall));
         rightArrow.setOnMouseClicked(event -> changeColor(colorList, 1, isBall));
 
-        return UIComponentFactory.createHBox(20, leftArrow, colorImageView, rightArrow);
+        // Create and center them in the HBox
+        HBox hbox = UIComponentFactory.createHBox(20, leftArrow, colorImageView, rightArrow);
+        hbox.setAlignment(Pos.CENTER);
+
+        return hbox;
     }
 
     /**
