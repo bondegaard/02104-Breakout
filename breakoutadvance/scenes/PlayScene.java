@@ -9,10 +9,7 @@ import breakoutadvance.objects.Powerup;
 import breakoutadvance.objects.powerups.PlusOnePowerUp;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
-import breakoutadvance.utils.CollisionChecker;
-import breakoutadvance.utils.EdgeHit;
-import breakoutadvance.utils.Sound;
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -60,11 +57,7 @@ public class PlayScene extends AbstractScene {
         this.grid = new Grid(this, 8, 10);
 
         // Create ball and paddle
-        int paddleWidth = 256;
-        int height = 16;
-        int radius = 16;
-        
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) paddleWidth /2), WindowUtils.getWindowHeight() * 0.8, 1.0, height, paddleWidth);
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) Constants.PADDLE_WIDTH /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, Constants.PADDLE_WIDTH);
 
         // Calculating angle/velocity
         spawnBall();
@@ -387,12 +380,11 @@ public class PlayScene extends AbstractScene {
 
     public void spawnBall() {
         // Reset ball position and velocity
-        int radius = 16;
         double[] vel = calculateStartVelForBall();
 
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2)  , this.paddle.getPosY() - 3* paddle.getHeight() , vel[0], vel[1], radius);
+        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_SIZE/2)  , this.paddle.getPosY() - 3* paddle.getHeight() , vel[0], vel[1], Constants.BALL_SIZE);
         balls.add(ball);
-        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (radius/2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
+        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_SIZE/2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
     }
 
     public double[] calculateStartVelForBall() {
