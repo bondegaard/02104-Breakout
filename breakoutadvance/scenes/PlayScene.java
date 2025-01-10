@@ -42,7 +42,7 @@ public class PlayScene extends AbstractScene {
 
     private final double maxAddedVel = 1.0;
 
-    private int lives = 4;
+    private int lives = 3;
     private Text deathPauseText;
     private Text deathInfoText;
     private boolean died = false;
