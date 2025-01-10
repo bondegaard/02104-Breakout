@@ -42,7 +42,7 @@ public class PlayScene extends AbstractScene {
 
     private final double maxAddedVel = 1.0;
 
-    private int lives = 4;
+    private int lives = 3;
     private Text deathPauseText;
     private Text deathInfoText;
     private boolean died = false;
@@ -373,13 +373,12 @@ public class PlayScene extends AbstractScene {
 
     private double[] calculateNewXVelocityAfterPaddleHit(Ball ball) {
         // Getting the middle of the paddle
-        double paddleMiddlePosX = this.paddle.getPosX() + paddle.getWidth()/2;
+        double paddleMiddlePosX = this.paddle.getPosX() + paddle.getWidth() / 2;
         // Ball position when hitting the paddle
         double ballHitPosX = ball.getPosX();
 
-        double decrease = 182; // 0.7 * x = 128, where 128 = (paddle width)/2
+        double decrease = 182; // 0.7 * x = 128, where 128 = (paddle width) / 2
 
-        //System.out.println("Before x: " + ball.getVelX() + " y: " + ball.getVelY() + " total: " + (Math.abs(ball.getVelX()) + Math.abs(ball.getVelY())));
         // Calculating velocities
         double velX = (paddleMiddlePosX - ballHitPosX) / decrease;
 
@@ -388,10 +387,11 @@ public class PlayScene extends AbstractScene {
         double max = 0.75;
         if (velX < 0 && velX > -min) velX -= min;
         else if (velX > 0 && velX < min) velX += min;
-        else if (velX > max) velX -= (velX-max);
-        else if (velX < -max) velX += (velX-max);
+        else if (velX > max) velX -= (velX - max);
+        else if (velX < -max) velX += (velX - max);
 
         double velY = maxAddedVel - Math.abs(velX);
+        if (velY < 0) velY = -velY;
 
         //System.out.println("After x: " + (-velX) + " y: " + (-velY) + " total: " + (velX+velY));
         return new double[]{-velX, -velY};
@@ -434,6 +434,7 @@ public class PlayScene extends AbstractScene {
 
             //sets paddle Width
             this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
+            this.paddle.setWidth(Constants.PADDLE_WIDTH);
             this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
             this.paddle.setWidth(Constants.PADDLE_WIDTH);
         }
