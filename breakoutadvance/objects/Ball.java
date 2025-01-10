@@ -24,7 +24,7 @@ public class Ball extends Entity {
         this.velY = velY;
 
         try {
-            Image image = AssetManager.getInstance().getImage(Breakout.getInstance().getDataManager().getData().getBallColor()+"Ball");
+            Image image = AssetManager.getInstance().getImage("OpenGameArt-balls-" + Breakout.getInstance().getDataManager().getData().getBallColor());
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
             imgView.setFitHeight(this.getHeight()*2);

@@ -3,8 +3,14 @@ package breakoutadvance.utils;
 import breakoutadvance.Breakout;
 import javafx.scene.image.Image;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A singleton AssetManager that loads and stores images (and possibly other assets)
@@ -16,7 +22,7 @@ public class AssetManager {
     private static AssetManager instance;
 
     // In-memory storage for all your images
-    private final Map<String, Image> images = new HashMap<>();
+    private static final Map<String, Image> images = new HashMap<>();
 
     /**
      * Private constructor to prevent external instantiation.
@@ -35,47 +41,41 @@ public class AssetManager {
     }
 
     /**
-     * Preloads all necessary images into our Map.
+     * PreLoad all the image files asynchronously
      */
-    public void loadAllImages() {
-        loadPaddleImages(Breakout.getInstance().getDataManager().getData().getPaddleColor());
-        loadBallImages(Breakout.getInstance().getDataManager().getData().getBallColor());
+    public static void load() {
+        final String BASEPATH = "./assets/img/";
 
-        // load other assets, like blocks, backgrounds, etc.
+        // Run async so it doesn't block the main thread
+        CompletableFuture.runAsync(() -> {
+            try {
+                List<String> filesList = getAllPNGFiles(BASEPATH);
+
+                for (String filePath : filesList) {
+                    putImage(filePath);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            });
     }
 
-    /**
-     * Reloads all images as calls loadAllImages.
-     */
-    public void reloadAllImages() {
-        images.clear();
-        loadAllImages();
-    }
 
-    /**
-     * Utility method to load a single set of paddle images (left, middle, right).
-     *
-     * @param color e.g., "blue", "red", "green", etc.
-     */
-    private void loadPaddleImages(String color) {
-        String basePath = "./assets/img/OpenGameArt/paddles/";
 
-        // The loaded images are stored as {color} + Left/Middle/Right fx redLeft
-        putImage(color + "Left",  basePath + color + "Left.png");
-        putImage(color + "Middle", basePath + color + "Middle.png");
-        putImage(color + "Right",  basePath + color + "Right.png");
-    }
+    public static List<String> getAllPNGFiles(String directoryPath) throws IOException {
+        List<String> pngFileList = new ArrayList<>();
 
-    /**
-     * Utility method to load a single ball image.
-     *
-     * @param color e.g., "blue", "red", "green", etc.
-     */
-    private void loadBallImages(String color) {
-        String basePath = "./assets/img/OpenGameArt/balls/";
+        try {
+            Files.walk(Paths.get(directoryPath)) // Recursively walk through the directory
+                    .filter(Files::isRegularFile)    // Filter only regular files
+                    .filter(path -> path.toString().toLowerCase().endsWith(".png")) // Check for .png extension
+                    .forEach(path -> pngFileList.add(path.toString())); // Add file paths to the list
+        } catch (IOException e) {
+            throw new IOException("Error while reading files", e);
+        }
 
-        // The loaded images are stored as {color} + Ball fx redBall
-        putImage(color + "Ball", basePath + color + ".png");
+        return pngFileList;
     }
 
     /**
@@ -91,15 +91,26 @@ public class AssetManager {
     /**
      * Put an image into the map with a try-catch block.
      *
-     * @param key the key to store the image under
      * @param url the url to image
      */
-    public void putImage(String key, String url) {
+    public static void putImage(String url) {
+        String basePath = "./assets/img/";
+
         try {
+            // Remove the starting path, slashes, and .png
+            String key = url.replaceFirst("^" + ".", "") // Remove the starting path
+                    .replace("\\assets\\img\\", "")
+                    .replace("\\", "-") // Replace slashes with dashes
+                    .replace(".png", "");// Remove .png extension
+            // Load the image
             Image image = new Image(url);
+            // Put the key-image pair in the map
             images.put(key, image);
+            System.out.printf("Saved image with key %s \n", key);
         } catch (Exception e) {
-            System.err.println("Error putting image with key: " + key + " | "+ e.getMessage());
+            System.err.println("Error putting image with key derived from URL: " + url + " | " + e.getMessage());
         }
     }
+
+
 }
