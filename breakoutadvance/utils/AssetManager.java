@@ -92,14 +92,14 @@ public class AssetManager {
      * Put an image into the map with a try-catch block.
      *
      * @param key the key to store the image under
-     * @param uri the uri to image
+     * @param url the url to image
      */
-    public void putImage(String key, String uri) {
+    public void putImage(String key, String url) {
         try {
-            Image image = new Image(uri);
+            Image image = new Image(url);
             images.put(key, image);
         } catch (Exception e) {
-            System.err.println("Error putting image with key: " + key + " "+ e.getMessage());
+            System.err.println("Error putting image with key: " + key + " | "+ e.getMessage());
         }
     }
 }
