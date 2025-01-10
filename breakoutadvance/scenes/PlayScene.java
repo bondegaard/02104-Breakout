@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
@@ -47,14 +48,16 @@ public class PlayScene extends AbstractScene {
     private Text deathInfoText;
     private boolean died = false;
 
+    private Text displayScore;
     public int score = 0;
+
 
     private final LifesDisplay lifesDisplay;
 
 
     public PlayScene(int n, int m) {
         this.addBackgroundImage();
-        this.grid = new Grid(this, 4, 6);
+        this.grid = new Grid(this, 4, 20);
 
         // Create ball and paddle
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) Constants.PADDLE_WIDTH /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, Constants.PADDLE_WIDTH);
@@ -74,6 +77,10 @@ public class PlayScene extends AbstractScene {
         // Add lives
         this.lifesDisplay = new LifesDisplay();
         this.lifesDisplay.updateLives(this, lives);
+
+        // Add score
+        addDisplayScore();
+
 
     }
 
@@ -197,6 +204,7 @@ public class PlayScene extends AbstractScene {
             this.deathPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
         });
 
+
         this.deathInfoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
             double textWidth = newValue.getWidth();
             double textHeight = newValue.getHeight();
@@ -204,6 +212,67 @@ public class PlayScene extends AbstractScene {
             this.deathInfoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
         });
     }
+
+    public void addDisplayScore() {
+        // Text to display start or pause information
+        this.displayScore = new Text("Score: " + grid.getNewScore());
+        this.displayScore.setFont(Font.font(FontUtil.getFont().getFamily(), 512));
+        this.displayScore.setStyle("-fx-font-size: 80px;");
+        this.displayScore.setFill(Color.BLACK);
+        this.displayScore.setStroke(Color.LIGHTGRAY);
+        this.displayScore.setStrokeWidth(1.5);
+        this.displayScore.setVisible(true);
+        this.getPane().getChildren().add(this.displayScore);
+
+
+        // Center the text after it is added to the scene as it needs to be visible and text changes
+        // This makes sure that it is centered no matter what
+        this.displayScore.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.displayScore.setX((WindowUtils.getWindowHeight() - textWidth)/ 20);
+            this.displayScore.setY((WindowUtils.getWindowHeight() - textHeight));
+        });
+    }
+
+    public void hasDied(){
+
+        lives--;
+        //reset and update paddle width of paddle when die
+        this.paddle.setWidth(Constants.PADDLE_WIDTH);
+        this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
+        this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
+        this.paddle.setWidth(Constants.PADDLE_WIDTH);
+
+        // Prettier
+        if (lives == 1)
+            this.deathPauseText.setText("You Died! You have " + lives + " life left.");
+        else
+            this.deathPauseText.setText("You Died! You have " + lives + " lives left.");
+
+        died = true;
+        playing = !playing;
+        resetBallAndPaddle();
+        if (lives <= 0) {
+            Breakout.getInstance().setCurrentScene(new GameOverScene());
+            Sound.playSound(Sound.LOSE);
+
+            // Save new highscore
+            Data data = Breakout.getInstance().getDataManager().getData();
+            if (data.getHighscore() < this.score)
+                data.setHighscore(this.score);
+
+                data.addGame(new Game(this.score, GameOutCome.LOSE));
+                Breakout.getInstance().getDataManager().saveData();
+
+                this.lifesDisplay.updateLives(this, lives);
+                return;
+
+        }
+    }
+
+
+
 
     @Override
     public void onTick() {
@@ -254,39 +323,8 @@ public class PlayScene extends AbstractScene {
 
                 // Check for lives
                 if (balls.isEmpty()) {
-                    lives--;
-
-                    //reset and update paddle width of paddle when die
-                    this.paddle.setWidth(Constants.PADDLE_WIDTH);
-                    this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
-                    this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
-                    this.paddle.setWidth(Constants.PADDLE_WIDTH);
-
-
-                    // Prettier
-                    if (lives == 1)
-                        this.deathPauseText.setText("You Died! You have " + lives + " life left.");
-                    else
-                        this.deathPauseText.setText("You Died! You have " + lives + " lives left.");
-
-                    died = true;
-                    playing = !playing;
-                    resetBallAndPaddle();
-                    if (lives <= 0) {
-                      Breakout.getInstance().setCurrentScene(new GameOverScene());
-                      Sound.playSound(Sound.LOSE);
-
-                        // Save new highscore
-                        Data data = Breakout.getInstance().getDataManager().getData();
-                        if (data.getHighscore() < this.score)
-                            data.setHighscore(this.score);
-
-                        data.addGame(new Game(this.score, GameOutCome.LOSE));
-                        Breakout.getInstance().getDataManager().saveData();
-                    }
+                    hasDied();
                 }
-                this.lifesDisplay.updateLives(this, lives);
-                return;
             }
         }
 
@@ -373,6 +411,9 @@ public class PlayScene extends AbstractScene {
         }
 
         powerups.forEach(Powerup::onTick);
+
+
+
     }
 
     private double[] calculateNewXVelocityAfterPaddleHit(Ball ball) {
@@ -421,6 +462,19 @@ public class PlayScene extends AbstractScene {
         return grid;
     }
 
+    public int getScore(){
+        return score;
+    }
+
+    public Text getDisplayScore(){
+        return displayScore;
+    }
+
+    public double getPaddleWidth(){
+        return paddle.getWidth();
+    }
+
+
     public void spawnBall() {
         // Reset ball position and velocity
         double[] vel = calculateStartVelForBall();
@@ -431,7 +485,7 @@ public class PlayScene extends AbstractScene {
     }
 
     public void increasePaddleWidth(){
-        if(paddle.getWidth() <= 414 ){
+        if(paddle.getWidth() <= WindowUtils.getWindowWidth()/4 ){
 
             //increase and update paddle Width
             this.paddle.setWidth(this.paddle.getWidth() * 1.2);
@@ -440,6 +494,12 @@ public class PlayScene extends AbstractScene {
             this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
             this.paddle.getImgView().setFitWidth(this.paddle.getWidth());
         }
+    }
+
+    //Bomb kills you when hit
+    public void hitBombObstacle(){
+        hasDied();
+        lifesDisplay.updateLives(this,lives);
     }
 
     public double[] calculateStartVelForBall() {

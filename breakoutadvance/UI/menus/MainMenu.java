@@ -1,14 +1,20 @@
 package breakoutadvance.UI.menus;
 
+import breakoutadvance.Breakout;
+import breakoutadvance.utils.FontUtil;
 import breakoutadvance.utils.SetSceneUtil;
 import breakoutadvance.utils.BombExplosion;
+import breakoutadvance.utils.WindowUtils;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+
+import java.awt.*;
 
 /**
  * Main menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.
@@ -21,6 +27,8 @@ public class MainMenu extends AbstractMenu {
 
     private int selectedBtn = 0;
     private final Text[] textItems;
+
+    private Text displayHighScore;
 
     public MainMenu() {
         super();
@@ -42,7 +50,11 @@ public class MainMenu extends AbstractMenu {
 
         // Setup keyboard navigation
         setupKeyPressedEvents();
+
+        // Add highScore
+        addHighScore();
     }
+
 
     /**
      * Creates a Text item for the menu with given label and on-click action.
@@ -100,6 +112,26 @@ public class MainMenu extends AbstractMenu {
         // Currently not used
     }
 
+    public void addHighScore() {
+                // Text to display HighScore
+        this.displayHighScore = new Text("Top Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
+        this.displayHighScore.setFont(Font.font(FontUtil.getFont().getFamily(), 512));
+        this.displayHighScore.setStyle("-fx-font-size: 80px;");
+        this.displayHighScore.setFill(Color.YELLOW);
+        this.displayHighScore.setStrokeWidth(3);
+        this.displayHighScore.setStroke(Color.BLACK);
+        this.getPane().getChildren().add(this.displayHighScore);
+
+        // Center the text after it is added to the scene as it needs to be visible and text changes
+        // This makes sure that it is centered no matter what
+        this.displayHighScore.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.displayHighScore.setX(10);
+            this.displayHighScore.setY(WindowUtils.getWindowHeight() - (textHeight/2));
+        });
+    }
+
     /* Convenience methods for each action */
     private void startGame() {
         new SetSceneUtil().playScene(5, 10);
@@ -113,3 +145,4 @@ public class MainMenu extends AbstractMenu {
         new SetSceneUtil().quitGame();
     }
 }
+
