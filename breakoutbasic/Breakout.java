@@ -74,6 +74,8 @@ public class Breakout extends Application {
         // Closing the scanner
         UserInputUtils.scan.close();
 
+        System.out.println("The game is now running.");
+
         // Set Current Scene
         this.currentScene = new PlayScene(n, m);
     }
