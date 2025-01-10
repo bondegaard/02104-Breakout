@@ -56,10 +56,27 @@ public enum Images {
     PADDLE_REDLEFT(Constants.PADDLE_FILEPATH + "redLeft.png"),
     PADDLE_REDMIDDLE(Constants.PADDLE_FILEPATH + "redMiddle.png"),
     PADDLE_REDRIGHT(Constants.PADDLE_FILEPATH + "redRight.png"),
-        PADDLE_YELLOW(Constants.PADDLE_FILEPATH + "yellow.png"),
+    PADDLE_YELLOW(Constants.PADDLE_FILEPATH + "yellow.png"),
     PADDLE_YELLOWLEFT(Constants.PADDLE_FILEPATH + "yellowLeft.png"),
     PADDLE_YELLOWMIDDLE(Constants.PADDLE_FILEPATH + "yellowMiddle.png"),
     PADDLE_YELLOWRIGHT(Constants.PADDLE_FILEPATH + "yellowRight.png"),
+
+    // BLOCK files
+    BLOCK_BLUELEFT(Constants.BLOCK_FILEPATH + "blueLeft.png"),
+    BLOCK_BLUEMIDDLE(Constants.BLOCK_FILEPATH + "blueMiddle.png"),
+    BLOCK_BLUERIGHT(Constants.BLOCK_FILEPATH + "blueRight.png"),
+    BLOCK_GREENLEFT(Constants.BLOCK_FILEPATH + "greenLeft.png"),
+    BLOCK_GREENMIDDLE(Constants.BLOCK_FILEPATH + "greenMiddle.png"),
+    BLOCK_GREENRIGHT(Constants.BLOCK_FILEPATH + "greenRight.png"),
+    BLOCK_PINKLEFT(Constants.BLOCK_FILEPATH + "pinkLeft.png"),
+    BLOCK_PINKMIDDLE(Constants.BLOCK_FILEPATH + "pinkMiddle.png"),
+    BLOCK_PINKRIGHT(Constants.BLOCK_FILEPATH + "pinkRight.png"),
+    BLOCK_REDLEFT(Constants.BLOCK_FILEPATH + "redLeft.png"),
+    BLOCK_REDMIDDLE(Constants.BLOCK_FILEPATH + "redMiddle.png"),
+    BLOCK_REDRIGHT(Constants.BLOCK_FILEPATH + "redRight.png"),
+    BLOCK_YELLOWLEFT(Constants.BLOCK_FILEPATH + "yellowLeft.png"),
+    BLOCK_YELLOWMIDDLE(Constants.BLOCK_FILEPATH + "yellowMiddle.png"),
+    BLOCK_YELLOWRIGHT(Constants.BLOCK_FILEPATH + "yellowRight.png"),
 
     // Powerup files
     BOMB(Constants.IMAGE_PATH + "bomb.png"),

@@ -17,6 +17,7 @@ public class Grid {
     private final int OFFSET = 3; // Offset between the blocks
 
     private final Color[] colors = {Color.RED, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.BURLYWOOD}; // Colors for rows of blocks
+    private final String[] blockColors = {"red", "pink", "yellow", "green", "blue"};
 
     /**
      * Setup a grid of blocks which is displayed on the scene.
@@ -44,7 +45,7 @@ public class Grid {
                 double posX = posXStart + col * lSize; // Horizontal position for each rectangle
                 double posY = posYStart + row * sSize; // Vertical position for each rectangle
 
-                Block block = new Block(posX, posY, lSize - OFFSET, sSize - OFFSET, colors[(int) Math.floor(row/2)]);
+                Block block = new Block(posX, posY, lSize - OFFSET, sSize - OFFSET, colors[(int) Math.floor(row/2)], blockColors[(int) Math.floor(row/2)]);
 
                 // Adding it to grid
                 grid[row][col] = block;
