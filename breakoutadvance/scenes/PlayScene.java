@@ -2,10 +2,7 @@ package breakoutadvance.scenes;
 
 import breakoutadvance.Breakout;
 import breakoutadvance.grid.Grid;
-import breakoutadvance.objects.Ball;
-import breakoutadvance.objects.Block;
-import breakoutadvance.objects.Paddle;
-import breakoutadvance.objects.Powerup;
+import breakoutadvance.objects.*;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
 import breakoutadvance.persistentdata.data.Game;
@@ -45,12 +42,14 @@ public class PlayScene extends AbstractScene {
 
     private final double maxAddedVel = 1.0;
 
-    private int lives = 3;
+    private int lives = 4;
     private Text deathPauseText;
     private Text deathInfoText;
     private boolean died = false;
 
     public int score = 0;
+
+    private final LifesDisplay lifesDisplay;
 
 
     public PlayScene(int n, int m) {
@@ -72,6 +71,10 @@ public class PlayScene extends AbstractScene {
 
         // Setup Keyboard events
         setupKeyPressedEvents();
+
+        // Add lives
+        this.lifesDisplay = new LifesDisplay();
+        this.lifesDisplay.updateLives(this, lives);
 
     }
 
@@ -280,6 +283,7 @@ public class PlayScene extends AbstractScene {
                         Breakout.getInstance().getDataManager().saveData();
                     }
                 }
+                this.lifesDisplay.updateLives(this, lives);
                 return;
             }
         }
