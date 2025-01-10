@@ -54,7 +54,6 @@ public class PlayScene extends AbstractScene {
 
 
     public PlayScene(int n, int m) {
-        AssetManager.getInstance().reloadAllImages();
         this.addBackgroundImage();
         this.grid = new Grid(this, 4, 6);
 
@@ -78,9 +77,7 @@ public class PlayScene extends AbstractScene {
     public void addBackgroundImage(){
         this.getScene().setFill(Color.BLACK);
         try {
-
-            FileInputStream input = new FileInputStream("./assets/img/Background2Færdig2.png");
-            Image image = new Image(input);
+            Image image = AssetManager.getInstance().getImage("backgrounds-Background2Færdig2");
 
             BackgroundImage backgroundimage = new BackgroundImage(image,
                     BackgroundRepeat.REPEAT,
