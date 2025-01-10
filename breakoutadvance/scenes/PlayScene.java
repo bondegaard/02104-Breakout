@@ -54,6 +54,7 @@ public class PlayScene extends AbstractScene {
 
 
     public PlayScene(int n, int m) {
+        AssetManager.getInstance().reloadAllImages();
         this.addBackgroundImage();
         this.grid = new Grid(this, 4, 6);
 

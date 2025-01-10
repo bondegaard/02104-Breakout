@@ -28,6 +28,9 @@ public abstract class AbstractMenu extends AbstractScene {
         addBackgroundImage();
     }
 
+    /**
+     * Loads the font, if any errors it falls back to a default font Arial.
+     */
     protected void loadFont() {
         try (FileInputStream fontStream = new FileInputStream("./assets/fonts/BLACEB__.TTF")) {
             currentFont = Font.loadFont(fontStream, 64);
@@ -37,6 +40,9 @@ public abstract class AbstractMenu extends AbstractScene {
         }
     }
 
+    /**
+     * Sets the background image to a default background image. If any errors it falls back to a completely black background.
+     */
     protected void addBackgroundImage() {
         try (FileInputStream input = new FileInputStream("./assets/img/cobblestoneWallWithDoor.png")) {
             Image image = new Image(input);
@@ -54,6 +60,12 @@ public abstract class AbstractMenu extends AbstractScene {
         }
     }
 
+    /**
+     * @param content A String that will be the text that will be displayed visible on the screen.
+     * @param size An integer this will be the font size.
+     * @param color The text color.
+     * @return
+     */
     protected Text createText(String content, int size, Color color) {
         Text text = new Text(content);
         text.setFont(Font.font(currentFont.getFamily(), size));
