@@ -1,7 +1,9 @@
 package breakoutadvance.UI.menus;
 
 import breakoutadvance.utils.SetSceneUtil;
+import breakoutadvance.utils.BombExplosion;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -67,7 +69,7 @@ public class MainMenu extends AbstractMenu {
         switch (selectedBtn) {
             case 0 -> startGame();
             case 1 -> openSettings();
-            case 2 -> quitGame();
+            case 2 -> new BombExplosion(500,500, pane);
             default -> throw new IllegalStateException("Unexpected button index: " + selectedBtn);
         }
     }
