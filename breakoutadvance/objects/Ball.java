@@ -14,7 +14,6 @@ import java.io.FileInputStream;
 public class Ball extends Entity {
     private double velX;
     private double velY;
-    private Image img;
     private ImageView imgView = new ImageView();
 
     //Ball constructor
@@ -25,6 +24,9 @@ public class Ball extends Entity {
 
         try {
             Image image = AssetManager.getInstance().getImage("OpenGameArt-balls-" + Breakout.getInstance().getDataManager().getData().getBallColor());
+            if (image == null) {
+                throw new Exception("Image not found");
+            }
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
             imgView.setFitHeight(this.getHeight()*2);
@@ -102,15 +104,6 @@ public class Ball extends Entity {
         velY = -velY;
     }
 
-    //-----------------------no usages --------------------
-    public void setImg(String newImgPath){
-        img = new Image(newImgPath, Math.round(this.getPosX()), Math.round(this.getPosY()), false, false);
-        imgView.setImage(img);
-    }
-
-    public Image getImg(){
-        return img;
-    }
 
     public ImageView getImgView() {
         return imgView;
