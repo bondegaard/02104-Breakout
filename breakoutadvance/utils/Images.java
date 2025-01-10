@@ -56,7 +56,7 @@ public enum Images {
     PADDLE_REDLEFT(Constants.PADDLE_FILEPATH + "redLeft.png"),
     PADDLE_REDMIDDLE(Constants.PADDLE_FILEPATH + "redMiddle.png"),
     PADDLE_REDRIGHT(Constants.PADDLE_FILEPATH + "redRight.png"),
-    PADDLE_YELLOW(Constants.PADDLE_FILEPATH + "yellow.png"),
+        PADDLE_YELLOW(Constants.PADDLE_FILEPATH + "yellow.png"),
     PADDLE_YELLOWLEFT(Constants.PADDLE_FILEPATH + "yellowLeft.png"),
     PADDLE_YELLOWMIDDLE(Constants.PADDLE_FILEPATH + "yellowMiddle.png"),
     PADDLE_YELLOWRIGHT(Constants.PADDLE_FILEPATH + "yellowRight.png"),
@@ -120,7 +120,6 @@ public enum Images {
             return null;
         }
         return images.get(key);
-
     }
 
 }
