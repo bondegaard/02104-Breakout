@@ -106,7 +106,6 @@ public class AssetManager {
             Image image = new Image(url);
             // Put the key-image pair in the map
             images.put(key, image);
-            System.out.printf("Saved image with key %s \n", key);
         } catch (Exception e) {
             System.err.println("Error putting image with key derived from URL: " + url + " | " + e.getMessage());
         }

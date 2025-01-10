@@ -1,5 +1,6 @@
 package breakoutadvance.UI.menus.components;
 
+import breakoutadvance.utils.FontUtil;
 import javafx.animation.PauseTransition;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -23,12 +24,11 @@ public class UIComponentFactory {
      * @param content the text content to be displayed.
      * @param size    the font size to use if {@code font} is {@code null}.
      * @param color   the color to fill the text with; if {@code null}, defaults to {@link Color#WHITE}.
-     * @param font    the custom font to use; if {@code null}, the method uses an Arial font at the specified size.
      * @return a {@link Text} node with the specified content, font size, color, and font.
      */
-    public static Text createText(String content, int size, Color color, Font font) {
+    public static Text createText(String content, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(font != null ? font : Font.font("Arial", size));
+        text.setFont(FontUtil.getFont());
         text.setFill(color != null ? color : Color.WHITE);
         return text;
     }
@@ -57,7 +57,7 @@ public class UIComponentFactory {
             Font font,
             Runnable onClickAction
     ) {
-        Text text = createText(content, size, normalColor, font);
+        Text text = createText(content, size, normalColor);
 
         text.setOnMouseClicked(e -> {
             // Change color to highlight color

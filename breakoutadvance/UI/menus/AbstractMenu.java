@@ -2,6 +2,7 @@ package breakoutadvance.UI.menus;
 
 import breakoutadvance.scenes.AbstractScene;
 import breakoutadvance.utils.AssetManager;
+import breakoutadvance.utils.FontUtil;
 import breakoutadvance.utils.WindowUtils;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -17,28 +18,12 @@ import java.io.FileInputStream;
  * to set the Scene on the primary stage from WindowUtils.
  */
 public abstract class AbstractMenu extends AbstractScene {
-
-    protected Font currentFont;
-
     /**
      * Default constructor uses the WindowUtils' primary stage.
      */
     public AbstractMenu() {
         super();  // calls AbstractScene(), which calls WindowUtils.getPrimaryStage()
-        loadFont();
         addBackgroundImage();
-    }
-
-    /**
-     * Loads the font, if any errors it falls back to a default font Arial.
-     */
-    protected void loadFont() {
-        try (FileInputStream fontStream = new FileInputStream("./assets/fonts/BLACEB__.TTF")) {
-            currentFont = Font.loadFont(fontStream, 64);
-        } catch (Exception e) {
-            System.err.println("Font file not found! Fallback to Arial.");
-            currentFont = Font.font("Arial", 64);
-        }
     }
 
     /**
@@ -69,7 +54,7 @@ public abstract class AbstractMenu extends AbstractScene {
      */
     protected Text createText(String content, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(Font.font(currentFont.getFamily(), size));
+        text.setFont(FontUtil.getFont());
         text.setFill(color);
         return text;
     }
