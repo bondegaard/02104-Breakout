@@ -229,7 +229,9 @@ public class PlayScene extends AbstractScene {
 
         // Check for Victory
         if (this.grid.getAliveAmount() <= 0) {
-            Breakout.getInstance().setCurrentScene(new VictoryScene());
+            resetBallAndPaddle();
+            this.grid = new Grid(this, 4, 6);
+
             Sound.playSound(Sound.WON);
 
             // Save new highscore
@@ -237,7 +239,6 @@ public class PlayScene extends AbstractScene {
             if (data.getHighscore() < this.score)
                 data.setHighscore(this.score);
 
-            data.addGame(new Game(this.score, GameOutCome.WON));
             Breakout.getInstance().getDataManager().saveData();
             return;
         }
@@ -400,6 +401,14 @@ public class PlayScene extends AbstractScene {
     }
 
     public void resetBallAndPaddle(){
+        // remove all balls
+        this.balls.forEach(ball -> this.getPane().getChildren().remove(ball.getNode()));
+        this.balls.clear();
+
+        // remove all powerups
+        this.powerups.forEach(powerup -> this.getPane().getChildren().remove(powerup.getNode()));
+        this.powerups.clear();
+
         //relocate paddle
         this.paddle.setPosX(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2);
         this.paddle.getNode().relocate(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2, WindowUtils.getWindowHeight() * 0.8);
