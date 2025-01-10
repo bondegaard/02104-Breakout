@@ -35,14 +35,11 @@ public class Breakout extends Application {
 
         // Load Sounds
         Sound.load();
+        AssetManager.load();
 
         // Load data manager
         this.dataManager = new DataManager();
         this.dataManager.load();
-
-        // Get the AssetManager and load all images once.
-        AssetManager manager = AssetManager.getInstance();
-        manager.loadAllImages();
 
         // Setup Stage
         primaryStage.setTitle("Breakout");
@@ -82,7 +79,6 @@ public class Breakout extends Application {
      */
     private void setupPlayScene(Stage primaryStage) {
         // Set Current Scene
-        // this.currentScene = new PlayScene(5, 10); // Uncomment to skip MainMenu scene
         this.currentScene = new MainMenu();
     }
 

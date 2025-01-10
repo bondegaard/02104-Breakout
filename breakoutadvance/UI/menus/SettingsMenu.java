@@ -2,6 +2,7 @@ package breakoutadvance.UI.menus;
 
 import breakoutadvance.Breakout;
 import breakoutadvance.UI.menus.components.UIComponentFactory;
+import breakoutadvance.utils.AssetManager;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.SetSceneUtil;
 import javafx.geometry.Pos;
@@ -10,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -97,6 +99,8 @@ public class SettingsMenu extends AbstractMenu {
 
         vbox.getChildren().addAll(title, volumeBox, muteCheckBox, hboxBall, hboxPaddle, backBtn);
         pane.getChildren().add(vbox);
+
+        setupKeyPressedEvents();
     }
 
     /**
@@ -140,11 +144,11 @@ public class SettingsMenu extends AbstractMenu {
         // e.g. "assets/img/paddles/" + colorName + "_paddle.png" for paddles
         String imagePath;
         if (isBall) {
-            imagePath = "./assets/img/OpenGameArt/balls/" + colorName + ".png";
+            imagePath = "OpenGameArt-balls-" + colorName;
         } else {
-            imagePath = "./assets/img/OpenGameArt/paddles/" + colorName + ".png"; // adjust for paddle if needed
+            imagePath = "OpenGameArt-paddles-" + colorName; // adjust for paddle if needed
         }
-        Image image = new Image(imagePath);
+        Image image = AssetManager.getInstance().getImage(imagePath);
         return new ImageView(image);
     }
 
@@ -161,7 +165,7 @@ public class SettingsMenu extends AbstractMenu {
 
             // Update the ImageView
             if (ballImageView != null) {
-                ballImageView.setImage(new Image("./assets/img/OpenGameArt/balls/" + newBallColor + ".png"));
+                ballImageView.setImage(AssetManager.getInstance().getImage("OpenGameArt-balls-" + newBallColor));
             }
         } else {
             currentPaddleColorIndex = (currentPaddleColorIndex + direction + colors.size()) % colors.size();
@@ -172,9 +176,22 @@ public class SettingsMenu extends AbstractMenu {
 
             // Update the ImageView
             if (paddleImageView != null) {
-                paddleImageView.setImage(new Image("./assets/img/OpenGameArt/paddles/" + newPaddleColor + ".png"));
+                paddleImageView.setImage(AssetManager.getInstance().getImage("OpenGameArt-paddles-" + newPaddleColor));
             }
         }
+    }
+
+    /**
+     * Sets up the event handler for arrow key navigation.
+     */
+    private void setupKeyPressedEvents() {
+        // 'scene' is inherited from AbstractScene
+        scene.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                Breakout.getInstance().getDataManager().saveData();
+                new SetSceneUtil().mainMenu();
+            }
+        });
     }
 
     @Override

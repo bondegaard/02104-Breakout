@@ -1,6 +1,7 @@
 package breakoutadvance.UI.menus;
 
 import breakoutadvance.scenes.AbstractScene;
+import breakoutadvance.utils.AssetManager;
 import breakoutadvance.utils.WindowUtils;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -44,8 +45,8 @@ public abstract class AbstractMenu extends AbstractScene {
      * Sets the background image to a default background image. If any errors it falls back to a completely black background.
      */
     protected void addBackgroundImage() {
-        try (FileInputStream input = new FileInputStream("./assets/img/cobblestoneWallWithDoor.png")) {
-            Image image = new Image(input);
+        try {
+            Image image = AssetManager.getInstance().getImage("cobblestoneWallWithDoor");
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,
                     BackgroundRepeat.REPEAT,
