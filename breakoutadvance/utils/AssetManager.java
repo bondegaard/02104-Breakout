@@ -52,7 +52,6 @@ public class AssetManager {
         loadAllImages();
     }
 
-
     /**
      * Utility method to load a single set of paddle images (left, middle, right).
      *
@@ -62,9 +61,9 @@ public class AssetManager {
         String basePath = "./assets/img/OpenGameArt/paddles/";
 
         // The loaded images are stored as {color} + Left/Middle/Right fx redLeft
-        images.put(color + "Left",   new Image(basePath + color + "Left.png"));
-        images.put(color + "Middle", new Image(basePath + color + "Middle.png"));
-        images.put(color + "Right",  new Image(basePath + color + "Right.png"));
+        putImage(color + "Left",  basePath + color + "Left.png");
+        putImage(color + "Middle", basePath + color + "Middle.png");
+        putImage(color + "Right",  basePath + color + "Right.png");
     }
 
     /**
@@ -76,10 +75,8 @@ public class AssetManager {
         String basePath = "./assets/img/OpenGameArt/balls/";
 
         // The loaded images are stored as {color} + Ball fx redBall
-        images.put(color + "Ball", new Image(basePath + color + ".png"));
+        putImage(color + "Ball", basePath + color + ".png");
     }
-
-
 
     /**
      * Retrieve an image by its key.
@@ -91,4 +88,18 @@ public class AssetManager {
         return images.get(key);
     }
 
+    /**
+     * Put an image into the map with a try-catch block.
+     *
+     * @param key the key to store the image under
+     * @param uri the uri to image
+     */
+    public void putImage(String key, String uri) {
+        try {
+            Image image = new Image(uri);
+            images.put(key, image);
+        } catch (Exception e) {
+            System.err.println("Error putting image with key: " + key + " "+ e.getMessage());
+        }
+    }
 }
