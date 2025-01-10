@@ -2,7 +2,8 @@ package breakoutadvance.objects;
 
 import breakoutadvance.Breakout;
 import breakoutadvance.scenes.PlayScene;
-import breakoutadvance.utils.AssetManager;
+import breakoutadvance.utils.Constants;
+import breakoutadvance.utils.Images;
 import breakoutadvance.utils.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,6 +15,7 @@ import java.io.FileInputStream;
 public class Ball extends Entity {
     private double velX;
     private double velY;
+    private Image img;
     private ImageView imgView = new ImageView();
 
     //Ball constructor
@@ -23,7 +25,7 @@ public class Ball extends Entity {
         this.velY = velY;
 
         try {
-            Image image = AssetManager.getInstance().getImage("OpenGameArt-balls-" + Breakout.getInstance().getDataManager().getData().getBallColor());
+            Image image = Images.getImage(Constants.BALL_FILEPATH + Breakout.getInstance().getDataManager().getData().getBallColor() + ".png");
             if (image == null) {
                 throw new Exception("Image not found");
             }
@@ -104,6 +106,15 @@ public class Ball extends Entity {
         velY = -velY;
     }
 
+    //-----------------------no usages --------------------
+    public void setImg(String newImgPath){
+        img = new Image(newImgPath, Math.round(this.getPosX()), Math.round(this.getPosY()), false, false);
+        imgView.setImage(img);
+    }
+
+    public Image getImg(){
+        return img;
+    }
 
     public ImageView getImgView() {
         return imgView;

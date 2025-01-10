@@ -4,7 +4,7 @@ import breakoutadvance.UI.menus.MainMenu;
 import breakoutadvance.loop.GameLoop;
 import breakoutadvance.persistentdata.DataManager;
 import breakoutadvance.scenes.AbstractScene;
-import breakoutadvance.utils.AssetManager;
+import breakoutadvance.utils.Images;
 import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
 import javafx.application.Application;
@@ -35,7 +35,7 @@ public class Breakout extends Application {
 
         // Load Sounds
         Sound.load();
-        AssetManager.load();
+        Images.load();
 
         // Load data manager
         this.dataManager = new DataManager();

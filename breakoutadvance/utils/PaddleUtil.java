@@ -21,9 +21,9 @@ public class PaddleUtil {
      */
     public static Image buildPaddleImage(int totalWidth) {
         String color = Breakout.getInstance().getDataManager().getData().getPaddleColor();
-        Image leftImg   = AssetManager.getInstance().getImage("OpenGameArt-paddles-" + color + "Left");
-        Image middleImg = AssetManager.getInstance().getImage("OpenGameArt-paddles-" + color + "Middle");
-        Image rightImg  = AssetManager.getInstance().getImage("OpenGameArt-paddles-" + color + "Right");
+        Image leftImg   = Images.getImage(  Constants.PADDLE_FILEPATH + color + "Left.png");
+        Image middleImg = Images.getImage(Constants.PADDLE_FILEPATH + color + "Middle.png");
+        Image rightImg  = Images.getImage(Constants.PADDLE_FILEPATH + color + "Right.png");
 
         int leftWidth = (int) leftImg.getWidth();
         int rightWidth = (int) rightImg.getWidth();

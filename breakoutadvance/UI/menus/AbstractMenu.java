@@ -1,17 +1,14 @@
 package breakoutadvance.UI.menus;
 
 import breakoutadvance.scenes.AbstractScene;
-import breakoutadvance.utils.AssetManager;
+import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.FontUtil;
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.Images;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import java.io.FileInputStream;
 
 /**
  * Base class for menu scenes, using AbstractScene's ability
@@ -31,7 +28,7 @@ public abstract class AbstractMenu extends AbstractScene {
      */
     protected void addBackgroundImage() {
         try {
-            Image image = AssetManager.getInstance().getImage("cobblestoneWallWithDoor");
+            Image image = Images.getImage(Constants.BACKGROUND_FILEPATH +"background2.png");
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,
                     BackgroundRepeat.REPEAT,

@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
@@ -73,7 +72,7 @@ public class GameOverScene extends AbstractScene {
     }
 
     protected void addBackgroundImage() {
-        try (FileInputStream input = new FileInputStream("./assets/img/cobblestoneWallWithDoor.png")) {
+        try (FileInputStream input = new FileInputStream("assets/img/backgrounds/background2.png")) {
             Image image = new Image(input);
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,

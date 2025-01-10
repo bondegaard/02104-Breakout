@@ -2,9 +2,9 @@ package breakoutadvance.UI.menus;
 
 import breakoutadvance.Breakout;
 import breakoutadvance.UI.menus.components.UIComponentFactory;
-import breakoutadvance.utils.AssetManager;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.FontUtil;
+import breakoutadvance.utils.Images;
 import breakoutadvance.utils.SetSceneUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
@@ -145,11 +145,11 @@ public class SettingsMenu extends AbstractMenu {
         // e.g. "assets/img/paddles/" + colorName + "_paddle.png" for paddles
         String imagePath;
         if (isBall) {
-            imagePath = "OpenGameArt-balls-" + colorName;
+            imagePath = Constants.BALL_FILEPATH + colorName + ".png";
         } else {
-            imagePath = "OpenGameArt-paddles-" + colorName; // adjust for paddle if needed
+            imagePath = Constants.PADDLE_FILEPATH + colorName + ".png"; // adjust for paddle if needed
         }
-        Image image = AssetManager.getInstance().getImage(imagePath);
+        Image image = Images.getImage(imagePath);
         return new ImageView(image);
     }
 
@@ -166,7 +166,7 @@ public class SettingsMenu extends AbstractMenu {
 
             // Update the ImageView
             if (ballImageView != null) {
-                ballImageView.setImage(AssetManager.getInstance().getImage("OpenGameArt-balls-" + newBallColor));
+                ballImageView.setImage(Images.getImage(Constants.BALL_FILEPATH + newBallColor + ".png"));
             }
         } else {
             currentPaddleColorIndex = (currentPaddleColorIndex + direction + colors.size()) % colors.size();
@@ -177,7 +177,7 @@ public class SettingsMenu extends AbstractMenu {
 
             // Update the ImageView
             if (paddleImageView != null) {
-                paddleImageView.setImage(AssetManager.getInstance().getImage("OpenGameArt-paddles-" + newPaddleColor));
+                paddleImageView.setImage(Images.getImage( Constants.PADDLE_FILEPATH + newPaddleColor + ".png"));
             }
         }
     }

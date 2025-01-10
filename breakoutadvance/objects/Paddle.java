@@ -37,7 +37,6 @@ public class Paddle extends Entity {
         this.velX = velX;
 
         try {
-            // Image image = new Image(new FileInputStream("./assets/img/OpenGameArt/paddles/" + Breakout.getInstance().getDataManager().getData().getPaddleColor() + ".png"));
             Image image = PaddleUtil.buildPaddleImage((int) this.width);
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX(), this.getPosY());

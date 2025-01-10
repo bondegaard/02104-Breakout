@@ -80,7 +80,7 @@ public class PlayScene extends AbstractScene {
     public void addBackgroundImage(){
         this.getScene().setFill(Color.BLACK);
         try {
-            Image image = AssetManager.getInstance().getImage("backgrounds-Background2Færdig2");
+            Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background1.png");
 
             BackgroundImage backgroundimage = new BackgroundImage(image,
                     BackgroundRepeat.REPEAT,
@@ -148,8 +148,12 @@ public class PlayScene extends AbstractScene {
         this.startOrPauseText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
             double textWidth = newValue.getWidth();
             double textHeight = newValue.getHeight();
-            this.startOrPauseText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.startOrPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
+            try {
+                this.startOrPauseText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+                this.startOrPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
+            } catch (Exception ex) {
+                System.err.println(ex.getMessage());
+            }
         });
 
         this.infoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
