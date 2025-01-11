@@ -24,7 +24,6 @@ public class BombObstacle extends Powerup {
     public void onCollision() {
         if (hasCollided) return;
         hasCollided = true;
-        this.playScene.hitBombObstacle();
-
+        this.playScene.hitBombObstacle(this.posX, this.posY);
     }
 }

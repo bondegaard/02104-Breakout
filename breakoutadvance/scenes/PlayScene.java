@@ -497,7 +497,8 @@ public class PlayScene extends AbstractScene {
     }
 
     //Bomb kills you when hit
-    public void hitBombObstacle(){
+    public void hitBombObstacle(double posX, double posY){
+        new BombExplosion(posX, posY, this.pane);
         hasDied();
         lifesDisplay.updateLives(this,lives);
     }
