@@ -11,6 +11,7 @@ public enum Images {
     // Background files
     BACKGROUND_1(Constants.BACKGROUND_FILEPATH + "background1.png"),
     BACKGROUND_2(Constants.BACKGROUND_FILEPATH + "background2.png"),
+    BACKGROUND_3(Constants.BACKGROUND_FILEPATH + "background12.png"),
 
     // Ball files
     BALL_BEIGE(Constants.BALL_FILEPATH + "beige.png"),

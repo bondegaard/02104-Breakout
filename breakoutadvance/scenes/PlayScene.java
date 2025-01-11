@@ -87,7 +87,7 @@ public class PlayScene extends AbstractScene {
     public void addBackgroundImage(){
         this.getScene().setFill(Color.BLACK);
         try {
-            Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background1.png");
+            Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background12.png");
 
             BackgroundImage backgroundimage = new BackgroundImage(image,
                     BackgroundRepeat.REPEAT,
@@ -134,20 +134,26 @@ public class PlayScene extends AbstractScene {
     public void addStartOrPauseText() {
         // Text to display start or pause information
         this.startOrPauseText = new Text("Press ENTER to start");
-        this.startOrPauseText.setStyle("-fx-font-size: 48px;");
-        this.startOrPauseText.setFill(Color.WHITE);
+        this.startOrPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
+        this.startOrPauseText.setFill(Color.BLACK);
+        this.startOrPauseText.setStroke(Color.LIGHTGRAY);
+        this.startOrPauseText.setStrokeWidth(1.25);
         this.getPane().getChildren().add(this.startOrPauseText);
 
         // Text to display controls
         this.infoText = new Text("Press 'a' to move left and 'd' to move right");
-        this.infoText.setStyle("-fx-font-size: 32px;");
-        this.infoText.setFill(Color.WHITE);
+        this.infoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
+        this.infoText.setFill(Color.BLACK);
+        this.infoText.setStroke(Color.LIGHTGRAY);
+        this.infoText.setStrokeWidth(1.25);
         this.getPane().getChildren().add(this.infoText);
 
         // Text to inform user that you can pause the game
         this.addInfoText = new Text("When started, you can press ENTER to pause the game");
-        this.addInfoText.setStyle("-fx-font-size: 32px;");
-        this.addInfoText.setFill(Color.WHITE);
+        this.addInfoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
+        this.addInfoText.setFill(Color.BLACK);
+        this.addInfoText.setStroke(Color.LIGHTGRAY);
+        this.addInfoText.setStrokeWidth(1.25);
         this.getPane().getChildren().add(this.addInfoText);
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
@@ -182,15 +188,19 @@ public class PlayScene extends AbstractScene {
     public void addDeathPauseText() {
         // Text to display start or pause information
         this.deathPauseText = new Text("You Died. You have " + lives + " left.");
-        this.deathPauseText.setStyle("-fx-font-size: 48px;");
-        this.deathPauseText.setFill(Color.WHITE);
+        this.deathPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
+        this.deathPauseText.setFill(Color.BLACK);
+        this.deathPauseText.setStroke(Color.LIGHTGRAY);
+        //this.deathPauseText.setStrokeWidth(1.25); // idk why it stops working when this line is not commented
         this.getPane().getChildren().add(this.deathPauseText);
         this.deathPauseText.setVisible(false);
 
         // Text to display controls
         this.deathInfoText = new Text("Press Enter to start again");
-        this.deathInfoText.setStyle("-fx-font-size: 32px;");
-        this.deathInfoText.setFill(Color.WHITE);
+        this.deathInfoText.setStyle("-fx-font-size: 32px;-fx-font-weight: bold;");
+        this.deathInfoText.setFill(Color.BLACK);
+        this.deathInfoText.setStroke(Color.LIGHTGRAY);
+        this.deathInfoText.setStrokeWidth(1.25);
         this.getPane().getChildren().add(this.deathInfoText);
         this.deathInfoText.setVisible(false);
 
@@ -259,7 +269,7 @@ public class PlayScene extends AbstractScene {
 
             // Save new highscore
             Data data = Breakout.getInstance().getDataManager().getData();
-            if (data.getHighscore() < this.score)
+            if (data.getHighscore() < this.score) {
                 data.setHighscore(this.score);
 
                 data.addGame(new Game(this.score, GameOutCome.LOSE));
@@ -267,7 +277,7 @@ public class PlayScene extends AbstractScene {
 
                 this.lifesDisplay.updateLives(this, lives);
                 return;
-
+            }
         }
     }
 
