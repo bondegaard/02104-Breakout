@@ -35,7 +35,7 @@ public abstract class Powerup extends AbstractEntity {
         this.velY = velY;
 
         try {
-            Image image = new Image(new FileInputStream(type.getImgPath()));
+            Image image = type.getImg();
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
             imgView.setFitHeight(this.getHeight()*2);

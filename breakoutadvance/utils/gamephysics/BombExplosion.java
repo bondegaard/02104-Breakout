@@ -18,7 +18,7 @@ public class BombExplosion {
     private final Random rand = new Random();
 
 
-    public BombExplosion(int posX, int posY, Pane pane) {
+    public BombExplosion(double posX, double posY, Pane pane) {
 
         int numberOfParticles = 150;
         ParallelTransition bombExplosion = new ParallelTransition();

@@ -19,6 +19,8 @@ public class Grid {
     private final Color[] colors = {Color.RED, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.BURLYWOOD}; // Colors for rows of blocks
     private final String[] blockColors = {"red", "pink", "yellow", "green", "blue"};
 
+    private int newScore;
+
     /**
      * Setup a grid of blocks which is displayed on the scene.
      * @param playScene Current instance of playScene
@@ -68,10 +70,6 @@ public class Grid {
         Block block = this.grid[n][m];
         if (block == null) return;
 
-
-
-
-
         int length = grid.length;
 
         //add blockValue to score
@@ -92,9 +90,6 @@ public class Grid {
         } else if (length - 1== n){
             playScene.score += 100;
         }
-        // scorecounter virker næsten rigtig nok.
-        // dog bliver blockværdiens værdi først opdateret i score, ved næste kollision. derfor skal den sidst ramte blocks blockværdi hentes og lægges til score, når man dør.
-        // ellers mangler man det sidste point til sin score.
 
         // Remove from screen
         playScene.getPane().getChildren().remove(block.getNode());
@@ -107,7 +102,17 @@ public class Grid {
         System.out.println("--" + playScene.score + "--" + grid.length);
          */
 
+        //Update score on the scene when block gets removed
+        newScore = playScene.getScore();
+        playScene.getDisplayScore().setText("Score: " + "" + newScore);
     }
+
+    public int getNewScore(){
+        return newScore;
+    }
+
+
+
 
     //get amount of blocks alive
 
