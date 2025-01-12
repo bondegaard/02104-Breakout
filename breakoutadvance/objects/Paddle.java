@@ -75,8 +75,7 @@ public class Paddle extends AbstractEntity {
         return velX;
     }
 
-    public void setImg(String newImgPath){
-        img = new Image(newImgPath, Math.round(this.getPosX()), Math.round(this.getPosY()), false, false);
+    public void setImg(Image img){
         imgView.setImage(img);
     }
 

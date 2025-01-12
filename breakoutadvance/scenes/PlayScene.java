@@ -250,11 +250,11 @@ public class PlayScene extends AbstractScene {
     }
 
     public void hasDied(){
-
         lives--;
         //reset and update paddle width of paddle when die
         this.paddle.setWidth(Constants.PADDLE_WIDTH);
         this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
+        this.paddle.setImg(PaddleUtil.buildPaddleImage(Constants.PADDLE_WIDTH));
         this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
         this.paddle.setWidth(Constants.PADDLE_WIDTH);
 
@@ -506,6 +506,9 @@ public class PlayScene extends AbstractScene {
 
             //sets paddle Width
             this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
+
+            // Update the paddle image
+            this.paddle.setImg(PaddleUtil.buildPaddleImage((int) this.paddle.getWidth()));
             this.paddle.getImgView().setFitWidth(this.paddle.getWidth());
         }
     }

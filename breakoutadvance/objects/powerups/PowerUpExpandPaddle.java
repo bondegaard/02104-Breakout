@@ -25,6 +25,5 @@ public class PowerUpExpandPaddle extends Powerup {
         if (hasCollided) return;
         hasCollided = true;
         this.playScene.increasePaddleWidth();
-
     }
 }
