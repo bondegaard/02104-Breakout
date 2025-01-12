@@ -38,7 +38,6 @@ public enum Fonts {
         try (FileInputStream fileInputStream = new FileInputStream(filePath)) {
             Font font = Font.loadFont(fileInputStream, size);
             fonts.put(filePath, font);
-            logger.info("Loaded font: " + filePath);
         } catch (IOException e) {
             throw new IOException("Error loading font: " + filePath, e);
         }

@@ -109,7 +109,6 @@ public enum Images {
             Image image = new Image(filepath);
             // Put the key-image pair in the map
             images.put(filepath, image);
-            System.out.printf("%s: %s\n", filepath, image);
         } catch (Exception e) {
             System.err.println("Error putting image with key derived from URL: " + filepath + " | " + e.getMessage());
         }

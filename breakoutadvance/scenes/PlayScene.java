@@ -138,7 +138,6 @@ public class PlayScene extends AbstractScene {
     }
 
     public void addStartOrPauseText() {
-        // Text to display start or pause information
         this.startOrPauseText = new Text("Press ENTER to start");
         this.startOrPauseText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
         this.startOrPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
@@ -147,7 +146,6 @@ public class PlayScene extends AbstractScene {
         this.startOrPauseText.setStrokeWidth(1.25);
         this.getPane().getChildren().add(this.startOrPauseText);
 
-        // Text to display controls
         this.infoText = new Text("Press 'a' to move left and 'd' to move right");
         this.infoText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
         this.infoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
@@ -156,7 +154,6 @@ public class PlayScene extends AbstractScene {
         this.infoText.setStrokeWidth(1.25);
         this.getPane().getChildren().add(this.infoText);
 
-        // Text to inform user that you can pause the game
         this.addInfoText = new Text("When started, you can press ENTER to pause the game");
         this.addInfoText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
         this.addInfoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
@@ -165,33 +162,32 @@ public class PlayScene extends AbstractScene {
         this.addInfoText.setStrokeWidth(1.25);
         this.getPane().getChildren().add(this.addInfoText);
 
-        // Center the text after it is added to the scene as it needs to be visible and text changes
-        // This makes sure that it is centered no matter what
-        this.startOrPauseText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            try {
-                this.startOrPauseText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-                this.startOrPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());
-            }
-        });
+        // Manually set the positions initially
+        updateTextPositions();
 
-        this.infoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.infoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.infoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
-        });
+        // Listen for window resize and update positions accordingly
+        this.getScene().widthProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
+        this.getScene().heightProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
+    }
 
-        this.addInfoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.addInfoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.addInfoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.6);
-        });
+    private void updateTextPositions() {
+        double windowWidth = WindowUtils.getWindowWidth();
+        double windowHeight = WindowUtils.getWindowHeight();
 
+        double startOrPauseTextWidth = this.startOrPauseText.getBoundsInLocal().getWidth();
+        double startOrPauseTextHeight = this.startOrPauseText.getBoundsInLocal().getHeight();
+        this.startOrPauseText.setX((windowWidth - startOrPauseTextWidth) / 2);
+        this.startOrPauseText.setY((windowHeight - startOrPauseTextHeight) / 2);
+
+        double infoTextWidth = this.infoText.getBoundsInLocal().getWidth();
+        double infoTextHeight = this.infoText.getBoundsInLocal().getHeight();
+        this.infoText.setX((windowWidth - infoTextWidth) / 2);
+        this.infoText.setY((windowHeight - infoTextHeight) / 1.8);
+
+        double addInfoTextWidth = this.addInfoText.getBoundsInLocal().getWidth();
+        double addInfoTextHeight = this.addInfoText.getBoundsInLocal().getHeight();
+        this.addInfoText.setX((windowWidth - addInfoTextWidth) / 2);
+        this.addInfoText.setY((windowHeight - addInfoTextHeight) / 1.6);
     }
 
     public void addDeathPauseText() {
@@ -235,8 +231,7 @@ public class PlayScene extends AbstractScene {
     public void addDisplayScore() {
         // Text to display start or pause information
         this.displayScore = new Text("Score: " + grid.getNewScore());
-        this.displayScore.setFont(Font.font(currentFont.getFamily(), 512));
-        this.displayScore.setStyle("-fx-font-size: 80px;");
+        this.displayScore.setFont(Font.font(currentFont.getFamily(), 80));
         this.displayScore.setFill(Color.BLACK);
         this.displayScore.setStroke(Color.LIGHTGRAY);
         this.displayScore.setStrokeWidth(1.5);
