@@ -1,6 +1,6 @@
 package breakoutadvance.objects;
 
-import breakoutadvance.utils.gamephysics.BlockUtil;
+import breakoutadvance.utils.BlockUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;

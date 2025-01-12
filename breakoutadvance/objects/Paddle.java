@@ -2,8 +2,8 @@
 package breakoutadvance.objects;
 
 import breakoutadvance.scenes.PlayScene;
-import breakoutadvance.utils.gamephysics.PaddleUtil;
-import breakoutadvance.utils.resources.WindowUtils;
+import breakoutadvance.utils.PaddleUtil;
+import breakoutadvance.utils.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;

@@ -1,6 +1,5 @@
-package breakoutadvance.utils.resources;
+package breakoutadvance.utils;
 
-import breakoutadvance.utils.Constants;
 import javafx.scene.text.Font;
 
 import java.io.FileInputStream;

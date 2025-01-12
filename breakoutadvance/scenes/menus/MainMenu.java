@@ -1,17 +1,14 @@
 package breakoutadvance.scenes.menus;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.utils.resources.Fonts;
 import breakoutadvance.utils.SetSceneUtil;
-import breakoutadvance.utils.gamephysics.BombExplosion;
-import breakoutadvance.utils.resources.WindowUtils;
+import breakoutadvance.utils.BombExplosion;
+import breakoutadvance.utils.WindowUtils;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import java.awt.*;
 
 /**
  * Main menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.

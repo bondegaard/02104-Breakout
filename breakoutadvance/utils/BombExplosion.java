@@ -1,4 +1,4 @@
-package breakoutadvance.utils.gamephysics;
+package breakoutadvance.utils;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;

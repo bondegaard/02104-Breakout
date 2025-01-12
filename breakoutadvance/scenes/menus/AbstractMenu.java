@@ -2,7 +2,7 @@ package breakoutadvance.scenes.menus;
 
 import breakoutadvance.scenes.AbstractScene;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.resources.Images;
+import breakoutadvance.utils.Images;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;

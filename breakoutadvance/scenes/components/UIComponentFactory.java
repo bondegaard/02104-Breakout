@@ -1,7 +1,7 @@
 package breakoutadvance.scenes.components;
 
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.resources.Fonts;
+import breakoutadvance.utils.Fonts;
 import javafx.animation.PauseTransition;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -27,9 +27,10 @@ public class UIComponentFactory {
      * @param color   the color to fill the text with; if {@code null}, defaults to {@link Color#WHITE}.
      * @return a {@link Text} node with the specified content, font size, color, and font.
      */
-    public static Text createText(String content, int size, Color color) {
+    public static Text createText(String content, String fontname, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "BLACEB__.TTF"));
+        text.setFont(Fonts.getFont(Constants.FONT_FILEPATH + fontname));
+        text.setStyle("-fx-font-size: " + size + ";");
         text.setFill(color != null ? color : Color.WHITE);
         return text;
     }
@@ -45,7 +46,7 @@ public class UIComponentFactory {
      * @param normalColor         the normal (default) text color, e.g. {@link Color#WHITE}.
      * @param highlightColor      the color used to highlight the text on click, e.g. {@link Color#YELLOW}.
      * @param highlightDurationMs how long (in milliseconds) the text remains highlighted before reverting.
-     * @param font                the custom font to use; if {@code null}, an Arial font at the specified size is used.
+     * @param fontname            the string name of the custom font to use; if {@code null}, an Arial font at the specified size is used.
      * @param onClickAction       a {@link Runnable} representing the action to be executed after the highlight.
      * @return a {@link Text} node that briefly highlights itself when clicked, then runs the user action.
      */
@@ -55,10 +56,10 @@ public class UIComponentFactory {
             Color normalColor,
             Color highlightColor,
             long highlightDurationMs,
-            Font font,
+            String fontname,
             Runnable onClickAction
     ) {
-        Text text = createText(content, size, normalColor);
+        Text text = createText(content, fontname, size, normalColor);
 
         text.setOnMouseClicked(e -> {
             // Change color to highlight color
@@ -120,11 +121,16 @@ public class UIComponentFactory {
      * @param width  the preferred width of the slider, in pixels.
      * @return a {@link Slider} configured with the given parameters.
      */
-    public static Slider createSlider(double min, double max, double value, double width) {
+    public static Slider createSlider(double min, double max, double value, double width, boolean showTicks, double majorTickUnit, boolean snapToTicks) {
         Slider slider = new Slider(min, max, value);
         slider.setPrefWidth(width);
+        slider.setShowTickLabels(showTicks);
+        slider.setShowTickMarks(showTicks);
+        slider.setMajorTickUnit(majorTickUnit);
+        slider.setSnapToTicks(snapToTicks);
         return slider;
     }
+
 
     /**
      * Creates a JavaFX HBox (horizontal box) with a given spacing and an array of child nodes.

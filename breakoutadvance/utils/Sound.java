@@ -1,4 +1,4 @@
-package breakoutadvance.utils.resources;
+package breakoutadvance.utils;
 
 import breakoutadvance.Breakout;
 import javafx.scene.media.Media;

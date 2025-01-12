@@ -1,8 +1,8 @@
 package breakoutadvance.scenes;
 
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.resources.Fonts;
-import breakoutadvance.utils.resources.WindowUtils;
+import breakoutadvance.utils.Fonts;
+import breakoutadvance.utils.WindowUtils;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;

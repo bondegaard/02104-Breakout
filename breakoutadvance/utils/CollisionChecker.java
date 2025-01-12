@@ -1,4 +1,4 @@
-package breakoutadvance.utils.gamephysics;
+package breakoutadvance.utils;
 
 import breakoutadvance.objects.Ball;
 import breakoutadvance.objects.AbstractEntity;

@@ -2,7 +2,7 @@ package breakoutadvance.core;
 
 import breakoutadvance.objects.Block;
 import breakoutadvance.scenes.PlayScene;
-import breakoutadvance.utils.resources.WindowUtils;
+import breakoutadvance.utils.WindowUtils;
 import javafx.scene.paint.Color;
 
 /**

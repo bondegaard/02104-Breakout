@@ -2,8 +2,8 @@ package breakoutadvance.objects;
 
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.resources.Images;
-import breakoutadvance.utils.resources.WindowUtils;
+import breakoutadvance.utils.Images;
+import breakoutadvance.utils.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 

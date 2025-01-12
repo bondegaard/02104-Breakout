@@ -1,4 +1,4 @@
-package breakoutadvance.utils.resources;
+package breakoutadvance.utils;
 
 import javafx.stage.Stage;
 

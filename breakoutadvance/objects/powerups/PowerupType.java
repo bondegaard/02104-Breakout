@@ -4,7 +4,7 @@ import breakoutadvance.Breakout;
 import breakoutadvance.objects.Powerup;
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.resources.Images;
+import breakoutadvance.utils.Images;
 import javafx.scene.image.Image;
 
 public enum PowerupType {
