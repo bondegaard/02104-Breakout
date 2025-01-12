@@ -1,7 +1,7 @@
 package breakoutadvance.scenes.menus;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.utils.SetSceneUtil;
+import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.BombExplosion;
 import breakoutadvance.utils.WindowUtils;
 import javafx.geometry.Pos;
@@ -128,15 +128,15 @@ public class MainMenu extends AbstractMenu {
 
     /* Convenience methods for each action */
     private void startGame() {
-        new SetSceneUtil().playScene(5, 10);
+        Breakout.getInstance().setCurrentScene(new PlayScene(5, 10));
     }
 
     private void openSettings() {
-        new SetSceneUtil().settingsMenu();
+        Breakout.getInstance().setCurrentScene(new SettingsMenu());
     }
 
     private void quitGame() {
-        new SetSceneUtil().quitGame();
+        System.exit(0);
     }
 }
 

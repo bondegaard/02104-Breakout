@@ -4,7 +4,6 @@ import breakoutadvance.Breakout;
 import breakoutadvance.scenes.components.UIComponentFactory;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.Images;
-import breakoutadvance.utils.SetSceneUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -97,7 +96,7 @@ public class SettingsMenu extends AbstractMenu {
         // Back button
         Text backBtn = UIComponentFactory.createText("Back", "BLACEB__.TTF",64, Color.WHITE);
         backBtn.setOnMouseClicked(event -> {
-            new SetSceneUtil().mainMenu();
+            Breakout.getInstance().setCurrentScene(new MainMenu());
         });
 
         vbox.getChildren().addAll(title, volumeBox, muteCheckBox, hboxBall, hboxPaddle, backBtn);
@@ -192,7 +191,7 @@ public class SettingsMenu extends AbstractMenu {
         scene.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 Breakout.getInstance().getDataManager().saveData();
-                new SetSceneUtil().mainMenu();
+                Breakout.getInstance().setCurrentScene(new MainMenu());
             }
         });
     }
