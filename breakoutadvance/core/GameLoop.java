@@ -1,4 +1,4 @@
-package breakoutadvance.loop;
+package breakoutadvance.core;
 
 import javafx.application.Platform;
 

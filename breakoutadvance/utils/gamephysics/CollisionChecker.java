@@ -1,11 +1,11 @@
-package breakoutadvance.utils;
+package breakoutadvance.utils.gamephysics;
 
 import breakoutadvance.objects.Ball;
-import breakoutadvance.objects.Entity;
+import breakoutadvance.objects.AbstractEntity;
 
 public class CollisionChecker {
 
-    public static boolean checkCollision(Entity entity1, Entity entity2) {
+    public static boolean checkCollision(AbstractEntity entity1, AbstractEntity entity2) {
 
         return entity1.getPosX() <= entity2.getPosX() + entity2.getWidth() &&
                 entity1.getPosX() + entity1.getWidth() >= entity2.getPosX() &&
@@ -13,7 +13,7 @@ public class CollisionChecker {
                 entity1.getPosY() + entity1.getWidth() >= entity2.getPosY();
     }
 
-    public static EdgeHit checkCollision(Entity entity, Ball ball) {
+    public static EdgeHit checkCollision(AbstractEntity entity, Ball ball) {
         double[][] ballEdges = ballCollision(ball, 8);
 
         for (double[] ballEdge : ballEdges) {

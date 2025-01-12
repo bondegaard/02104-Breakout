@@ -1,10 +1,9 @@
-package breakoutadvance.UI.menus;
+package breakoutadvance.scenes.menus;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.UI.menus.components.UIComponentFactory;
+import breakoutadvance.scenes.components.UIComponentFactory;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.FontUtil;
-import breakoutadvance.utils.Images;
+import breakoutadvance.utils.resources.Images;
 import breakoutadvance.utils.SetSceneUtil;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
@@ -62,7 +61,7 @@ public class SettingsMenu extends AbstractMenu {
         Label volumeLabel = UIComponentFactory.createLabel(
                 String.format("Volume: %3d %%", (int) volumeSlider.getValue()),
                 20,
-                FontUtil.getFont()
+                currentFont
         );
         volumeLabel.setMaxWidth(400);
         volumeLabel.setMinWidth(400);
@@ -79,7 +78,7 @@ public class SettingsMenu extends AbstractMenu {
         CheckBox muteCheckBox = UIComponentFactory.createCheckBox(
                 "Mute",
                 Breakout.getInstance().getDataManager().getData().isMute(),
-                FontUtil.getFont()
+                currentFont
         );
         muteCheckBox.selectedProperty().addListener((observable, oldVal, newVal) -> {
             Breakout.getInstance().getDataManager().getData().setMute(newVal);

@@ -5,7 +5,7 @@ import javafx.scene.Node;
 /**
  * Abstract class used to create an entity on the screen.
  */
-public abstract class Entity {
+public abstract class AbstractEntity {
 
     // JavaFX node on the screen
     protected Node node;
@@ -23,7 +23,7 @@ public abstract class Entity {
      * @param height height of entity
      * @param width width of entity
      */
-    public Entity(double posX, double posY, double height, double width) {
+    public AbstractEntity(double posX, double posY, double height, double width) {
         this.posX = posX;
         this.posY = posY;
         this.height = height;

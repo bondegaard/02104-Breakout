@@ -1,21 +1,18 @@
 
 package breakoutadvance.objects;
 
-import breakoutadvance.Breakout;
 import breakoutadvance.scenes.PlayScene;
-import breakoutadvance.utils.PaddleUtil;
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.gamephysics.PaddleUtil;
+import breakoutadvance.utils.resources.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.io.FileInputStream;
-
 /**
  * Used to create a paddle on the screen
  */
-public class Paddle extends Entity {
+public class Paddle extends AbstractEntity {
     private double velX; // Current directional velocity
     private Image img;
     private ImageView imgView = new ImageView();

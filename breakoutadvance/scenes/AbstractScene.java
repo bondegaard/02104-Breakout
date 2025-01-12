@@ -1,8 +1,11 @@
 package breakoutadvance.scenes;
 
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.Constants;
+import breakoutadvance.utils.resources.Fonts;
+import breakoutadvance.utils.resources.WindowUtils;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 
 /**
  * Abstract class to handle different kinds of scenes
@@ -11,6 +14,8 @@ public abstract class AbstractScene {
     protected Scene scene; // Scene that is displayed
 
     protected Pane pane; // Pane which spands the full screen.
+
+    protected Font currentFont = Fonts.getFont(Constants.FONT_PATH + "BLACEB__.TTF");
 
     /**
      * Create a basic Scene

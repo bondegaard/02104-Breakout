@@ -1,15 +1,13 @@
 package breakoutadvance.objects;
 
-import breakoutadvance.utils.BlockUtil;
-import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.Images;
+import breakoutadvance.utils.gamephysics.BlockUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public class Block extends Entity {
+public class Block extends AbstractEntity {
     private Image img;
     private ImageView imgView = new ImageView();
 

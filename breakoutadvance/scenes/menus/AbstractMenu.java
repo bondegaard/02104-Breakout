@@ -1,9 +1,8 @@
-package breakoutadvance.UI.menus;
+package breakoutadvance.scenes.menus;
 
 import breakoutadvance.scenes.AbstractScene;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.FontUtil;
-import breakoutadvance.utils.Images;
+import breakoutadvance.utils.resources.Images;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -51,7 +50,7 @@ public abstract class AbstractMenu extends AbstractScene {
      */
     protected Text createText(String content, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(FontUtil.getFont());
+        text.setFont(currentFont);
         text.setFill(color);
         return text;
     }

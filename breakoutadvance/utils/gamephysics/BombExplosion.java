@@ -1,18 +1,15 @@
-package breakoutadvance.utils;
+package breakoutadvance.utils.gamephysics;
 
-import breakoutadvance.Breakout;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 
-import java.awt.*;
 import java.util.Random;
 
 public class BombExplosion {

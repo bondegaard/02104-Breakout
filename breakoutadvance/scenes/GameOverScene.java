@@ -1,7 +1,7 @@
 package breakoutadvance.scenes;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.resources.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;

@@ -9,7 +9,7 @@ import javafx.scene.shape.Circle;
 
 import java.io.FileInputStream;
 
-public abstract class Powerup extends Entity {
+public abstract class Powerup extends AbstractEntity {
 
     protected final PlayScene playScene;
 

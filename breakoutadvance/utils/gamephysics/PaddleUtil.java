@@ -1,6 +1,8 @@
-package breakoutadvance.utils;
+package breakoutadvance.utils.gamephysics;
 
 import breakoutadvance.Breakout;
+import breakoutadvance.utils.Constants;
+import breakoutadvance.utils.resources.Images;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;

@@ -1,8 +1,8 @@
 package breakoutadvance.utils;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.UI.menus.MainMenu;
-import breakoutadvance.UI.menus.SettingsMenu;
+import breakoutadvance.scenes.menus.MainMenu;
+import breakoutadvance.scenes.menus.SettingsMenu;
 import breakoutadvance.scenes.PlayScene;
 
 public class SetSceneUtil {

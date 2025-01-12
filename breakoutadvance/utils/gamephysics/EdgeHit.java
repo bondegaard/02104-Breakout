@@ -1,4 +1,4 @@
-package breakoutadvance.utils;
+package breakoutadvance.utils.gamephysics;
 
 /**
  * Enum used to determind on which axis two enities collided.

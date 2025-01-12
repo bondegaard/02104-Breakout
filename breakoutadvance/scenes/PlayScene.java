@@ -1,20 +1,24 @@
 package breakoutadvance.scenes;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.grid.Grid;
+import breakoutadvance.core.Grid;
 import breakoutadvance.objects.*;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
 import breakoutadvance.persistentdata.data.Game;
 import breakoutadvance.persistentdata.data.GameOutCome;
 import breakoutadvance.utils.*;
+import breakoutadvance.utils.gamephysics.CollisionChecker;
+import breakoutadvance.utils.gamephysics.EdgeHit;
+import breakoutadvance.utils.resources.Images;
+import breakoutadvance.utils.resources.Sound;
+import breakoutadvance.utils.resources.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

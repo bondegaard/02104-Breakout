@@ -1,5 +1,6 @@
-package breakoutadvance.utils;
+package breakoutadvance.utils.resources;
 
+import breakoutadvance.utils.Constants;
 import javafx.scene.image.Image;
 
 import java.util.HashMap;

@@ -1,8 +1,8 @@
-package breakoutadvance.grid;
+package breakoutadvance.core;
 
 import breakoutadvance.objects.Block;
 import breakoutadvance.scenes.PlayScene;
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.resources.WindowUtils;
 import javafx.scene.paint.Color;
 
 /**

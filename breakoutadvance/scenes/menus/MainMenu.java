@@ -1,13 +1,11 @@
-package breakoutadvance.UI.menus;
+package breakoutadvance.scenes.menus;
 
 import breakoutadvance.utils.SetSceneUtil;
-import breakoutadvance.utils.BombExplosion;
+import breakoutadvance.utils.gamephysics.BombExplosion;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**

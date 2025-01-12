@@ -1,12 +1,13 @@
 package breakoutadvance;
 
-import breakoutadvance.UI.menus.MainMenu;
-import breakoutadvance.loop.GameLoop;
+import breakoutadvance.scenes.menus.MainMenu;
+import breakoutadvance.core.GameLoop;
 import breakoutadvance.persistentdata.DataManager;
 import breakoutadvance.scenes.AbstractScene;
-import breakoutadvance.utils.Images;
-import breakoutadvance.utils.Sound;
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.resources.Fonts;
+import breakoutadvance.utils.resources.Images;
+import breakoutadvance.utils.resources.Sound;
+import breakoutadvance.utils.resources.WindowUtils;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
@@ -36,6 +37,7 @@ public class Breakout extends Application {
         // Load Sounds
         Sound.load();
         Images.load();
+        Fonts.load();
 
         // Load data manager
         this.dataManager = new DataManager();

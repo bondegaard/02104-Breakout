@@ -3,7 +3,7 @@ package breakoutadvance.objects.powerups;
 import breakoutadvance.objects.Powerup;
 import breakoutadvance.scenes.PlayScene;
 
-public class PlusOnePowerUp extends Powerup {
+public class PowerUpExpandPaddle extends Powerup {
     /**
      * Basic setup for an entity
      *
@@ -15,14 +15,16 @@ public class PlusOnePowerUp extends Powerup {
      * @param velX
      * @param velY
      */
-    public PlusOnePowerUp(PlayScene playScene, double posX, double posY, double height, double width, double velX, double velY) {
-        super(playScene, PowerupType.PLUS_ONE, posX, posY, height, width, velX, velY);
+    public PowerUpExpandPaddle(PlayScene playScene, double posX, double posY, double height, double width, double velX, double velY) {
+        super(playScene, PowerupType.PLUS_WIDTH, posX, posY, height, width, velX, velY);
     }
 
+    //method calls increasePaddleWidth on collisions between Power Ups and paddle
     @Override
     public void onCollision() {
         if (hasCollided) return;
         hasCollided = true;
-        this.playScene.spawnBall();
+        this.playScene.increasePaddleWidth();
+
     }
 }

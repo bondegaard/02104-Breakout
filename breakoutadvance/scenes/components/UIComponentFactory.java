@@ -1,6 +1,7 @@
-package breakoutadvance.UI.menus.components;
+package breakoutadvance.scenes.components;
 
-import breakoutadvance.utils.FontUtil;
+import breakoutadvance.utils.Constants;
+import breakoutadvance.utils.resources.Fonts;
 import javafx.animation.PauseTransition;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -28,7 +29,7 @@ public class UIComponentFactory {
      */
     public static Text createText(String content, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(FontUtil.getFont());
+        text.setFont(Fonts.getFont(Constants.FONT_PATH + "BLACEB__.TTF"));
         text.setFill(color != null ? color : Color.WHITE);
         return text;
     }

@@ -3,16 +3,14 @@ package breakoutadvance.objects;
 import breakoutadvance.Breakout;
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.Images;
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.resources.Images;
+import breakoutadvance.utils.resources.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.io.FileInputStream;
-
-public class Ball extends Entity {
+public class Ball extends AbstractEntity {
     private double velX;
     private double velY;
     private Image img;
