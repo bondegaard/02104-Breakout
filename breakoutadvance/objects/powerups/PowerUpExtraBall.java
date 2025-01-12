@@ -12,8 +12,8 @@ public class PowerUpExtraBall extends Powerup {
      * @param posY      y position
      * @param height    height of entity
      * @param width     width of entity
-     * @param velX
-     * @param velY
+     * @param velX      velocity on X-axis
+     * @param velY      velocity on Y-axis
      */
     public PowerUpExtraBall(PlayScene playScene, double posX, double posY, double height, double width, double velX, double velY) {
         super(playScene, PowerupType.PLUS_ONE, posX, posY, height, width, velX, velY);

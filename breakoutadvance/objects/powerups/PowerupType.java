@@ -4,14 +4,13 @@ import breakoutadvance.Breakout;
 import breakoutadvance.objects.Powerup;
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.Images;
-import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.utils.resources.Images;
 import javafx.scene.image.Image;
 
 public enum PowerupType {
     PLUS_ONE(Images.getImage(Constants.BALL_FILEPATH + Breakout.getInstance().getDataManager().getData().getBallColor() + ".png"), 200), // 1 is equal to 0.1%
-    PLUS_WIDTH(Images.getImage("assets/img/paddleWidthPowerUp.png"), 200),
-    BOMB(Images.getImage("assets/img/bomb.png"), 100);
+    PLUS_WIDTH(Images.getImage(Constants.IMAGE_PATH + "paddleWidthPowerUp.png"), 200),
+    BOMB(Images.getImage( Constants.IMAGE_PATH + "bomb.png"), 100);
 
 
     private final Image img;
@@ -32,16 +31,12 @@ public enum PowerupType {
     }
 
     public Powerup createPowerup(PlayScene playScene, PowerupType type, double posX, double posY, double height, double width, double velX, double velY) {
-        switch (type) {
-            case PLUS_ONE:
-                return new PowerUpExtraBall(playScene, posX, posY, height, width, velX, velY);
-            case PLUS_WIDTH:
-                return new PowerUpExpandPaddle(playScene, posX, posY, height, width, velX, velY);
-            case BOMB:
-                return new BombObstacle(playScene, posX, posY, height, width, velX, velY);
-            default:
-                throw new IllegalArgumentException("Invalid powerup type");
-        }
+        return switch (type) {
+            case PLUS_ONE -> new PowerUpExtraBall(playScene, posX, posY, height, width, velX, velY);
+            case PLUS_WIDTH -> new PowerUpExpandPaddle(playScene, posX, posY, height, width, velX, velY);
+            case BOMB -> new BombObstacle(playScene, posX, posY, height, width, velX, velY);
+            default -> throw new IllegalArgumentException("Invalid powerup type");
+        };
     }
 }
 

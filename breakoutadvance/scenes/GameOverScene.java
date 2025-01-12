@@ -1,14 +1,14 @@
 package breakoutadvance.scenes;
 
 import breakoutadvance.Breakout;
+import breakoutadvance.utils.Constants;
+import breakoutadvance.utils.resources.Images;
 import breakoutadvance.utils.resources.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import java.io.FileInputStream;
 
 /**
  * This class is used to display the game is over scene
@@ -72,8 +72,8 @@ public class GameOverScene extends AbstractScene {
     }
 
     protected void addBackgroundImage() {
-        try (FileInputStream input = new FileInputStream("assets/img/backgrounds/background2.png")) {
-            Image image = new Image(input);
+        try  {
+            Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background12.png");
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,
                     BackgroundRepeat.REPEAT,

@@ -19,5 +19,5 @@ public class Constants {
     public static final String BALL_FILEPATH = "./assets/img/OpenGameArt/balls/";
     public static final String PADDLE_FILEPATH = "./assets/img/OpenGameArt/paddles/";
     public static final String BLOCK_FILEPATH = "./assets/img/OpenGameArt/bricks/";
-    public static final String FONT_PATH = "./assets/fonts/";
+    public static final String FONT_FILEPATH = "./assets/fonts/";
 }

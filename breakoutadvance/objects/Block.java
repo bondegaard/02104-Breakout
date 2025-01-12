@@ -16,10 +16,11 @@ public class Block extends AbstractEntity {
     /**
      * Create a block
      * @param posX x position
-     * @param posY
-     * @param width
-     * @param height
-     * @param color
+     * @param posY y position
+     * @param width the width of the block
+     * @param height the height of the block
+     * @param color the displayed color of the block, if it fails to load the image
+     * @param blockColor the color of the block displayed with image
      */
     public Block(double posX, double posY, double width, double height, Color color, String blockColor) {
         super(posX, posY, height, width); // getting coordinates and height/width from parent class
@@ -29,7 +30,7 @@ public class Block extends AbstractEntity {
             img = BlockUtil.buildBrickImage((int) width, blockColor);
             imgView = new ImageView(img);
 
-            // Set dimentions
+            // Set dimensions
             imgView.setFitWidth(width);
             imgView.setFitHeight(height);
 

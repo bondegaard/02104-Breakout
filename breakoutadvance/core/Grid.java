@@ -104,7 +104,7 @@ public class Grid {
 
         //Update score on the scene when block gets removed
         newScore = playScene.getScore();
-        playScene.getDisplayScore().setText("Score: " + "" + newScore);
+        playScene.getDisplayScore().setText("Score: " + newScore);
     }
 
     public int getNewScore(){
@@ -121,9 +121,9 @@ public class Grid {
      */
     public int getAliveAmount() {
         int aliveAmount = 0;
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j] != null)
+        for (Block[] blocks : grid) {
+            for (Block block : blocks) {
+                if (block != null)
                     aliveAmount += 1;
 
             }

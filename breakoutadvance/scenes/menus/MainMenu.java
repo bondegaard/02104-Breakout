@@ -1,9 +1,10 @@
 package breakoutadvance.scenes.menus;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.utils.FontUtil;
+import breakoutadvance.utils.resources.Fonts;
 import breakoutadvance.utils.SetSceneUtil;
 import breakoutadvance.utils.gamephysics.BombExplosion;
+import breakoutadvance.utils.resources.WindowUtils;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
@@ -111,7 +112,7 @@ public class MainMenu extends AbstractMenu {
     public void addHighScore() {
                 // Text to display HighScore
         this.displayHighScore = new Text("Top Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
-        this.displayHighScore.setFont(Font.font(FontUtil.getFont().getFamily(), 512));
+        this.displayHighScore.setFont(currentFont);
         this.displayHighScore.setStyle("-fx-font-size: 80px;");
         this.displayHighScore.setFill(Color.YELLOW);
         this.displayHighScore.setStrokeWidth(3);

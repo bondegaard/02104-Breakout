@@ -21,7 +21,7 @@ public class GameLoop {
     /**
      * Constructor for the GameLoop
      *
-     * @param callback The function to be called every one milisecond
+     * @param callback The function to be called every one millisecond
      */
     public GameLoop(Runnable callback) {
         this.callback = callback;

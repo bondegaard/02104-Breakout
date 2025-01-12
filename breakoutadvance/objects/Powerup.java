@@ -45,7 +45,7 @@ public abstract class Powerup extends AbstractEntity {
             this.setNode(imgView);
         } catch (Exception e) {
             // Drawing ball
-            // Adding radius (this.getHeight()) to accomodate how a circle is drawn
+            // Adding radius (this.getHeight()) to accommodate how a circle is drawn
             Circle ball = new Circle(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight(), this.getHeight());
             ball.setFill(Color.YELLOW);
             playScene.getPane().getChildren().add(ball);

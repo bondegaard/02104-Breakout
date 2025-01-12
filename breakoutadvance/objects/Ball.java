@@ -104,20 +104,6 @@ public class Ball extends AbstractEntity {
         velY = -velY;
     }
 
-    //-----------------------no usages --------------------
-    public void setImg(String newImgPath){
-        img = new Image(newImgPath, Math.round(this.getPosX()), Math.round(this.getPosY()), false, false);
-        imgView.setImage(img);
-    }
-
-    public Image getImg(){
-        return img;
-    }
-
-    public ImageView getImgView() {
-        return imgView;
-    }
-
     //updates ball position
 
     /**

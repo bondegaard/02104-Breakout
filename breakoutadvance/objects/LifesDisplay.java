@@ -1,6 +1,8 @@
 package breakoutadvance.objects;
 
 import breakoutadvance.scenes.PlayScene;
+import breakoutadvance.utils.Constants;
+import breakoutadvance.utils.resources.Images;
 import breakoutadvance.utils.resources.WindowUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,8 +19,8 @@ public class LifesDisplay {
 
 
     public LifesDisplay() {
-        this.fullHeartImg = new Image("./assets/img/heart_full.png");
-        this.emptyHeartImg = new Image("./assets/img/heart_empty.png");;
+        this.fullHeartImg = Images.getImage(Constants.IMAGE_PATH + "heart_full.png");
+        this.emptyHeartImg = Images.getImage(Constants.IMAGE_PATH + "heart_empty.png");;
     }
 
 

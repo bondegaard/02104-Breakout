@@ -29,7 +29,7 @@ public class UIComponentFactory {
      */
     public static Text createText(String content, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(Fonts.getFont(Constants.FONT_PATH + "BLACEB__.TTF"));
+        text.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "BLACEB__.TTF"));
         text.setFill(color != null ? color : Color.WHITE);
         return text;
     }

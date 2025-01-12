@@ -8,8 +8,10 @@ import breakoutadvance.persistentdata.data.Data;
 import breakoutadvance.persistentdata.data.Game;
 import breakoutadvance.persistentdata.data.GameOutCome;
 import breakoutadvance.utils.*;
+import breakoutadvance.utils.gamephysics.BombExplosion;
 import breakoutadvance.utils.gamephysics.CollisionChecker;
 import breakoutadvance.utils.gamephysics.EdgeHit;
+import breakoutadvance.utils.resources.Fonts;
 import breakoutadvance.utils.resources.Images;
 import breakoutadvance.utils.resources.Sound;
 import breakoutadvance.utils.resources.WindowUtils;
@@ -138,6 +140,7 @@ public class PlayScene extends AbstractScene {
     public void addStartOrPauseText() {
         // Text to display start or pause information
         this.startOrPauseText = new Text("Press ENTER to start");
+        this.startOrPauseText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
         this.startOrPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
         this.startOrPauseText.setFill(Color.BLACK);
         this.startOrPauseText.setStroke(Color.LIGHTGRAY);
@@ -146,6 +149,7 @@ public class PlayScene extends AbstractScene {
 
         // Text to display controls
         this.infoText = new Text("Press 'a' to move left and 'd' to move right");
+        this.infoText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
         this.infoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
         this.infoText.setFill(Color.BLACK);
         this.infoText.setStroke(Color.LIGHTGRAY);
@@ -154,6 +158,7 @@ public class PlayScene extends AbstractScene {
 
         // Text to inform user that you can pause the game
         this.addInfoText = new Text("When started, you can press ENTER to pause the game");
+        this.addInfoText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
         this.addInfoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
         this.addInfoText.setFill(Color.BLACK);
         this.addInfoText.setStroke(Color.LIGHTGRAY);
@@ -230,7 +235,7 @@ public class PlayScene extends AbstractScene {
     public void addDisplayScore() {
         // Text to display start or pause information
         this.displayScore = new Text("Score: " + grid.getNewScore());
-        this.displayScore.setFont(Font.font(FontUtil.getFont().getFamily(), 512));
+        this.displayScore.setFont(Font.font(currentFont.getFamily(), 512));
         this.displayScore.setStyle("-fx-font-size: 80px;");
         this.displayScore.setFill(Color.BLACK);
         this.displayScore.setStroke(Color.LIGHTGRAY);
