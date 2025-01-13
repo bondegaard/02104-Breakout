@@ -38,7 +38,7 @@ public class SettingsMenu extends AbstractMenu {
         vbox.setStyle("-fx-padding: 20;");
         vbox.setAlignment(Pos.CENTER);
 
-        Text title = UIComponentFactory.createText("Settings", "BLACEB__.ttf",64, Color.YELLOW);
+        Text title = UIComponentFactory.createText("Settings", "BlackwoodCastle.ttf",64, Color.WHITE);
 
         // Initialize color indices
         currentBallColorIndex = Arrays.asList(ballColors).indexOf(
@@ -94,7 +94,7 @@ public class SettingsMenu extends AbstractMenu {
         HBox hboxPaddle = createColorSelector(paddleColors, currentPaddleColorIndex, false);
 
         // Back button
-        Text backBtn = UIComponentFactory.createText("Back", "BLACEB__.ttf",64, Color.WHITE);
+        Text backBtn = UIComponentFactory.createText("Back", "BlackwoodCastle.ttf",64, Color.YELLOW);
         backBtn.setOnMouseClicked(event -> {
             Breakout.getInstance().setCurrentScene(new MainMenu());
         });
@@ -189,12 +189,13 @@ public class SettingsMenu extends AbstractMenu {
     private void setupKeyPressedEvents() {
         // 'scene' is inherited from AbstractScene
         scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE) {
+            if (event.getCode() == KeyCode.ESCAPE || event.getCode() == KeyCode.ENTER) {
                 Breakout.getInstance().getDataManager().saveData();
                 Breakout.getInstance().setCurrentScene(new MainMenu());
             }
         });
     }
+
 
     @Override
     public void onTick() {
