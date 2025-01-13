@@ -119,15 +119,12 @@ public enum Images {
     public static void load() {
 
         for (Images image : Images.values()) {
-            // Run async so it doesn't block the main thread
-            CompletableFuture.runAsync(() -> {
-                try {
-                    putImage(image.filename);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
+            // Run sync, since we need the images at the start.
+            try {
+                putImage(image.filename);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
