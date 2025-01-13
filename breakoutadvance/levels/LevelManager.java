@@ -49,5 +49,9 @@ public class LevelManager {
 
         System.out.println("Levels loaded: " + levels.size());
     }
+
+    public Level getLevelByName(String name) {
+        return levels.stream().filter(level -> level.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
 }
 

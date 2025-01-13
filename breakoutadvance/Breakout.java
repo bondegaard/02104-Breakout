@@ -118,4 +118,8 @@ public class Breakout extends Application {
     public DataManager getDataManager() {
         return dataManager;
     }
+
+    public LevelManager getLevelManager() {
+        return levelManager;
+    }
 }
