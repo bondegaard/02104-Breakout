@@ -216,6 +216,8 @@ public class PlayScene extends AbstractScene {
     }
 
     public void addDisplayScore() {
+
+
         // Text to display start or pause information
         this.displayScore = new Text("Score: " + grid.getNewScore());
         this.displayScore.setFont(Font.font(currentFont.getFamily(), 80));
@@ -224,7 +226,6 @@ public class PlayScene extends AbstractScene {
         this.displayScore.setStrokeWidth(1.5);
         this.displayScore.setVisible(true);
         this.getPane().getChildren().add(this.displayScore);
-
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
@@ -318,7 +319,7 @@ public class PlayScene extends AbstractScene {
             return;
         }
 
-        // Check if eah ball is out of bounds
+        // Check if each ball is out of bounds
         Iterator<Ball> iterator = balls.iterator();
         while (iterator.hasNext()) {
             Ball ball = iterator.next();
@@ -537,7 +538,7 @@ public class PlayScene extends AbstractScene {
         for (PowerupType type : PowerupType.values()) {
             int randomNumber = random.nextInt(1000);
             if (randomNumber < type.getSpawnChance()) { // Convert spawn chance to a comparable value
-                Powerup powerup = type.createPowerup(this, type,xPos, yPos, 16, 16, 0, 0.01);
+                Powerup powerup = type.createPowerup(this, type,xPos, yPos, 8, 8, 0, 0.01);
                 if (powerup == null) break;
                 powerups.add(powerup);
                 break;

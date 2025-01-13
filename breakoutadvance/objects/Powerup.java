@@ -38,15 +38,15 @@ public abstract class Powerup extends AbstractEntity {
             Image image = type.getImg();
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
-            imgView.setFitHeight(this.getHeight()*2);
-            imgView.setFitWidth(this.getWidth()*2);
+            imgView.setFitHeight(this.getHeight()*4);
+            imgView.setFitWidth(this.getWidth()*4);
 
             playScene.getPane().getChildren().add(imgView);
             this.setNode(imgView);
         } catch (Exception e) {
             // Drawing ball
             // Adding radius (this.getHeight()) to accommodate how a circle is drawn
-            Circle ball = new Circle(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight(), this.getHeight());
+            Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight()/2);
             ball.setFill(Color.YELLOW);
             playScene.getPane().getChildren().add(ball);
 
