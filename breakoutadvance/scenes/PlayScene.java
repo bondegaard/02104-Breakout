@@ -249,8 +249,15 @@ public class PlayScene extends AbstractScene {
         });
     }
 
+    public void increaseHealth() {
+        lives++;
+        this.lifesDisplay.updateLives(this, lives);
+    }
+
     public void hasDied(){
         lives--;
+        this.lifesDisplay.updateLives(this, lives);
+
         //reset and update paddle width of paddle when die
         this.paddle.setWidth(Constants.PADDLE_WIDTH);
         this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
@@ -278,8 +285,6 @@ public class PlayScene extends AbstractScene {
 
                 data.addGame(new Game(this.score, GameOutCome.LOSE));
                 Breakout.getInstance().getDataManager().saveData();
-
-                this.lifesDisplay.updateLives(this, lives);
                 return;
             }
         }
@@ -498,13 +503,14 @@ public class PlayScene extends AbstractScene {
         ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
     }
 
+    // Increase paddle width
     public void increasePaddleWidth(){
         if(paddle.getWidth() <= WindowUtils.getWindowWidth()/4 ){
 
             //increase and update paddle Width
             this.paddle.setWidth(this.paddle.getWidth() * 1.2);
 
-            //sets paddle Width
+            //relocate and set new paddle
             this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
 
             // Update the paddle image
@@ -513,7 +519,7 @@ public class PlayScene extends AbstractScene {
         }
     }
 
-    //Bomb kills you when hit
+    // Bomb kills you when hit
     public void hitBombObstacle(double posX, double posY){
         new BombExplosion(posX, posY, this.pane);
         hasDied();
