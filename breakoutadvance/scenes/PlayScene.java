@@ -544,4 +544,8 @@ public class PlayScene extends AbstractScene {
             }
         }
     }
+
+    public int getLives() {
+        return lives;
+    }
 }
