@@ -249,8 +249,15 @@ public class PlayScene extends AbstractScene {
         });
     }
 
+    public void increaseHealth() {
+        lives++;
+        this.lifesDisplay.updateLives(this, lives);
+    }
+
     public void hasDied(){
         lives--;
+        this.lifesDisplay.updateLives(this, lives);
+
         //reset and update paddle width of paddle when die
         this.paddle.setWidth(Constants.PADDLE_WIDTH);
         this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
@@ -278,8 +285,6 @@ public class PlayScene extends AbstractScene {
 
                 data.addGame(new Game(this.score, GameOutCome.LOSE));
                 Breakout.getInstance().getDataManager().saveData();
-
-                this.lifesDisplay.updateLives(this, lives);
                 return;
             }
         }
