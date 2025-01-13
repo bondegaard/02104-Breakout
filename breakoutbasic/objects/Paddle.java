@@ -11,10 +11,8 @@ import javafx.scene.shape.Rectangle;
 /**
  * Used to create a paddle on the screen
  */
-public class Paddle extends Entity {
+public class Paddle extends AbstractEntity {
     private double velX; // Current directional velocity
-    private Image img;
-    private ImageView imgView = new ImageView();
 
     private boolean moveLeft = false; // Is paddle set to move left?
     private boolean moveRight = false; // Is paddle set to move right?
@@ -61,19 +59,6 @@ public class Paddle extends Entity {
 
     public double getVelX(){
         return velX;
-    }
-
-    public void setImg(String newImgPath){
-        img = new Image(newImgPath, Math.round(this.getPosX()), Math.round(this.getPosY()), false, false);
-        imgView.setImage(img);
-    }
-
-    public Image getImg(){
-        return img;
-    }
-
-    public ImageView getImgView() {
-        return imgView;
     }
 
     public boolean isMoveLeft() {

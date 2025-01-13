@@ -40,13 +40,12 @@ public class Ball extends AbstractEntity {
             Circle ball = new Circle(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight(), this.getHeight());
             ball.setFill(Color.RED);
             playScene.getPane().getChildren().add(ball);
-
             this.setNode(ball);
         }
     }
 
     /**
-     * Update x postion of the ball
+     * Update x position of the ball
      */
     public void updateX() {
         if(this.getPosX() + velX >= WindowUtils.getWindowWidth() - this.getWidth()*2){
@@ -57,13 +56,13 @@ public class Ball extends AbstractEntity {
     }
 
     /**
-     * Update y postion of the ball
+     * Update y position of the ball
      */
     public void updateY() {
         if(this.getPosY() + velY >= WindowUtils.getWindowHeight() - this.getHeight()*2){
             return; // Do nothing as the ball hits the bottom of the screen.
         } else if (this.getPosY() + velY <= 0){
-            this.flipVelY(); //flip velocity if ball goes out of bounds (top)
+            this.flipVelY(); // Flip velocity if ball goes out of bounds (top)
         }
     }
 
@@ -71,7 +70,7 @@ public class Ball extends AbstractEntity {
     public void updatePosition() {
         this.setPosX(this.getPosX() + velX);
         this.setPosY(this.getPosY() + velY);
-        this.getNode().relocate(this.getPosX(), this.getPosY()); //relocates points in scene
+        this.getNode().relocate(this.getPosX(), this.getPosY()); // Relocates points in scene
     }
 
     public double getVelX(){

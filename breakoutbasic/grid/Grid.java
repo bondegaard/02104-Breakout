@@ -36,7 +36,7 @@ public class Grid {
 
         // Starting positions, where blank space is calculated
         double posXStart = WindowUtils.getWindowWidth() * (1.0/100.0);
-        double posYStart = WindowUtils.getWindowWidth() * (3.0/100.0);
+        double posYStart = WindowUtils.getWindowWidth() * (4.0/100.0);
 
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < m; col++) {
@@ -54,8 +54,6 @@ public class Grid {
             }
         }
     }
-
-
     //remove block method
 
     /**
@@ -78,15 +76,15 @@ public class Grid {
      * @return Amount of alive blocks in the grid
      */
     public int getAliveAmount() {
-        int aliveAmount = 0;
+        // If at least on block is alive, return 1
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] != null)
-                    aliveAmount += 1;
-
+                    return 1;
             }
         }
-        return aliveAmount;
+        // If no blocks are alive, return 0
+        return 0;
     }
 
     // Get 2d array of Block
