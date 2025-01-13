@@ -50,7 +50,7 @@ public class PlayScene extends AbstractScene {
 
     private Random random = new Random();
 
-    private final double maxAddedVel = 1.0;
+    private final double maxVel = 1.0;
 
     private int lives = 3;
     private Text deathPauseText;
@@ -66,12 +66,12 @@ public class PlayScene extends AbstractScene {
 
     public PlayScene(int n, int m) {
         this.addBackgroundImage();
-        this.grid = new Grid(this, 4, 20);
+        this.grid = new Grid(this, 4, 10);
 
-        // Create ball and paddle
+        // Creating paddle
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) Constants.PADDLE_WIDTH /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, Constants.PADDLE_WIDTH);
 
-        // Calculating angle/velocity
+        // Creating ball
         spawnBall();
 
         // Add start or pause text
@@ -89,8 +89,6 @@ public class PlayScene extends AbstractScene {
 
         // Add score
         addDisplayScore();
-
-
     }
 
     public void addBackgroundImage(){
@@ -197,7 +195,7 @@ public class PlayScene extends AbstractScene {
         this.deathPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
         this.deathPauseText.setFill(Color.BLACK);
         this.deathPauseText.setStroke(Color.LIGHTGRAY);
-        //this.deathPauseText.setStrokeWidth(1.25); // idk why it stops working when this line is not commented
+        this.deathPauseText.setStrokeWidth(1.0);
         this.getPane().getChildren().add(this.deathPauseText);
         this.deathPauseText.setVisible(false);
 
@@ -353,7 +351,7 @@ public class PlayScene extends AbstractScene {
 
                 ball.setPosY(this.paddle.getPosY() - ball.getHeight() * 2); // Making sure the ball only hits the paddle once
                 //ball.setVelY(-Math.abs(ball.getVelY()));
-                double[] vel = calculateNewXVelocityAfterPaddleHit(ball);
+                double[] vel = calcNewVelAfterPaddleColl(ball);
                 ball.setVelX(vel[0]);
                 ball.setVelY(vel[1]);
 
@@ -383,7 +381,6 @@ public class PlayScene extends AbstractScene {
                     } else if (ballBlockHit == EdgeHit.YAXIS) {
                         flipY = true;
                         attemptPowerupSpawn(block.getPosX()+block.getWidth()/2, block.getPosY()+block.getHeight()/2);
-
 
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
@@ -420,7 +417,7 @@ public class PlayScene extends AbstractScene {
         powerups.forEach(Powerup::onTick);
     }
 
-    private double[] calculateNewXVelocityAfterPaddleHit(Ball ball) {
+    private double[] calcNewVelAfterPaddleColl(Ball ball) {
         // Getting the middle of the paddle
         double paddleMiddlePosX = this.paddle.getPosX() + paddle.getWidth() / 2;
         // Ball position when hitting the paddle
@@ -432,7 +429,7 @@ public class PlayScene extends AbstractScene {
         // Now using these calculations, where paddlewidth is dynamic
 
         // x = y / 0.7
-        // y = (paddle widt) / 2
+        // y = (paddle width) / 2
         double decrease = (this.getPaddleWidth() / 2.0) / 0.7;
 
         // Calculating velocities
@@ -446,7 +443,7 @@ public class PlayScene extends AbstractScene {
         else if (velX > max) velX -= (velX - max);
         else if (velX < -max) velX += (velX - max);
 
-        double velY = maxAddedVel - Math.abs(velX);
+        double velY = maxVel - Math.abs(velX);
         if (velY < 0) velY = -velY;
 
         //System.out.println("After x: " + (-velX) + " y: " + (-velY) + " total: " + (velX+velY));
@@ -524,13 +521,13 @@ public class PlayScene extends AbstractScene {
         });
     }
 
-    public double[] calculateStartVelForBall() {
+    private double[] calculateStartVelForBall() {
         // Creating a random angle to start from
         // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
-        // velY is calculated based on (maxAddedVel - velX)
+        // velY is calculated based on (maxVel - velX)
         boolean positiveNumber = random.nextBoolean();
         double velX = random.nextDouble(0.2,0.75);
-        double velY = maxAddedVel - velX;
+        double velY = maxVel - velX;
         velX = (positiveNumber) ? velX : -velX;
 
         return new double[]{velX,-velY};

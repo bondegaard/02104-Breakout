@@ -1,5 +1,6 @@
 package breakoutbasic.scenes;
 
+import breakoutadvance.utils.Constants;
 import breakoutbasic.Breakout;
 import breakoutbasic.grid.Grid;
 import breakoutbasic.objects.Ball;
@@ -31,31 +32,16 @@ public class PlayScene extends AbstractScene {
     private Text addInfoText;
 
     private Random random = new Random();
-
-
-
+    
     public PlayScene(int n, int m) {
         this.getScene().setFill(Color.BLACK);
         this.grid = new Grid(this, n, m);
 
-        // Create ball and paddle
-        int width = 256;
-        int height = 16;
-        int radius = 16;
+        // Creating paddle
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) Constants.PADDLE_WIDTH /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, Constants.PADDLE_WIDTH);
 
-        // Creating a random angle
-        // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
-        // velY is calculated based on (maxAddedVel - velX)
-        boolean positiveNumber = random.nextBoolean();
-        double maxAddedVel = 1.0;
-        double velX = random.nextDouble(0.2,0.75);
-        double velY = maxAddedVel - velX;
-        velX = (positiveNumber) ? velX : -velX;
-
-
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - 64 , WindowUtils.getWindowHeight() * 0.8, 1.0, height, width);
-
-        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - radius/2d, this.paddle.getPosY() - 2*paddle.getHeight(), velX , velY, radius);
+        // Spawning ball
+        spawnBall();
 
         // Add start or pause text
         addStartOrPauseText();
@@ -63,6 +49,29 @@ public class PlayScene extends AbstractScene {
         // Setup Keyboard events
         setupKeyPressedEvents();
     }
+
+    private void spawnBall() {
+        // Reset ball position and velocity
+        double[] vel = calculateStartVelForBall();
+
+        // Creating ball
+        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - Constants.BALL_RADIUS/2d, this.paddle.getPosY() - 2*paddle.getHeight(), vel[0] , vel[1], Constants.BALL_RADIUS);
+        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
+    }
+
+    private double[] calculateStartVelForBall() {
+        // Creating a random angle to start from
+        // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
+        // velY is calculated based on (maxVel - velX)
+        double maxVel = 1.0;
+        boolean positiveNumber = random.nextBoolean();
+        double velX = random.nextDouble(0.2,0.75);
+        double velY = maxVel - velX;
+        velX = (positiveNumber) ? velX : -velX;
+
+        return new double[]{velX,-velY};
+    }
+
 
     public void setupKeyPressedEvents() {
         this.getScene().setOnKeyPressed(event -> {
@@ -165,7 +174,7 @@ public class PlayScene extends AbstractScene {
             return;
         }
 
-        // Move paddle left2
+        // Move paddle left
         if (paddle.isMoveLeft()) {
             paddle.updatePosXLeft();
         }
@@ -190,7 +199,7 @@ public class PlayScene extends AbstractScene {
             for (int j = 0; j < grid.getGrid()[i].length; j++){
                 Block block = grid.getGrid()[i][j];
 
-                if(block == null){
+                if(block == null) {
                     continue;
                 }
 
@@ -208,9 +217,8 @@ public class PlayScene extends AbstractScene {
                 }
             }
         }
-        if (flipX)ball.flipVelX();
-        if (flipY)ball.flipVelY();
-
+        if (flipX) ball.flipVelX();
+        if (flipY) ball.flipVelY();
 
         // Call the ball onTick function for it to move.
         this.ball.onTick();
