@@ -34,9 +34,9 @@ public class LifesDisplay {
         // Add full heart images for the number of lives remaining
         for (int i = 0; i < lives; i++) {
             ImageView fullHeart = new ImageView(fullHeartImg);
-            fullHeart.setFitWidth(24);
-            fullHeart.setFitHeight(24);
-            fullHeart.setX(WindowUtils.getWindowWidth() - (i + 1) * 30); // Adjust the X position for each heart
+            fullHeart.setFitWidth(32);
+            fullHeart.setFitHeight(32);
+            fullHeart.setX(WindowUtils.getWindowWidth() - (i + 1) * 48); // Adjust the X position for each heart
             fullHeart.setY(WindowUtils.getWindowHeight() - 80); // Adjust the Y position for each heart
             lifeImages.add(fullHeart);
         }
@@ -44,9 +44,9 @@ public class LifesDisplay {
         // Add empty heart images for the remaining slots up to 3
         for (int i = lives; i < 3; i++) {
             ImageView emptyHeart = new ImageView(emptyHeartImg);
-            emptyHeart.setFitWidth(24);
-            emptyHeart.setFitHeight(24);
-            emptyHeart.setX(WindowUtils.getWindowWidth() - (i + 1) * 30); // Adjust the X position for each heart
+            emptyHeart.setFitWidth(32);
+            emptyHeart.setFitHeight(32);
+            emptyHeart.setX(WindowUtils.getWindowWidth() - (i + 1) * 48); // Adjust the X position for each heart
             emptyHeart.setY(WindowUtils.getWindowHeight() - 80); // Adjust the Y position for each heart
             lifeImages.add(emptyHeart);
         }
