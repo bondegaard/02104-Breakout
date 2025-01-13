@@ -2,6 +2,8 @@ package breakoutadvance.utils;
 
 import breakoutadvance.objects.Ball;
 import breakoutadvance.objects.AbstractEntity;
+import breakoutadvance.objects.Paddle;
+import breakoutadvance.objects.Powerup;
 
 public class CollisionChecker {
 
@@ -11,6 +13,16 @@ public class CollisionChecker {
                 entity1.getPosX() + entity1.getWidth() >= entity2.getPosX() &&
                 entity1.getPosY() <= entity2.getPosY() + entity2.getWidth() &&
                 entity1.getPosY() + entity1.getWidth() >= entity2.getPosY();
+    }
+
+    public static boolean checkCollision(Paddle paddle, Powerup powerup) {
+        if (paddle.getPosY()+paddle.getHeight() < powerup.getPosY())
+            return false;
+
+        return paddle.getPosX() <= powerup.getPosX() + 8 + powerup.getWidth() &&
+                paddle.getPosX() + paddle.getWidth() >= powerup.getPosX() + 8 &&
+                paddle.getPosY() <= powerup.getPosY() + 8 + powerup.getWidth() &&
+                paddle.getPosY() + paddle.getWidth() >= powerup.getPosY() + 8;
     }
 
     public static EdgeHit checkCollision(AbstractEntity entity, Ball ball) {

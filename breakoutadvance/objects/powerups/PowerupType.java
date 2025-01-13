@@ -42,7 +42,12 @@ public enum PowerupType {
                 yield null;
             }
             case BOMB -> new BombObstacle(playScene, posX, posY, height, width, velX, velY);
-            case HEART -> new HearthObstacle(playScene, posX, posY, height, width, velX, velY);
+            case HEART -> {
+                if (playScene.getLives() <= 5) {
+                    yield new HearthObstacle(playScene, posX, posY, height, width, velX, velY);
+                }
+                yield null;
+            }
             default -> throw new IllegalArgumentException("Invalid powerup type");
         };
     }

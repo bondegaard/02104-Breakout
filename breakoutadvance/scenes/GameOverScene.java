@@ -1,30 +1,52 @@
 package breakoutadvance.scenes;
 
 import breakoutadvance.Breakout;
+import breakoutadvance.scenes.menus.AbstractMenu;
+import breakoutadvance.scenes.menus.MainMenu;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.Images;
 import breakoutadvance.utils.WindowUtils;
+import breakoutadvance.scenes.components.UIComponentFactory;
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  * This class is used to display the game is over scene
  * You can also restart the game after the game has been lost
  */
-public class GameOverScene extends AbstractScene {
-
-    // Text for scene
-    private Text GameOver;
-    private Text additionalInfo;
-
+public class GameOverScene extends AbstractMenu {
     public GameOverScene() {
-        // Screen color
-        this.getScene().setFill(Color.BLACK);
+        super();
 
-        // Add background
+        VBox vbox = createVBox(Pos.CENTER, 10);
+        vbox.setStyle("-fx-background-color: black; -fx-padding: 50");
+
+        Text gameOverText = createMenuItem("Game Over!", null);
+        gameOverText.setStyle("-fx-font-size: 128;");
+        gameOverText.setFill(Color.DARKRED);
+
+        Text scoreText = createMenuItem("Score: " + Breakout.getInstance().getDataManager().getData().getPreviousGames()[Breakout.getInstance().getDataManager().getData().getPreviousGames().length-1].getScore(), null);
+        scoreText.setStyle("-fx-font-size: 72;");
+
+        Text playAgainText = createMenuItem("Play Again", playAgain());
+        playAgainText.setFill(Color.YELLOW);
+
+
+        Text returnToMenuText = createMenuItem("Return to Menu", mainMenu());
+        returnToMenuText.setStyle("-fx-font-size: 48;");
+
+
+
+        Text[] texts = new Text[] {gameOverText, scoreText, playAgainText, returnToMenuText};
+
+        vbox.getChildren().addAll(texts);
+
+
         addBackgroundImage();
 
         // Adding game over text
@@ -32,6 +54,16 @@ public class GameOverScene extends AbstractScene {
 
         // Setup Keyboard events
         setupKeyPressedEvents();
+
+        pane.getChildren().add(vbox);
+    }
+
+    private Runnable mainMenu() {
+        return () -> {Breakout.getInstance().setCurrentScene(new MainMenu());};
+    }
+
+    private Runnable playAgain() {
+        return () -> {Breakout.getInstance().setCurrentScene(new PlayScene(5,10));};
     }
 
     public void setupKeyPressedEvents() {
@@ -42,32 +74,26 @@ public class GameOverScene extends AbstractScene {
     }
 
     public void addGameOverText() {
-        // Game over text
-        this.GameOver = new Text("Game over!");
-        this.GameOver.setStyle("-fx-font-size: 64px;");
-        this.GameOver.setFill(Color.DARKRED);
-        this.getPane().getChildren().add(this.GameOver);
 
-        // Additional info text
-        this.additionalInfo = new Text("Press ENTER to play again");
-        this.additionalInfo.setStyle("-fx-font-size: 32px;");
-        this.additionalInfo.setFill(Color.WHITE);
-        this.getPane().getChildren().add(this.additionalInfo);
+        Text gameOverText = UIComponentFactory.createText("Game Over!", "OpenSans-Regular.ttf", 64, Color.DARKRED);
+        gameOverText.setTextAlignment(TextAlignment.CENTER);
+
+        Text playAgainText = UIComponentFactory.createText("Press ENTER to play again", "OpenSans-Regular.ttf", 32, Color.WHITE);
+
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
-        this.GameOver.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+        gameOverText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
             double textWidth = newValue.getWidth();
             double textHeight = newValue.getHeight();
-            this.GameOver.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.GameOver.setY((WindowUtils.getWindowHeight() - textHeight) / 2.5);
+
         });
 
-        this.additionalInfo.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+        playAgainText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
             double textWidth = newValue.getWidth();
             double textHeight = newValue.getHeight();
-            this.additionalInfo.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.additionalInfo.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
+            playAgainText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            playAgainText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
         });
     }
 
