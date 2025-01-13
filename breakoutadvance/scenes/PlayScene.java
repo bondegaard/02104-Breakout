@@ -259,18 +259,18 @@ public class PlayScene extends AbstractScene {
         playing = false;
         resetBallAndPaddle();
         if (lives <= 0) {
-            Breakout.getInstance().setCurrentScene(new GameOverScene());
-            Sound.playSound(Sound.LOSE);
-
             // Save new highscore
             Data data = Breakout.getInstance().getDataManager().getData();
             if (data.getHighscore() < this.score) {
                 data.setHighscore(this.score);
 
-                data.addGame(new Game(this.score, GameOutCome.LOSE));
+                data.addGame(new Game(this.score));
                 Breakout.getInstance().getDataManager().saveData();
                 return;
             }
+
+            Breakout.getInstance().setCurrentScene(new GameOverScene());
+            Sound.playSound(Sound.LOSE);
         }
     }
 
