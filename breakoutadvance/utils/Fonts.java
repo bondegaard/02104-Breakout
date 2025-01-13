@@ -23,13 +23,11 @@ public enum Fonts {
 
     public static void load() {
         for (Fonts font : Fonts.values()) {
-            //CompletableFuture.runAsync(() -> {
-                try {
-                    loadFont(font.filename, 64); // Default size
-                } catch (IOException e) {
-                    logger.log(Level.SEVERE, "Failed to load font: " + font.filename, e);
-                }
-            //});
+            try {
+                loadFont(font.filename, 64); // Default size
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Failed to load font: " + font.filename, e);
+            }
         }
     }
 
