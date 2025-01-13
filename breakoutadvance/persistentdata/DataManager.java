@@ -58,6 +58,10 @@ public class DataManager {
         }
     }
 
+    public Gson getGson() {
+        return gson;
+    }
+
     private Data createDefaultData() {
         return new Data();
     }

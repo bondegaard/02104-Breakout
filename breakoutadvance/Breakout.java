@@ -1,5 +1,6 @@
 package breakoutadvance;
 
+import breakoutadvance.levels.LevelManager;
 import breakoutadvance.scenes.menus.MainMenu;
 import breakoutadvance.core.GameLoop;
 import breakoutadvance.persistentdata.DataManager;
@@ -25,6 +26,8 @@ public class Breakout extends Application {
 
     private DataManager dataManager; // Manager to handle persistent data
 
+    private LevelManager levelManager; // Manager to handle levels
+
     public Breakout run() {
         launch();
         return this;
@@ -42,6 +45,10 @@ public class Breakout extends Application {
         // Load data manager
         this.dataManager = new DataManager();
         this.dataManager.load();
+
+        // Load level manager
+        this.levelManager = new LevelManager(this.dataManager);
+        this.levelManager.load();
 
         // Setup Stage
         primaryStage.setTitle("Breakout");
