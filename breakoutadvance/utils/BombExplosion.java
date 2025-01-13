@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class BombExplosion {
 
-    private final int scaleDuration = 200;
+    private final int scaleDuration = 200; // Animation time
     private final Random rand = new Random();
 
 
