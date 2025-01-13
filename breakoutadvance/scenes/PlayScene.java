@@ -174,20 +174,20 @@ public class PlayScene extends AbstractScene {
     }
 
     private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
-    if (text == null) return;
+        if (text == null) return;
 
-    text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+        text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
 
-        // Make sure bounds of text are updated correctly before calculating new position
-        Platform.runLater(() -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
+            // Make sure bounds of text are updated correctly before calculating new position
+            Platform.runLater(() -> {
+                double textWidth = newValue.getWidth();
+                double textHeight = newValue.getHeight();
 
-            text.setX((WindowUtils.getWindowWidth() - textWidth) / xOffset);
-            text.setY((WindowUtils.getWindowHeight() - textHeight) / yOffSet);
+                text.setX((WindowUtils.getWindowWidth() - textWidth) / xOffset);
+                text.setY((WindowUtils.getWindowHeight() - textHeight) / yOffSet);
+            });
         });
-    });
-}
+    }
 
     public void addDeathPauseText() {
         // Text to display start or pause information

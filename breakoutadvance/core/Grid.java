@@ -39,7 +39,7 @@ public class Grid {
 
         // Starting positions, where blank space is calculated
         double posXStart = WindowUtils.getWindowWidth() * (1.0/100.0);
-        double posYStart = WindowUtils.getWindowWidth() * (3.0/100.0);
+        double posYStart = WindowUtils.getWindowWidth() * (4.0/100.0);
 
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < m; col++) {
@@ -95,13 +95,6 @@ public class Grid {
         playScene.getPane().getChildren().remove(block.getNode());
         this.grid[n][m] = null;
 
-        /*
-        //debugging---
-        System.out.print(n);
-        System.out.print(m);
-        System.out.println("--" + playScene.score + "--" + grid.length);
-         */
-
         //Update score on the scene when block gets removed
         newScore = playScene.getScore();
         playScene.getDisplayScore().setText("Score: " + newScore);
@@ -120,15 +113,15 @@ public class Grid {
      * @return Amount of alive blocks in the grid
      */
     public int getAliveAmount() {
-        int aliveAmount = 0;
-        for (Block[] blocks : grid) {
-            for (Block block : blocks) {
-                if (block != null)
-                    aliveAmount += 1;
-
+        // If at least on block is alive, return 1
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[i].length; j++) {
+                if (grid[i][j] != null)
+                    return 1;
             }
         }
-        return aliveAmount;
+        // If no blocks are alive, return 0
+        return 0;
     }
 
     // Get 2d array of Block

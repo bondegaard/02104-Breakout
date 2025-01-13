@@ -9,6 +9,7 @@ import breakoutbasic.objects.Paddle;
 import breakoutbasic.utils.CollisionChecker;
 import breakoutbasic.utils.EdgeHit;
 import breakoutbasic.utils.WindowUtils;
+import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -32,7 +33,7 @@ public class PlayScene extends AbstractScene {
     private Text addInfoText;
 
     private Random random = new Random();
-    
+
     public PlayScene(int n, int m) {
         this.getScene().setFill(Color.BLACK);
         this.grid = new Grid(this, n, m);
@@ -71,7 +72,6 @@ public class PlayScene extends AbstractScene {
 
         return new double[]{velX,-velY};
     }
-
 
     public void setupKeyPressedEvents() {
         this.getScene().setOnKeyPressed(event -> {
@@ -121,27 +121,23 @@ public class PlayScene extends AbstractScene {
         this.getPane().getChildren().add(this.addInfoText);
 
 
-        // Center the text after it is added to the scene as it needs to be visible and text changes
-        // This makes sure that it is centered no matter what
-        this.startOrPauseText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.startOrPauseText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.startOrPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
-        });
+        // Manually set the positions initially
+        addCenterTextListener(this.startOrPauseText, 2, 2);
+        addCenterTextListener(this.infoText, 2, 1.8);
+        addCenterTextListener(this.addInfoText, 2, 1.6);
+    }
+    private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
+        if (text == null) return;
+        text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
 
-        this.infoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.infoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.infoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
-        });
+            // Make sure bounds of text are updated correctly before calculating new position
+            Platform.runLater(() -> {
+                double textWidth = newValue.getWidth();
+                double textHeight = newValue.getHeight();
 
-        this.addInfoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.addInfoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.addInfoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.6);
+                text.setX((WindowUtils.getWindowWidth() - textWidth) / xOffset);
+                text.setY((WindowUtils.getWindowHeight() - textHeight) / yOffSet);
+            });
         });
     }
 

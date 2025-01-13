@@ -11,7 +11,8 @@ import java.util.logging.Logger;
 
 public enum Fonts {
     BLACEB(Constants.FONT_FILEPATH + "BLACEB__.ttf"),
-    OPENSANS(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf");
+    OPENSANS(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"),
+    BLACKWOOD(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf");
 
     private final String filename;
     private static final ConcurrentHashMap<String, Font> fonts = new ConcurrentHashMap<>();

@@ -2,16 +2,12 @@ package breakoutbasic.objects;
 
 import breakoutbasic.scenes.PlayScene;
 import breakoutbasic.utils.WindowUtils;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Ball extends Entity {
+public class Ball extends AbstractEntity {
     private double velX;
     private double velY;
-    private Image img;
-    private ImageView imgView = new ImageView();
 
     //Ball constructor
     public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius/*, String imgPath*/){
@@ -20,17 +16,15 @@ public class Ball extends Entity {
         this.velY = velY;
 
         // Drawing ball
-        // Adding radius (this.getHeight()) to accomodate how a circle is drawn
+        // Adding radius (this.getHeight()) to accommodate how a circle is drawn
         Circle ball = new Circle(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight(), this.getHeight());
-        
         ball.setFill(Color.RED);
         playScene.getPane().getChildren().add(ball);
-
         this.setNode(ball);
     }
 
     /**
-     * Update x postion of the ball
+     * Update x position of the ball
      */
     public void updateX() {
         if(this.getPosX() + velX >= WindowUtils.getWindowWidth() - this.getWidth()*2){
@@ -41,13 +35,13 @@ public class Ball extends Entity {
     }
 
     /**
-     * Update y postion of the ball
+     * Update y position of the ball
      */
     public void updateY() {
         if(this.getPosY() + velY >= WindowUtils.getWindowHeight() - this.getHeight()*2){
             return; // Do nothing as the ball hits the bottom of the screen.
         } else if (this.getPosY() + velY <= 0){
-            this.flipVelY(); //flip velocity if ball goes out of bounds (top)
+            this.flipVelY(); // Flip velocity if ball goes out of bounds (top)
         }
     }
 
@@ -88,22 +82,7 @@ public class Ball extends Entity {
         velY = -velY;
     }
 
-    //-----------------------no usages --------------------
-    public void setImg(String newImgPath){
-        img = new Image(newImgPath, Math.round(this.getPosX()), Math.round(this.getPosY()), false, false);
-        imgView.setImage(img);
-    }
-
-    public Image getImg(){
-        return img;
-    }
-
-    public ImageView getImgView() {
-        return imgView;
-    }
-
     //updates ball position
-
     /**
      * Function called every tick which updates the position of the ball.
      */

@@ -5,15 +5,12 @@ import breakoutadvance.scenes.menus.AbstractMenu;
 import breakoutadvance.scenes.menus.MainMenu;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.Images;
-import breakoutadvance.utils.WindowUtils;
-import breakoutadvance.scenes.components.UIComponentFactory;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 /**
  * This class is used to display the game is over scene
@@ -24,7 +21,7 @@ public class GameOverScene extends AbstractMenu {
         super();
 
         VBox vbox = createVBox(Pos.CENTER, 10);
-        vbox.setStyle("-fx-background-color: black; -fx-padding: 50");
+        //vbox.setStyle("-fx-background-color: black; -fx-padding: 50");
 
         Text gameOverText = createMenuItem("Game Over!", null);
         gameOverText.setStyle("-fx-font-size: 128;");
@@ -40,17 +37,11 @@ public class GameOverScene extends AbstractMenu {
         Text returnToMenuText = createMenuItem("Return to Menu", mainMenu());
         returnToMenuText.setStyle("-fx-font-size: 48;");
 
-
-
         Text[] texts = new Text[] {gameOverText, scoreText, playAgainText, returnToMenuText};
-
         vbox.getChildren().addAll(texts);
 
 
         addBackgroundImage();
-
-        // Adding game over text
-        addGameOverText();
 
         // Setup Keyboard events
         setupKeyPressedEvents();
@@ -70,30 +61,6 @@ public class GameOverScene extends AbstractMenu {
         // IF ENTER key is pressed, change the scene to playScene
         this.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) Breakout.getInstance().setCurrentScene(new PlayScene(10,15));
-        });
-    }
-
-    public void addGameOverText() {
-
-        Text gameOverText = UIComponentFactory.createText("Game Over!", "OpenSans-Regular.ttf", 64, Color.DARKRED);
-        gameOverText.setTextAlignment(TextAlignment.CENTER);
-
-        Text playAgainText = UIComponentFactory.createText("Press ENTER to play again", "OpenSans-Regular.ttf", 32, Color.WHITE);
-
-
-        // Center the text after it is added to the scene as it needs to be visible and text changes
-        // This makes sure that it is centered no matter what
-        gameOverText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-
-        });
-
-        playAgainText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            playAgainText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            playAgainText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
         });
     }
 
