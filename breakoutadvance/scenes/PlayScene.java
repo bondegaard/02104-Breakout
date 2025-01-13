@@ -1,6 +1,7 @@
 package breakoutadvance.scenes;
 
 import breakoutadvance.Breakout;
+import breakoutadvance.core.GameLoop;
 import breakoutadvance.core.Grid;
 import breakoutadvance.objects.*;
 import breakoutadvance.objects.powerups.PowerupType;
@@ -255,7 +256,7 @@ public class PlayScene extends AbstractScene {
             this.deathPauseText.setText("You Died! You have " + lives + " lives left.");
 
         died = true;
-        playing = !playing;
+        playing = false;
         resetBallAndPaddle();
         if (lives <= 0) {
             Breakout.getInstance().setCurrentScene(new GameOverScene());
@@ -281,10 +282,14 @@ public class PlayScene extends AbstractScene {
         // Handle unstarted or paused game
         if (!playing) {
             if (died) {
+                startOrPauseText.setVisible(false);
+                infoText.setVisible(false);
                 deathPauseText.setVisible(true);
                 deathInfoText.setVisible(true);
             }
             else {
+                deathInfoText.setVisible(false);
+                deathPauseText.setVisible(false);
                 startOrPauseText.setVisible(true);
                 infoText.setVisible(true);
             }
@@ -508,9 +513,15 @@ public class PlayScene extends AbstractScene {
 
     // Bomb kills you when hit
     public void hitBombObstacle(double posX, double posY){
-        new BombExplosion(posX, posY, this.pane);
-        hasDied();
+        // Give Bomb animation enough time to play
+        playing = false;
+        died = true;
         lifesDisplay.updateLives(this,lives);
+        new BombExplosion(posX, posY, this.pane);
+
+        GameLoop.wait(200, () -> {
+            hasDied();
+        });
     }
 
     public double[] calculateStartVelForBall() {
