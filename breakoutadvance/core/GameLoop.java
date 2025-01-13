@@ -63,4 +63,19 @@ public class GameLoop {
     public boolean isRunning() {
         return isRunning;
     }
+
+
+    /**
+     * Wait for a specified amount of time before executing the callback.
+     *
+     * @param timeInMilliseconds The time to wait in milliseconds
+     * @param callback The callback to execute after the wait
+     */
+    public static void wait(int timeInMilliseconds, Runnable callback) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> {
+            Platform.runLater(callback); // Ensures the callback runs on the JavaFX Thread
+            scheduler.shutdown();
+        }, timeInMilliseconds, TimeUnit.MILLISECONDS);
+    }
 }
