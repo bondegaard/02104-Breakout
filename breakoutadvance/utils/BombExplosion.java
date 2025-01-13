@@ -14,9 +14,9 @@ import java.util.Random;
 
 public class BombExplosion {
 
-    private final int scaleDuration = 200; // Animation time
+    private final int animationTime = 200; // Animation time
     private final Random rand = new Random();
-
+    private final Color[] colors = new Color[]{Color.RED, Color.YELLOW, Color.ORANGE, Color.ORANGERED};
 
     public BombExplosion(double posX, double posY, Pane pane) {
 
@@ -24,7 +24,8 @@ public class BombExplosion {
         ParallelTransition bombExplosion = new ParallelTransition();
 
         for (int i = 0; i < numberOfParticles; i++) {
-            Circle eParticle = new Circle(posX, posY, rand.nextInt(2,5), getRandomColor()[rand.nextInt(3)]);
+            // Creating new particle, with a randomly selected color from the colors array
+            Circle eParticle = new Circle(posX, posY, rand.nextInt(2,5), colors[rand.nextInt(3)]);
 
             // Scaling transition
             ScaleTransition scaling = createScaleTransition(eParticle, rand.nextDouble());
@@ -51,28 +52,36 @@ public class BombExplosion {
         bombExplosion.play();
     }
 
-    private Color[] getRandomColor() {
-        return new Color[]{Color.RED, Color.YELLOW, Color.ORANGE, Color.ORANGERED};
-    }
-
     private ScaleTransition createScaleTransition(Circle circle, double scaleFactor) {
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(scaleDuration), circle);
+        // Creating a scale transition, based on animationTime and the given object
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(animationTime), circle);
+
+        // Changing the scale from 100% to a random given number (scaleFactor)
         scaleTransition.setFromX(1);
         scaleTransition.setFromY(1);
         scaleTransition.setToX(scaleFactor);
         scaleTransition.setToY(scaleFactor);
+
+        // Returning scaleTransition
         return scaleTransition;
     }
 
     private FadeTransition createFadeTransition(Circle circle) {
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(scaleDuration*2), circle);
+        // Creating a fade transition, based on animationTime * 2, since we want to see the particles all the time
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(animationTime *2), circle);
+
+        // Changing the opacity from 100% to 0
         fadeTransition.setFromValue(1.0);
         fadeTransition.setToValue(0.0);
+
+        // Returning fadeTransition
         return fadeTransition;
     }
 
     private TranslateTransition createTranslateTransition(Circle circle, double x, double y) {
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(scaleDuration), circle);
+        // Creating a translation transition, which changes the location of the particles
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(animationTime), circle);
+        
         translateTransition.setByX(x);
         translateTransition.setByY(y);
         return translateTransition;
