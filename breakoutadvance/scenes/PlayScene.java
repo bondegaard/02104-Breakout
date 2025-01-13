@@ -7,6 +7,7 @@ import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
 import breakoutadvance.persistentdata.data.Game;
 import breakoutadvance.persistentdata.data.GameOutCome;
+import breakoutadvance.scenes.components.UIComponentFactory;
 import breakoutadvance.utils.*;
 import breakoutadvance.utils.BombExplosion;
 import breakoutadvance.utils.CollisionChecker;
@@ -15,6 +16,7 @@ import breakoutadvance.utils.Fonts;
 import breakoutadvance.utils.Images;
 import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
@@ -163,32 +165,30 @@ public class PlayScene extends AbstractScene {
         this.getPane().getChildren().add(this.addInfoText);
 
         // Manually set the positions initially
-        updateTextPositions();
+        addCenterTextListener(this.startOrPauseText, 2, 2);
+        addCenterTextListener(this.infoText, 2, 1.8);
+        addCenterTextListener(this.addInfoText, 2, 1.6);
 
         // Listen for window resize and update positions accordingly
-        this.getScene().widthProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
-        this.getScene().heightProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
+     //   this.getScene().widthProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
+     //   this.getScene().heightProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
     }
 
-    private void updateTextPositions() {
-        double windowWidth = WindowUtils.getWindowWidth();
-        double windowHeight = WindowUtils.getWindowHeight();
+    private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
+    if (text == null) return;
 
-        double startOrPauseTextWidth = this.startOrPauseText.getBoundsInLocal().getWidth();
-        double startOrPauseTextHeight = this.startOrPauseText.getBoundsInLocal().getHeight();
-        this.startOrPauseText.setX((windowWidth - startOrPauseTextWidth) / 2);
-        this.startOrPauseText.setY((windowHeight - startOrPauseTextHeight) / 2);
+    text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
 
-        double infoTextWidth = this.infoText.getBoundsInLocal().getWidth();
-        double infoTextHeight = this.infoText.getBoundsInLocal().getHeight();
-        this.infoText.setX((windowWidth - infoTextWidth) / 2);
-        this.infoText.setY((windowHeight - infoTextHeight) / 1.8);
+        // Make sure bounds of text are updated correctly before calculating new position
+        Platform.runLater(() -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
 
-        double addInfoTextWidth = this.addInfoText.getBoundsInLocal().getWidth();
-        double addInfoTextHeight = this.addInfoText.getBoundsInLocal().getHeight();
-        this.addInfoText.setX((windowWidth - addInfoTextWidth) / 2);
-        this.addInfoText.setY((windowHeight - addInfoTextHeight) / 1.6);
-    }
+            text.setX((WindowUtils.getWindowWidth() - textWidth) / xOffset);
+            text.setY((WindowUtils.getWindowHeight() - textHeight) / yOffSet);
+        });
+    });
+}
 
     public void addDeathPauseText() {
         // Text to display start or pause information
@@ -212,20 +212,8 @@ public class PlayScene extends AbstractScene {
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
-        this.deathPauseText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.deathPauseText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.deathPauseText.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
-        });
-
-
-        this.deathInfoText.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.deathInfoText.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.deathInfoText.setY((WindowUtils.getWindowHeight() - textHeight) / 1.8);
-        });
+        addCenterTextListener(this.deathPauseText, 2, 2);
+        addCenterTextListener(this.deathInfoText, 2, 1.8);
     }
 
     public void addDisplayScore() {
@@ -241,12 +229,7 @@ public class PlayScene extends AbstractScene {
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
-        this.displayScore.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.displayScore.setX((WindowUtils.getWindowHeight() - textWidth)/ 20);
-            this.displayScore.setY((WindowUtils.getWindowHeight() - textHeight));
-        });
+        addCenterTextListener(this.displayScore, 20, 1);
     }
 
     public void increaseHealth() {
