@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public enum Fonts {
-    BLACEB(Constants.FONT_FILEPATH + "BLACEB__.TTF"),
+    BLACEB(Constants.FONT_FILEPATH + "BLACEB__.ttf"),
     OPENSANS(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf");
 
     private final String filename;

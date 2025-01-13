@@ -38,7 +38,7 @@ public class SettingsMenu extends AbstractMenu {
         vbox.setStyle("-fx-padding: 20;");
         vbox.setAlignment(Pos.CENTER);
 
-        Text title = UIComponentFactory.createText("Settings", "BLACEB__.TTF",64, Color.YELLOW);
+        Text title = UIComponentFactory.createText("Settings", "BLACEB__.ttf",64, Color.YELLOW);
 
         // Initialize color indices
         currentBallColorIndex = Arrays.asList(ballColors).indexOf(
@@ -94,7 +94,7 @@ public class SettingsMenu extends AbstractMenu {
         HBox hboxPaddle = createColorSelector(paddleColors, currentPaddleColorIndex, false);
 
         // Back button
-        Text backBtn = UIComponentFactory.createText("Back", "BLACEB__.TTF",64, Color.WHITE);
+        Text backBtn = UIComponentFactory.createText("Back", "BLACEB__.ttf",64, Color.WHITE);
         backBtn.setOnMouseClicked(event -> {
             Breakout.getInstance().setCurrentScene(new MainMenu());
         });
@@ -111,8 +111,8 @@ public class SettingsMenu extends AbstractMenu {
     private <T> HBox createColorSelector(T[] colors, int currentIndex, boolean isBall) {
         List<T> colorList = Arrays.asList(colors);
 
-        Text leftArrow = UIComponentFactory.createText("<", "BLACEB__.TTF", 48, Color.WHITE);
-        Text rightArrow = UIComponentFactory.createText(">", "BLACEB__.TTF", 48, Color.WHITE);
+        Text leftArrow = UIComponentFactory.createText("<", "BLACEB__.ttf", 48, Color.WHITE);
+        Text rightArrow = UIComponentFactory.createText(">", "BLACEB__.ttf", 48, Color.WHITE);
 
         // Initialize ImageView with the current color image
         ImageView colorImageView = createColorImageView(colorList.get(currentIndex).toString(), isBall);
