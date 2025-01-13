@@ -17,6 +17,9 @@ import javafx.scene.text.Text;
  * You can also restart the game after the game has been lost
  */
 public class GameOverScene extends AbstractMenu {
+    private int selectedBtn = 0;
+    private Text[] textItems;
+
     public GameOverScene() {
         super();
 
@@ -40,6 +43,7 @@ public class GameOverScene extends AbstractMenu {
         Text[] texts = new Text[] {gameOverText, scoreText, playAgainText, returnToMenuText};
         vbox.getChildren().addAll(texts);
 
+        textItems = new Text[] {playAgainText, returnToMenuText};
 
         addBackgroundImage();
 
@@ -50,18 +54,46 @@ public class GameOverScene extends AbstractMenu {
     }
 
     private Runnable mainMenu() {
-        return () -> {Breakout.getInstance().setCurrentScene(new MainMenu());};
+        return this::loadMainMenu;
+    }
+
+    private void loadMainMenu() {
+        Breakout.getInstance().setCurrentScene(new MainMenu());
     }
 
     private Runnable playAgain() {
-        return () -> {Breakout.getInstance().setCurrentScene(new PlayScene(5,10));};
+        return this::loadPlayScene;
+    }
+
+    private void loadPlayScene() {
+        Breakout.getInstance().setCurrentScene(new PlayScene(5,10));
     }
 
     public void setupKeyPressedEvents() {
         // IF ENTER key is pressed, change the scene to playScene
         this.getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) Breakout.getInstance().setCurrentScene(new PlayScene(10,15));
+            if (event.getCode() == KeyCode.ENTER) {
+                btnEnter();
+            } else if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.W) {
+                selectedBtn = (selectedBtn - 1 + textItems.length) % textItems.length;
+                selectText(selectedBtn);
+            } else if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.S) {
+                selectedBtn = (selectedBtn + 1) % textItems.length;
+                selectText(selectedBtn);
+            }
         });
+
+    }
+
+    /**
+     * Handles “Enter” key presses according to which item is currently selected.
+     */
+    private void btnEnter() {
+        switch (selectedBtn) {
+            case 0 -> loadPlayScene();
+            case 1 -> loadMainMenu();
+            default -> throw new IllegalStateException("Unexpected button index: " + selectedBtn);
+        }
     }
 
     protected void addBackgroundImage() {
@@ -78,6 +110,15 @@ public class GameOverScene extends AbstractMenu {
         } catch (Exception e) {
             System.err.println("Error loading background image, using black background instead.");
             pane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, null)));
+        }
+    }
+
+    /**
+     * Update the highlighting for the currently selected menu item.
+     */
+    private void selectText(int btnIndex) {
+        for (int i = 0; i < textItems.length; i++) {
+            textItems[i].setFill(i == btnIndex ? HIGHLIGHT_COLOR : NORMAL_COLOR);
         }
     }
 
