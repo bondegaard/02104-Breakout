@@ -34,9 +34,8 @@ public class BombExplosion {
             FadeTransition fading = createFadeTransition(eParticle);
 
             // Adding translating transition, to make the particles move
-            TranslateTransition translating = createTranslateTransition(
-                    eParticle, rand.nextInt(200)-100, rand.nextInt(200)-100
-            );
+            // Interval from [-100, 99]
+            TranslateTransition translating = createTranslateTransition(eParticle, rand.nextInt(200)-100, rand.nextInt(200)-10);
 
             // Combining the animations
             bombExplosion.getChildren().add(new ParallelTransition(scaling, fading, translating));
@@ -81,9 +80,12 @@ public class BombExplosion {
     private TranslateTransition createTranslateTransition(Circle circle, double x, double y) {
         // Creating a translation transition, which changes the location of the particles
         TranslateTransition translateTransition = new TranslateTransition(Duration.millis(animationTime), circle);
-        
+
+        // Setting the particle to move a set position in both its x- and y-axis
         translateTransition.setByX(x);
         translateTransition.setByY(y);
+
+        // Returning translateTransition
         return translateTransition;
     }
 }
