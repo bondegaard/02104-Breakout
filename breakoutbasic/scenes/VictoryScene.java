@@ -14,6 +14,7 @@ public class VictoryScene extends AbstractScene {
     // Text for scene
     private Text victoryText;
     private Text additionalInfo;
+    private Text harderNextLevel;
 
     public VictoryScene() {
         // Setting screen color to black
@@ -31,8 +32,10 @@ public class VictoryScene extends AbstractScene {
         this.getScene().setOnKeyPressed(event -> {
             int n = Breakout.getInstance().n;
             int m = Breakout.getInstance().m;
+            // If all row or columns are still in the given interval, add one to each and play again
+            // If not, try to add one to either row or column
             if (n <= 10 && m <= 20)
-                if (event.getCode() == KeyCode.ENTER) Breakout.getInstance().setCurrentScene(new PlayScene(n += 1, m += 1));
+                Breakout.getInstance().setCurrentScene(new PlayScene(n+=1, m+=1));
         });
     }
 
@@ -44,10 +47,16 @@ public class VictoryScene extends AbstractScene {
         this.getPane().getChildren().add(this.victoryText);
 
         // Additional info text
-        this.additionalInfo = new Text("Press ENTER to play again");
+        this.additionalInfo = new Text("Press ENTER to play the next level!");
         this.additionalInfo.setStyle("-fx-font-size: 32px;");
         this.additionalInfo.setFill(Color.WHITE);
         this.getPane().getChildren().add(this.additionalInfo);
+
+        // Info about next level
+        this.harderNextLevel = new Text("One row and one column will be added to the next level!");
+        this.harderNextLevel.setStyle("-fx-font-size: 32px;");
+        this.harderNextLevel.setFill(Color.WHITE);
+        this.getPane().getChildren().add(this.harderNextLevel);
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
@@ -63,6 +72,13 @@ public class VictoryScene extends AbstractScene {
             double textHeight = newValue.getHeight();
             this.additionalInfo.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
             this.additionalInfo.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
+        });
+
+        this.harderNextLevel.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+            double textWidth = newValue.getWidth();
+            double textHeight = newValue.getHeight();
+            this.harderNextLevel.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
+            this.harderNextLevel.setY((WindowUtils.getWindowHeight() - textHeight) / 1.7);
         });
     }
 

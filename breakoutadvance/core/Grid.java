@@ -135,6 +135,4 @@ public class Grid {
     public Block[][] getGrid(){
         return grid;
     }
-
-
 }
