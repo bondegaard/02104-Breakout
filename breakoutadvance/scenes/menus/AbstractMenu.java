@@ -14,11 +14,19 @@ import javafx.scene.text.Text;
  * to set the Scene on the primary stage from WindowUtils.
  */
 public abstract class AbstractMenu extends AbstractScene {
+
+    protected static final int FONT_SIZE = 64;
+    protected static final Color NORMAL_COLOR = Color.WHITE;
+    protected static final Color HIGHLIGHT_COLOR = Color.YELLOW;
+
     /**
      * Default constructor uses the WindowUtils' primary stage.
      */
     public AbstractMenu() {
         super();  // calls AbstractScene(), which calls WindowUtils.getPrimaryStage()
+
+        this.getScene().setFill(Color.BLACK);
+
         addBackgroundImage();
     }
 
@@ -52,6 +60,15 @@ public abstract class AbstractMenu extends AbstractScene {
         Text text = new Text(content);
         text.setFont(currentFont);
         text.setFill(color);
+        return text;
+    }
+
+    /**
+     * Creates a Text item for the menu with given label and on-click action.
+     */
+    protected Text createMenuItem(String label, Runnable onClickAction) {
+        Text text = createText(label, FONT_SIZE, NORMAL_COLOR);
+        text.setOnMouseClicked(e -> onClickAction.run());
         return text;
     }
 

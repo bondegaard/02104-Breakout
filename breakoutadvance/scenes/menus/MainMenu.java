@@ -1,6 +1,7 @@
 package breakoutadvance.scenes.menus;
 
 import breakoutadvance.Breakout;
+import breakoutadvance.scenes.GameOverScene;
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.BombExplosion;
 import breakoutadvance.utils.WindowUtils;
@@ -14,10 +15,6 @@ import javafx.scene.text.Text;
  * Main menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.
  */
 public class MainMenu extends AbstractMenu {
-
-    private static final int FONT_SIZE = 64;
-    private static final Color NORMAL_COLOR = Color.WHITE;
-    private static final Color HIGHLIGHT_COLOR = Color.YELLOW;
 
     private int selectedBtn = 0;
     private final Text[] textItems;
@@ -50,14 +47,7 @@ public class MainMenu extends AbstractMenu {
     }
 
 
-    /**
-     * Creates a Text item for the menu with given label and on-click action.
-     */
-    private Text createMenuItem(String label, Runnable onClickAction) {
-        Text text = createText(label, FONT_SIZE, NORMAL_COLOR);
-        text.setOnMouseClicked(e -> onClickAction.run());
-        return text;
-    }
+
 
     /**
      * Update the highlighting for the currently selected menu item.
@@ -94,6 +84,8 @@ public class MainMenu extends AbstractMenu {
             } else if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.S) {
                 selectedBtn = (selectedBtn + 1) % textItems.length;
                 selectText(selectedBtn);
+            } else if (event.getCode() == KeyCode.Q) {
+                Breakout.getInstance().setCurrentScene(new GameOverScene());
             }
         });
     }
@@ -107,7 +99,7 @@ public class MainMenu extends AbstractMenu {
     }
 
     public void addHighScore() {
-                // Text to display HighScore
+        // Text to display HighScore
         this.displayHighScore = new Text("Top Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
         this.displayHighScore.setFont(currentFont);
         this.displayHighScore.setStyle("-fx-font-size: 80px;");
