@@ -430,9 +430,6 @@ public class PlayScene extends AbstractScene {
         }
 
         powerups.forEach(Powerup::onTick);
-
-
-
     }
 
     private double[] calculateNewXVelocityAfterPaddleHit(Ball ball) {
@@ -441,7 +438,14 @@ public class PlayScene extends AbstractScene {
         // Ball position when hitting the paddle
         double ballHitPosX = ball.getPosX();
 
-        double decrease = 182; // 0.7 * x = 128, where 128 = (paddle width) / 2
+        // Started with this function, where paddlewidth was a constant factor
+        //double decrease = 182; // 0.7 * x = 128, where 128 = (paddle width) / 2
+
+        // Now using these calculations, where paddlewidth is dynamic
+
+        // x = y / 0.7
+        // y = (paddle widt) / 2
+        double decrease = (this.getPaddleWidth() / 2.0) / 0.7;
 
         // Calculating velocities
         double velX = (paddleMiddlePosX - ballHitPosX) / decrease;
