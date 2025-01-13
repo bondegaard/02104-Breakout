@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
-public class Block extends Entity{
+public class Block extends AbstractEntity {
     //Block constructor
 
     /**
@@ -16,9 +16,9 @@ public class Block extends Entity{
      * @param color
      */
     public Block(double posX, double posY, double width, double height, Color color) {
-        super(posX, posY, height, width); // getting coordinates and height/width from parentclass
+        super(posX, posY, height, width); // Getting coordinates and height/width from parentclass
 
-        //creates new rectangle
+        // Creates new rectangle
         Rectangle rectangle = new Rectangle(posX, posY, width, height);
 
         // For every second row, a new color will appear, based on the colors[] array
