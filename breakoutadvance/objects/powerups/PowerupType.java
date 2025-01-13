@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 public enum PowerupType {
     PLUS_ONE(Images.getImage(Constants.BALL_FILEPATH + Breakout.getInstance().getDataManager().getData().getBallColor() + ".png"), 200), // 1 is equal to 0.1%
     PLUS_WIDTH(Images.getImage(Constants.IMAGE_PATH + "paddleWidthPowerUp.png"), 200),
-    BOMB(Images.getImage( Constants.IMAGE_PATH + "bomb.png"), 1000),
+    BOMB(Images.getImage( Constants.IMAGE_PATH + "bomb.png"), 100),
     HEART(Images.getImage( Constants.IMAGE_PATH + "heart_full.png"), 25);
 
 
@@ -42,7 +42,12 @@ public enum PowerupType {
                 yield null;
             }
             case BOMB -> new BombObstacle(playScene, posX, posY, height, width, velX, velY);
-            case HEART -> new HearthObstacle(playScene, posX, posY, height, width, velX, velY);
+            case HEART -> {
+                if (playScene.getLives() <= 5) {
+                    yield new HearthObstacle(playScene, posX, posY, height, width, velX, velY);
+                }
+                yield null;
+            }
             default -> throw new IllegalArgumentException("Invalid powerup type");
         };
     }
