@@ -1,5 +1,6 @@
 package breakoutadvance.scenes;
 
+import breakoutadvance.Breakout;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.Fonts;
 import breakoutadvance.utils.WindowUtils;
