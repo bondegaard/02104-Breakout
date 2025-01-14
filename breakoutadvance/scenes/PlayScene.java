@@ -543,6 +543,7 @@ public class PlayScene extends AbstractScene {
         double velX = random.nextDouble(0.2,0.75) * ballSpeed;
         double velY = this.level.getMaxBallVelocity() - velX;
         velX = (positiveNumber) ? velX : -velX;
+        velY = Math.max(0.2, velY);
 
         return new double[]{velX,-velY};
     }
