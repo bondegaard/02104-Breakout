@@ -75,6 +75,10 @@ public class Paddle extends AbstractEntity {
         return velX;
     }
 
+    public void setVelX(double velX){
+        this.velX = velX;
+    }
+
     public void setImg(Image img){
         imgView.setImage(img);
     }

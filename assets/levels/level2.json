@@ -4,8 +4,8 @@
   "paddleWidth": 100,
   "ballSpeed": 1,
   "availablePowerUps": [],
-  "powerUpSpeed": 1.2,
-  "paddleSpeed": 0.0001,
+  "powerUpSpeed": 0.0001,
+  "paddleSpeed": 1.2,
   "rows": 4,
   "columns": 10,
   "levelMap": {

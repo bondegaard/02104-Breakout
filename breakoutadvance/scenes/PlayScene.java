@@ -470,9 +470,12 @@ public class PlayScene extends AbstractScene {
         this.powerups.clear();
 
         //relocate paddle
-        if (this.paddle != null)
-            this.getPane().getChildren().remove(this.paddle.getNode());
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) this.level.getPaddleWidth() /2), WindowUtils.getWindowHeight() * 0.8, this.level.getPaddleSpeed(), Constants.PADDLE_HEIGHT, this.level.getPaddleWidth());
+        this.paddle.setWidth(this.level.getPaddleWidth());
+        this.paddle.getImgView().setFitWidth(this.paddle.getWidth());
+        this.paddle.setVelX(this.level.getPaddleSpeed());
+        this.paddle.setPosX(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2);
+        this.paddle.getNode().relocate(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2, WindowUtils.getWindowHeight() * 0.8);
+
         spawnBall();
     }
 
