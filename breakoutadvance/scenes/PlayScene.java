@@ -433,17 +433,12 @@ public class PlayScene extends AbstractScene {
         // Ball position when hitting the paddle
         double ballHitPosX = ball.getPosX();
 
-        // Started with this function, where paddlewidth was a constant factor
-        //double decrease = 182; // 0.7 * x = 128, where 128 = (paddle width) / 2
-
-        // Now using these calculations, where paddlewidth is dynamic
-
-        // x = y / 0.7
+        // x = y / 0.75
         // y = (paddle width) / 2
-        double decrease = (this.getPaddleWidth() / 2.0) / 0.75;
+        double scaling = (this.getPaddleWidth() / 2.0) / 0.75;
 
         // Calculating velocities
-        double velX = (paddleMiddlePosX - ballHitPosX) / decrease;
+        double velX = (paddleMiddlePosX - ballHitPosX) / scaling;
 
         // Prevent it from going too straight horizontally and vertically
         double min = 0.25 * this.level.getBallSpeed();
@@ -456,7 +451,6 @@ public class PlayScene extends AbstractScene {
         double velY = this.level.getMaxBallVelocity() - Math.abs(velX);
         if (velY < 0) velY = -velY;
 
-        //System.out.println("After x: " + (-velX) + " y: " + (-velY) + " total: " + (velX+velY));
         return new double[]{-velX, -velY};
     }
 

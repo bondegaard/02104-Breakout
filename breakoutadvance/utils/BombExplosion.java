@@ -12,6 +12,10 @@ import javafx.util.Duration;
 
 import java.util.Random;
 
+/**
+ * Class to play explosion when paddle collides with bomb
+ */
+
 public class BombExplosion {
 
     private final int animationTime = 200; // Animation time
