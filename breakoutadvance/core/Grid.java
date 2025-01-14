@@ -35,9 +35,18 @@ public class Grid {
 
         for (int row = 0; row < this.getCols(); row++) {
             for (int col = 0; col < this.getRows(); col++) {
+
+                if (levelMap.getLevelRows()[row].getRow().length <= col) {
+                    grid[row][col] = null;
+                    continue;
+                }
+
+
+
                 // Calculating positions on screen
                 double posX = posXStart + col * lSize; // Horizontal position for each rectangle
                 double posY = posYStart + row * sSize; // Vertical position for each rectangle
+
 
                 Block.BlockType blockType = levelMap.getLevelRows()[row].getRow()[col];
 

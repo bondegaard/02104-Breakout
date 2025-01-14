@@ -20,20 +20,7 @@ public class Level {
 
     private double paddleSpeed = 1.0;
 
-    private int rows = 10;
-
-    private int columns = 5;
-
     private LevelMap levelMap = new LevelMap();
-
-
-    public int getRows() {
-        return rows;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
 
     public String getName() {
         return name;
@@ -85,8 +72,6 @@ public class Level {
                 ", availablePowerUps=" + Arrays.toString(availablePowerUps) +
                 ", powerUpSpeed=" + powerUpSpeed +
                 ", paddleSpeed=" + paddleSpeed +
-                ", rows=" + rows +
-                ", columns=" + columns +
                 ", levelMap=" + levelMap +
                 '}';
     }
