@@ -35,7 +35,7 @@ public class BombExplosion {
 
             // Adding translating transition, to make the particles move
             // Interval from [-100, 99]
-            TranslateTransition translating = createTranslateTransition(eParticle, rand.nextInt(200)-100, rand.nextInt(200)-10);
+            TranslateTransition translating = createTranslateTransition(eParticle, rand.nextInt(200)-100, rand.nextInt(200)-100);
 
             // Combining the animations
             bombExplosion.getChildren().add(new ParallelTransition(scaling, fading, translating));
