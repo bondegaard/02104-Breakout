@@ -62,9 +62,9 @@ public abstract class Powerup extends AbstractEntity {
     }
 
 
-    public void onTick() {
+    public void onTick(double speed) {
         updatePosition();
-        velY+=0.0001;
+        velY+=speed;
     }
 
     public abstract void onCollision();

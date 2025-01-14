@@ -3,10 +3,7 @@
   "paddleWidth": 200,
   "ballSpeed": 1,
   "availablePowerUps": [],
-  "powerUpSpeed": 1,
-  "powerUpWidth": 8,
-  "powerUpHeight": 8,
-  "hearts": 3,
+  "powerUpSpeed": 0.0001,
   "paddleSpeed": 1,
   "rows": 4,
   "columns": 10

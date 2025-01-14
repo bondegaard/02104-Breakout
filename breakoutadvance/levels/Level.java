@@ -4,27 +4,23 @@ import java.util.Arrays;
 
 public class Level {
 
-    private String name;
+    private String name = "level_unknown";
 
-    private double paddleWidth;
+    private double paddleWidth = 200;
 
-    private double ballSpeed;
+    private double ballSpeed = 1.0;
 
-    private LevelPowerUp [] availablePowerUps;
+    private double maxBallVelocity = 1.0;
 
-    private double powerUpSpeed;
+    private LevelPowerUp [] availablePowerUps = new LevelPowerUp[0];
 
-    private double powerUpWidth;
+    private double powerUpSpeed = 0.01;
 
-    private double powerUpHeight;
+    private double paddleSpeed = 1.0;
 
-    private int hearts;
+    private int rows = 10;
 
-    private double paddleSpeed;
-
-    private int rows;
-
-    private int columns;
+    private int columns = 5;
 
 
     public int getRows() {
@@ -47,24 +43,16 @@ public class Level {
         return ballSpeed;
     }
 
+    public double getMaxBallVelocity() {
+        return maxBallVelocity;
+    }
+
     public LevelPowerUp[] getAvailablePowerUps() {
         return availablePowerUps;
     }
 
     public double getPowerUpSpeed() {
         return powerUpSpeed;
-    }
-
-    public double getPowerUpWidth() {
-        return powerUpWidth;
-    }
-
-    public double getPowerUpHeight() {
-        return powerUpHeight;
-    }
-
-    public int getHearts() {
-        return hearts;
     }
 
     public double getPaddleSpeed() {
@@ -77,12 +65,12 @@ public class Level {
                 "name='" + name + '\'' +
                 ", paddleWidth=" + paddleWidth +
                 ", ballSpeed=" + ballSpeed +
+                ", maxBallVelocity=" + maxBallVelocity +
                 ", availablePowerUps=" + Arrays.toString(availablePowerUps) +
                 ", powerUpSpeed=" + powerUpSpeed +
-                ", powerUpWidth=" + powerUpWidth +
-                ", powerUpHeight=" + powerUpHeight +
-                ", hearts=" + hearts +
                 ", paddleSpeed=" + paddleSpeed +
+                ", rows=" + rows +
+                ", columns=" + columns +
                 '}';
     }
 }
