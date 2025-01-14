@@ -1,5 +1,6 @@
 package breakoutadvance.core;
 
+import breakoutadvance.levels.LevelMap;
 import breakoutadvance.objects.Block;
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.WindowUtils;
@@ -16,23 +17,14 @@ public class Grid {
 
     private final int OFFSET = 3; // Offset between the blocks
 
-    private final Color[] colors = {Color.RED, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.BURLYWOOD}; // Colors for rows of blocks
-    private final String[] blockColors = {"red", "pink", "yellow", "green", "blue"};
-
-    private int newScore;
-
-    /**
-     * Setup a grid of blocks which is displayed on the scene.
-     * @param playScene Current instance of playScene
-     * @param n Amount of rows
-     * @param m Amount of columns
-     */
-    public Grid (PlayScene playScene, int n, int m) {
+    private LevelMap levelMap;
+    public Grid (PlayScene playScene, LevelMap levelMap) {
         this.playScene = playScene;
-        grid = new Block[n][m];
+        this.levelMap = levelMap;
+        grid = new Block[this.getCols()][this.getRows()];
 
         // Long side of the rectangle's length, based on window size
-        double lSize = (WindowUtils.getWindowWidth() * (97.5/100.0) / m);
+        double lSize = (WindowUtils.getWindowWidth() * (97.5/100.0) / this.getRows());
 
         // Short side of the rectangle's length, based on window size
         double sSize = ((WindowUtils.getWindowHeight() / 20.0));
@@ -41,13 +33,19 @@ public class Grid {
         double posXStart = WindowUtils.getWindowWidth() * (1.0/100.0);
         double posYStart = WindowUtils.getWindowWidth() * (4.0/100.0);
 
-        for (int row = 0; row < n; row++) {
-            for (int col = 0; col < m; col++) {
+        for (int row = 0; row < this.getCols(); row++) {
+            for (int col = 0; col < this.getRows(); col++) {
                 // Calculating positions on screen
                 double posX = posXStart + col * lSize; // Horizontal position for each rectangle
                 double posY = posYStart + row * sSize; // Vertical position for each rectangle
 
-                Block block = new Block(posX, posY, lSize - OFFSET, sSize - OFFSET, colors[(int) Math.floor(row/2)], blockColors[(int) Math.floor(row/2)]);
+                Block.BlockType blockType = levelMap.getLevelRows()[row].getRow()[col];
+
+                if (blockType == null) {
+                    grid[row][col] = null;
+                    continue;
+                }
+                Block block = new Block(blockType, posX, posY, lSize - OFFSET, sSize - OFFSET);
 
                 // Adding it to grid
                 grid[row][col] = block;
@@ -68,40 +66,24 @@ public class Grid {
      */
     public void removeBlock(int n, int m) {
         Block block = this.grid[n][m];
-        if (block == null) return;
-
-        int length = grid.length;
+        if (block == null || block.getBlockType() == null) return;
 
         //add blockValue to score
-        if (length - 8 == n){
-            playScene.score += 700;
-        } else if (length - 7 == n){
-            playScene.score += 700;
-        } else if (length - 6 == n){
-            playScene.score += 500 ;
-        } else if (length - 5== n){
-            playScene.score += 500;
-        } else if (length - 4== n){
-            playScene.score += 300;
-        } else if (length - 3== n){
-            playScene.score += 300;
-        } else if (length - 2== n){
-            playScene.score += 100;
-        } else if (length - 1== n){
-            playScene.score += 100;
+        playScene.score += block.getBlockType().getBreakScore();
+
+        // Get next block type or Remove from screen
+        Block.BlockType nextBlockType = Block.BlockType.getNextBlockType(block.getBlockType());
+
+        if (nextBlockType != null) {
+            block.setBlockType(nextBlockType);
+            block.updateImage();
+        } else {
+            playScene.getPane().getChildren().remove(block.getNode());
+            this.grid[n][m] = null;
         }
 
-        // Remove from screen
-        playScene.getPane().getChildren().remove(block.getNode());
-        this.grid[n][m] = null;
-
         //Update score on the scene when block gets removed
-        newScore = playScene.getScore();
-        playScene.getDisplayScore().setText("Score: " + newScore);
-    }
-
-    public int getNewScore(){
-        return newScore;
+        playScene.getDisplayScore().setText("Score: " + playScene.getScore());
     }
 
 
@@ -127,5 +109,20 @@ public class Grid {
     // Get 2d array of Block
     public Block[][] getGrid(){
         return grid;
+    }
+
+
+    private int getRows(){
+        int maxLength = 0;
+        for (int i = 0; i < this.levelMap.getLevelRows().length; i++){
+            if (this.levelMap.getLevelRows()[i].getRow().length > maxLength){
+                maxLength = this.levelMap.getLevelRows()[i].getRow().length;
+            }
+        }
+        return maxLength;
+    }
+
+    private int getCols(){
+        return this.levelMap.getLevelRows().length;
     }
 }

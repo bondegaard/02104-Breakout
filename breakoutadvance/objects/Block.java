@@ -8,6 +8,8 @@ import javafx.scene.shape.Rectangle;
 
 
 public class Block extends AbstractEntity {
+
+    private BlockType blockType;
     private Image img;
     private ImageView imgView = new ImageView();
 
@@ -15,19 +17,19 @@ public class Block extends AbstractEntity {
 
     /**
      * Create a block
+     * @param blockType type of block
      * @param posX x position
      * @param posY y position
      * @param width the width of the block
      * @param height the height of the block
-     * @param color the displayed color of the block, if it fails to load the image
-     * @param blockColor the color of the block displayed with image
      */
-    public Block(double posX, double posY, double width, double height, Color color, String blockColor) {
+    public Block(BlockType blockType, double posX, double posY, double width, double height) {
         super(posX, posY, height, width); // getting coordinates and height/width from parent class
+        this.blockType = blockType;
 
         try {
             // Get the image and add it to an ImageView
-            img = BlockUtil.buildBrickImage((int) width, blockColor);
+            img = BlockUtil.buildBrickImage((int) width, blockType.getImage());
             imgView = new ImageView(img);
 
             // Set dimensions
@@ -44,9 +46,77 @@ public class Block extends AbstractEntity {
             Rectangle rectangle = new Rectangle(posX, posY, width, height);
 
             // For every second row, a new color will appear, based on the colors[] array
-            rectangle.setFill(color);
+            rectangle.setFill(blockType.getColor());
 
             this.setNode(rectangle);
+        }
+    }
+
+    public void updateImage() {
+        img = BlockUtil.buildBrickImage((int) width, blockType.getImage());
+
+        if (this.getNode() instanceof ImageView imageView) {
+            imageView.setImage(img);
+        }
+    }
+
+    public BlockType getBlockType() {
+        return blockType;
+    }
+
+    public void setBlockType(BlockType blockType) {
+        this.blockType = blockType;
+    }
+
+    public enum BlockType {
+        BLUE(0, 10, "blue", Color.BLUE),
+        GREEN(1, 20, "green", Color.GREEN),
+        PINK(2, 30, "pink", Color.PINK),
+        RED(3, 40, "red", Color.RED),
+        YELLOW(4, 50, "yellow", Color.YELLOW),;
+
+        private final int id;
+
+        private final int breakScore;
+
+        private final String image;
+
+        private final Color color;
+
+        BlockType(int id, int breakScore, String image, Color color) {
+            this.id = id;
+            this.breakScore = breakScore;
+            this.image = image;
+            this.color = color;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public int getBreakScore() {
+            return breakScore;
+        }
+
+        public String getImage() {
+            return image;
+        }
+
+        public Color getColor() {
+            return color;
+        }
+
+        public static BlockType getBlockType(int id) {
+            for (BlockType blockType : BlockType.values()) {
+                if (blockType.getId() == id) {
+                    return blockType;
+                }
+            }
+            return null;
+        }
+
+        public static BlockType getNextBlockType(BlockType blockType) {
+            return getBlockType(blockType.getId()-1);
         }
     }
 }

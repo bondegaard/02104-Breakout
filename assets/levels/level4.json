@@ -1,5 +1,6 @@
 {
   "name": "level_4",
+  "nextLevel": "level_5",
   "paddleWidth": 100,
   "ballSpeed": 1.5,
   "availablePowerUps": [],

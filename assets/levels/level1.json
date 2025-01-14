@@ -1,10 +1,41 @@
 {
   "name": "level_1",
+  "nextLevel": "level_2",
   "paddleWidth": 200,
   "ballSpeed": 1,
   "availablePowerUps": [],
   "powerUpSpeed": 0.0001,
   "paddleSpeed": 1,
   "rows": 4,
-  "columns": 10
+  "columns": 10,
+  "levelMap": {
+    "levelRows": [
+      {
+        "row": [
+          "BLUE",
+          "BLUE",
+          "BLUE",
+          "BLUE",
+          "BLUE"
+        ]
+      },
+      {
+        "row": [
+          "BLUE",
+          "BLUE",
+          "BLUE",
+          "BLUE",
+          "BLUE"
+        ]
+      },{
+        "row": [
+          "BLUE",
+          "BLUE",
+          "BLUE",
+          "BLUE",
+          "BLUE"
+        ]
+      }
+    ]
+  }
 }

@@ -59,25 +59,21 @@ public class PlayScene extends AbstractScene {
 
     private final LifesDisplay lifesDisplay;
 
-    private final Level level;
+    private Level level;
 
 
 
-    public PlayScene(Level level) {
-        this.level = level;
+    public PlayScene() {
+        this.level = Breakout.getInstance().getLevelManager().getCurrentLevel();
 
         this.addBackgroundImage();
-        this.grid = new Grid(this, level.getRows(), level.getColumns());
+        this.grid = new Grid(this, this.level.getLevelMap());
 
         // Creating paddle
         this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) this.level.getPaddleWidth() /2), WindowUtils.getWindowHeight() * 0.8, this.level.getPaddleSpeed(), Constants.PADDLE_HEIGHT, this.level.getPaddleWidth());
 
         // Set Hearts
         this.lives = Constants.STARTING_HEARTS;
-
-
-        // Creating ball
-        spawnBall();
 
         // Add start or pause text
         addStartOrPauseText();
@@ -94,6 +90,9 @@ public class PlayScene extends AbstractScene {
 
         // Add score
         addDisplayScore();
+
+        // Spawn ball
+        spawnBall();
     }
 
     public void addBackgroundImage(){
@@ -224,7 +223,7 @@ public class PlayScene extends AbstractScene {
 
 
         // Text to display start or pause information
-        this.displayScore = new Text("Score: " + grid.getNewScore());
+        this.displayScore = new Text("Score: " + this.getScore());
         this.displayScore.setFont(Font.font(currentFont.getFamily(), 80));
         this.displayScore.setFill(Color.BLACK);
         this.displayScore.setStroke(Color.LIGHTGRAY);
@@ -264,7 +263,6 @@ public class PlayScene extends AbstractScene {
 
         died = true;
         playing = false;
-        resetBallAndPaddle();
         if (lives <= 0) {
             // Save new highscore
             Data data = Breakout.getInstance().getDataManager().getData();
@@ -313,8 +311,11 @@ public class PlayScene extends AbstractScene {
 
         // Check for Victory
         if (this.grid.getAliveAmount() <= 0) {
+            Breakout.getInstance().getLevelManager().setNextLevel();
+            this.level = Breakout.getInstance().getLevelManager().getCurrentLevel();
             resetBallAndPaddle();
-            this.grid = new Grid(this, this.level.getRows(), this.level.getColumns());
+
+            this.grid = new Grid(this, this.level.getLevelMap());
 
             Sound.playSound(Sound.WON);
 
@@ -469,9 +470,9 @@ public class PlayScene extends AbstractScene {
         this.powerups.clear();
 
         //relocate paddle
-        this.paddle.setPosX(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2);
-        this.paddle.getNode().relocate(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2, WindowUtils.getWindowHeight() * 0.8);
-
+        if (this.paddle != null)
+            this.getPane().getChildren().remove(this.paddle.getNode());
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) this.level.getPaddleWidth() /2), WindowUtils.getWindowHeight() * 0.8, this.level.getPaddleSpeed(), Constants.PADDLE_HEIGHT, this.level.getPaddleWidth());
         spawnBall();
     }
 

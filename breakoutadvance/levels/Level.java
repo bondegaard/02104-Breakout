@@ -6,6 +6,8 @@ public class Level {
 
     private String name = "level_unknown";
 
+    private String nextLevel = "level_unknown";
+
     private double paddleWidth = 200;
 
     private double ballSpeed = 1.0;
@@ -21,6 +23,8 @@ public class Level {
     private int rows = 10;
 
     private int columns = 5;
+
+    private LevelMap levelMap = new LevelMap();
 
 
     public int getRows() {
@@ -59,6 +63,18 @@ public class Level {
         return paddleSpeed;
     }
 
+    public LevelMap getLevelMap() {
+        return levelMap;
+    }
+
+    public void setLevelMap(LevelMap levelMap) {
+        this.levelMap = levelMap;
+    }
+
+    public String getNextLevel() {
+        return nextLevel;
+    }
+
     @Override
     public String toString() {
         return "Level{" +
@@ -71,6 +87,7 @@ public class Level {
                 ", paddleSpeed=" + paddleSpeed +
                 ", rows=" + rows +
                 ", columns=" + columns +
+                ", levelMap=" + levelMap +
                 '}';
     }
 }
