@@ -3,6 +3,7 @@ package breakoutadvance.scenes;
 import breakoutadvance.Breakout;
 import breakoutadvance.core.GameLoop;
 import breakoutadvance.core.Grid;
+import breakoutadvance.levels.Level;
 import breakoutadvance.objects.*;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
@@ -52,7 +53,7 @@ public class PlayScene extends AbstractScene {
 
     private final double maxVel = 1.0;
 
-    private int lives = 3;
+    private int lives;
     private Text deathPauseText;
     private Text deathInfoText;
     private boolean died = false;
@@ -60,16 +61,24 @@ public class PlayScene extends AbstractScene {
     private Text displayScore;
     public int score = 0;
 
-
     private final LifesDisplay lifesDisplay;
 
+    private Level level;
 
-    public PlayScene(int n, int m) {
+
+
+    public PlayScene(Level level) {
+        this.level = level;
+
         this.addBackgroundImage();
-        this.grid = new Grid(this, 4, 10);
+        this.grid = new Grid(this, level.getRows(), level.getColumns());
 
         // Creating paddle
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) Constants.PADDLE_WIDTH /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, Constants.PADDLE_WIDTH);
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) this.level.getPaddleWidth() /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, this.level.getPaddleWidth());
+
+        // Set Hearts
+        this.lives = this.level.getHearts();
+
 
         // Creating ball
         spawnBall();
@@ -242,11 +251,14 @@ public class PlayScene extends AbstractScene {
         this.lifesDisplay.updateLives(this, lives);
 
         //reset and update paddle width of paddle when die
-        this.paddle.setWidth(Constants.PADDLE_WIDTH);
-        this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
-        this.paddle.setImg(PaddleUtil.buildPaddleImage(Constants.PADDLE_WIDTH));
-        this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
-        this.paddle.setWidth(Constants.PADDLE_WIDTH);
+        resetBallAndPaddle();
+
+
+//        this.paddle.setWidth(Constants.PADDLE_WIDTH);
+//        this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
+//        this.paddle.setImg(PaddleUtil.buildPaddleImage(Constants.PADDLE_WIDTH));
+//        this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
+//        this.paddle.setWidth(Constants.PADDLE_WIDTH);
 
         // Prettier
         if (lives == 1)

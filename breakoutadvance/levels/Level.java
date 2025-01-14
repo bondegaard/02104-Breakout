@@ -22,6 +22,19 @@ public class Level {
 
     private double paddleSpeed;
 
+    private int rows;
+
+    private int columns;
+
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getColumns() {
+        return columns;
+    }
+
     public String getName() {
         return name;
     }

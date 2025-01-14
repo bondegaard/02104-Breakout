@@ -1,0 +1,13 @@
+{
+  "name": "level_4",
+  "paddleWidth": 100,
+  "ballSpeed": 1.5,
+  "availablePowerUps": [],
+  "powerUpSpeed": 1.2,
+  "powerUpWidth": 8,
+  "powerUpHeight": 8,
+  "hearts": 3,
+  "paddleSpeed": 1,
+  "rows": 8,
+  "columns": 20
+}

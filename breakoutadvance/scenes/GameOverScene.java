@@ -11,6 +11,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  * This class is used to display the game is over scene
@@ -29,19 +30,31 @@ public class GameOverScene extends AbstractMenu {
         Text gameOverText = createMenuItem("Game Over!", null);
         gameOverText.setStyle("-fx-font-size: 128;");
         gameOverText.setFill(Color.DARKRED);
+        gameOverText.setStroke(Color.BLACK);
 
         Text scoreText = createMenuItem("Score: " + Breakout.getInstance().getDataManager().getData().getPreviousGames()[Breakout.getInstance().getDataManager().getData().getPreviousGames().length-1].getScore(), null);
         scoreText.setStyle("-fx-font-size: 72;");
+        scoreText.setStroke(Color.BLACK);
+
 
         Text playAgainText = createMenuItem("Play Again", playAgain());
         playAgainText.setFill(Color.YELLOW);
+        playAgainText.setStroke(Color.BLACK);
 
 
         Text returnToMenuText = createMenuItem("Return to Menu", mainMenu());
         returnToMenuText.setStyle("-fx-font-size: 48;");
+        returnToMenuText.setStroke(Color.BLACK);
 
-        Text[] texts = new Text[] {gameOverText, scoreText, playAgainText, returnToMenuText};
+
+
+        VBox vboxBtns = new VBox(playAgainText, returnToMenuText);
+        vboxBtns.setStyle("-fx-border-color: white ;-fx-border-width: 5 ;-fx-border-style: segments(10, 15, 15, 15)  line-cap round ;");
+        vboxBtns.setAlignment(Pos.TOP_CENTER);
+
+        Text[] texts = new Text[] {gameOverText, scoreText};
         vbox.getChildren().addAll(texts);
+        vbox.getChildren().add(vboxBtns);
 
         textItems = new Text[] {playAgainText, returnToMenuText};
 
@@ -66,7 +79,7 @@ public class GameOverScene extends AbstractMenu {
     }
 
     private void loadPlayScene() {
-        Breakout.getInstance().setCurrentScene(new PlayScene(5,10));
+        Breakout.getInstance().setCurrentScene(new PlayScene(Breakout.getInstance().getLevelManager().getLevelByName("level_1")));
     }
 
     public void setupKeyPressedEvents() {
