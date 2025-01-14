@@ -443,7 +443,7 @@ public class PlayScene extends AbstractScene {
 
         // x = y / 0.7
         // y = (paddle width) / 2
-        double decrease = (this.getPaddleWidth() / 2.0) / 0.7;
+        double decrease = (this.getPaddleWidth() / 2.0) / 0.75;
 
         // Calculating velocities
         double velX = (paddleMiddlePosX - ballHitPosX) / decrease;
