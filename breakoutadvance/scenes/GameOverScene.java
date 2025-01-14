@@ -79,7 +79,7 @@ public class GameOverScene extends AbstractMenu {
     }
 
     private void loadPlayScene() {
-        Breakout.getInstance().setCurrentScene(new PlayScene(Breakout.getInstance().getLevelManager().getLevelByName("level_1")));
+        Breakout.getInstance().setCurrentScene(new PlayScene());
     }
 
     public void setupKeyPressedEvents() {

@@ -8,8 +8,6 @@ import breakoutadvance.objects.*;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
 import breakoutadvance.persistentdata.data.Game;
-import breakoutadvance.persistentdata.data.GameOutCome;
-import breakoutadvance.scenes.components.UIComponentFactory;
 import breakoutadvance.utils.*;
 import breakoutadvance.utils.BombExplosion;
 import breakoutadvance.utils.CollisionChecker;
@@ -49,9 +47,7 @@ public class PlayScene extends AbstractScene {
 
     private Text addInfoText;
 
-    private Random random = new Random();
-
-    private final double maxVel = 1.0;
+    private final Random random = new Random();
 
     private int lives;
     private Text deathPauseText;
@@ -67,21 +63,17 @@ public class PlayScene extends AbstractScene {
 
 
 
-    public PlayScene(Level level) {
-        this.level = level;
+    public PlayScene() {
+        this.level = Breakout.getInstance().getLevelManager().getCurrentLevel();
 
         this.addBackgroundImage();
-        this.grid = new Grid(this, level.getRows(), level.getColumns());
+        this.grid = new Grid(this, this.level.getLevelMap());
 
         // Creating paddle
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) this.level.getPaddleWidth() /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, this.level.getPaddleWidth());
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) this.level.getPaddleWidth() /2), WindowUtils.getWindowHeight() * 0.8, this.level.getPaddleSpeed(), Constants.PADDLE_HEIGHT, this.level.getPaddleWidth());
 
         // Set Hearts
-        this.lives = this.level.getHearts();
-
-
-        // Creating ball
-        spawnBall();
+        this.lives = Constants.STARTING_HEARTS;
 
         // Add start or pause text
         addStartOrPauseText();
@@ -98,6 +90,9 @@ public class PlayScene extends AbstractScene {
 
         // Add score
         addDisplayScore();
+
+        // Spawn ball
+        spawnBall();
     }
 
     public void addBackgroundImage(){
@@ -228,7 +223,7 @@ public class PlayScene extends AbstractScene {
 
 
         // Text to display start or pause information
-        this.displayScore = new Text("Score: " + grid.getNewScore());
+        this.displayScore = new Text("Score: " + this.getScore());
         this.displayScore.setFont(Font.font(currentFont.getFamily(), 80));
         this.displayScore.setFill(Color.BLACK);
         this.displayScore.setStroke(Color.LIGHTGRAY);
@@ -268,7 +263,6 @@ public class PlayScene extends AbstractScene {
 
         died = true;
         playing = false;
-        resetBallAndPaddle();
         if (lives <= 0) {
             // Save new highscore
             Data data = Breakout.getInstance().getDataManager().getData();
@@ -317,8 +311,11 @@ public class PlayScene extends AbstractScene {
 
         // Check for Victory
         if (this.grid.getAliveAmount() <= 0) {
+            Breakout.getInstance().getLevelManager().setNextLevel();
+            this.level = Breakout.getInstance().getLevelManager().getCurrentLevel();
             resetBallAndPaddle();
-            this.grid = new Grid(this, 4, 6);
+
+            this.grid = new Grid(this, this.level.getLevelMap());
 
             Sound.playSound(Sound.WON);
 
@@ -427,7 +424,7 @@ public class PlayScene extends AbstractScene {
             }
         }
 
-        powerups.forEach(Powerup::onTick);
+        powerups.forEach(p -> p.onTick(this.level.getPowerUpSpeed()));
     }
 
     private double[] calcNewVelAfterPaddleColl(Ball ball) {
@@ -449,14 +446,14 @@ public class PlayScene extends AbstractScene {
         double velX = (paddleMiddlePosX - ballHitPosX) / decrease;
 
         // Prevent it from going too straight horizontally and vertically
-        double min = 0.25;
-        double max = 0.75;
+        double min = 0.25 * this.level.getBallSpeed();
+        double max = 0.75 * this.level.getBallSpeed();
         if (velX < 0 && velX > -min) velX -= min;
         else if (velX > 0 && velX < min) velX += min;
         else if (velX > max) velX -= (velX - max);
         else if (velX < -max) velX += (velX - max);
 
-        double velY = maxVel - Math.abs(velX);
+        double velY = this.level.getMaxBallVelocity() - Math.abs(velX);
         if (velY < 0) velY = -velY;
 
         //System.out.println("After x: " + (-velX) + " y: " + (-velY) + " total: " + (velX+velY));
@@ -473,6 +470,9 @@ public class PlayScene extends AbstractScene {
         this.powerups.clear();
 
         //relocate paddle
+        this.paddle.setWidth(this.level.getPaddleWidth());
+        this.paddle.getImgView().setFitWidth(this.paddle.getWidth());
+        this.paddle.setVelX(this.level.getPaddleSpeed());
         this.paddle.setPosX(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2);
         this.paddle.getNode().relocate(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2, WindowUtils.getWindowHeight() * 0.8);
 
@@ -538,9 +538,10 @@ public class PlayScene extends AbstractScene {
         // Creating a random angle to start from
         // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
         // velY is calculated based on (maxVel - velX)
+        double ballSpeed = this.level.getBallSpeed();
         boolean positiveNumber = random.nextBoolean();
-        double velX = random.nextDouble(0.2,0.75);
-        double velY = maxVel - velX;
+        double velX = random.nextDouble(0.2,0.75) * ballSpeed;
+        double velY = this.level.getMaxBallVelocity() - velX;
         velX = (positiveNumber) ? velX : -velX;
 
         return new double[]{velX,-velY};

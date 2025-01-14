@@ -4,27 +4,27 @@ import java.util.Arrays;
 
 public class Level {
 
-    private String name;
+    private String name = "level_unknown";
 
-    private double paddleWidth;
+    private String nextLevel = "level_unknown";
 
-    private double ballSpeed;
+    private double paddleWidth = 200;
 
-    private LevelPowerUp [] availablePowerUps;
+    private double ballSpeed = 1.0;
 
-    private double powerUpSpeed;
+    private double maxBallVelocity = 1.0;
 
-    private double powerUpWidth;
+    private LevelPowerUp [] availablePowerUps = new LevelPowerUp[0];
 
-    private double powerUpHeight;
+    private double powerUpSpeed = 0.01;
 
-    private int hearts;
+    private double paddleSpeed = 1.0;
 
-    private double paddleSpeed;
+    private int rows = 10;
 
-    private int rows;
+    private int columns = 5;
 
-    private int columns;
+    private LevelMap levelMap = new LevelMap();
 
 
     public int getRows() {
@@ -47,6 +47,10 @@ public class Level {
         return ballSpeed;
     }
 
+    public double getMaxBallVelocity() {
+        return maxBallVelocity;
+    }
+
     public LevelPowerUp[] getAvailablePowerUps() {
         return availablePowerUps;
     }
@@ -55,20 +59,20 @@ public class Level {
         return powerUpSpeed;
     }
 
-    public double getPowerUpWidth() {
-        return powerUpWidth;
-    }
-
-    public double getPowerUpHeight() {
-        return powerUpHeight;
-    }
-
-    public int getHearts() {
-        return hearts;
-    }
-
     public double getPaddleSpeed() {
         return paddleSpeed;
+    }
+
+    public LevelMap getLevelMap() {
+        return levelMap;
+    }
+
+    public void setLevelMap(LevelMap levelMap) {
+        this.levelMap = levelMap;
+    }
+
+    public String getNextLevel() {
+        return nextLevel;
     }
 
     @Override
@@ -77,12 +81,13 @@ public class Level {
                 "name='" + name + '\'' +
                 ", paddleWidth=" + paddleWidth +
                 ", ballSpeed=" + ballSpeed +
+                ", maxBallVelocity=" + maxBallVelocity +
                 ", availablePowerUps=" + Arrays.toString(availablePowerUps) +
                 ", powerUpSpeed=" + powerUpSpeed +
-                ", powerUpWidth=" + powerUpWidth +
-                ", powerUpHeight=" + powerUpHeight +
-                ", hearts=" + hearts +
                 ", paddleSpeed=" + paddleSpeed +
+                ", rows=" + rows +
+                ", columns=" + columns +
+                ", levelMap=" + levelMap +
                 '}';
     }
 }

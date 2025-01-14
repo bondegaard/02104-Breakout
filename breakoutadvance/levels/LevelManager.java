@@ -1,9 +1,12 @@
 package breakoutadvance.levels;
 
+import breakoutadvance.Breakout;
+import breakoutadvance.objects.Block;
 import breakoutadvance.persistentdata.DataManager;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +17,8 @@ public class LevelManager {
     private final DataManager dataManager;
 
     private final List <Level> levels = new ArrayList<>();
+
+    private Level currentLevel;
 
     public LevelManager(DataManager dataManager) {
         this.dataManager = dataManager;
@@ -48,10 +53,28 @@ public class LevelManager {
         }
 
         System.out.println("Levels loaded: " + levels.size());
+
+        this.currentLevel = getLevelByName("level_1");
     }
 
     public Level getLevelByName(String name) {
         return levels.stream().filter(level -> level.getName().equalsIgnoreCase(name)).findFirst().orElse(null);
+    }
+
+    public Level getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public void setNextLevel() {
+
+        Level nextLevel = levels.stream().filter(level -> level.getName().equalsIgnoreCase(currentLevel.getNextLevel())).findFirst().orElse(null);
+
+        if (nextLevel == null) {
+            currentLevel = levels.get((int) (Math.random() * levels.size()));
+            return;
+        }
+
+        currentLevel = nextLevel;
     }
 }
 

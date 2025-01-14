@@ -120,7 +120,7 @@ public class MainMenu extends AbstractMenu {
 
     /* Convenience methods for each action */
     private void startGame() {
-        Breakout.getInstance().setCurrentScene(new PlayScene(Breakout.getInstance().getLevelManager().getLevelByName("level_1")));
+        Breakout.getInstance().setCurrentScene(new PlayScene());
     }
 
     private void openSettings() {
