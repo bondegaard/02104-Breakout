@@ -41,7 +41,7 @@ public class Grid {
                     continue;
                 }
 
-                
+
 
                 // Calculating positions on screen
                 double posX = posXStart + col * lSize; // Horizontal position for each rectangle
