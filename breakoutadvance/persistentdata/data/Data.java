@@ -32,28 +32,32 @@ public class Data {
         return highscore;
     }
 
-    public double getVolume() {
-        return volume;
-    }
-
-    public boolean isMute() {
-        return mute;
-    }
-
-    public Game[] getPreviousGames() {
-        return previousGames;
-    }
-
     public void setHighscore(int highscore) {
         this.highscore = highscore;
+    }
+
+    public double getVolume() {
+        return volume;
     }
 
     public void setVolume(double volume) {
         this.volume = volume;
     }
 
+    public boolean isMute() {
+        return mute;
+    }
+
     public void setMute(boolean mute) {
         this.mute = mute;
+    }
+
+    public Game[] getPreviousGames() {
+        return previousGames;
+    }
+
+    public void setPreviousGames(Game[] previousGames) {
+        this.previousGames = previousGames;
     }
 
     public String getBallColor() {
@@ -70,10 +74,6 @@ public class Data {
 
     public void setPaddleColor(String paddleColor) {
         this.paddleColor = paddleColor;
-    }
-
-    public void setPreviousGames(Game[] previousGames) {
-        this.previousGames = previousGames;
     }
 
     public void addGame(Game game) {

@@ -35,7 +35,7 @@ public abstract class AbstractMenu extends AbstractScene {
      */
     protected void addBackgroundImage() {
         try {
-            Image image = Images.getImage(Constants.BACKGROUND_FILEPATH +"background2.png");
+            Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background2.png");
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,
                     BackgroundRepeat.REPEAT,
@@ -52,8 +52,8 @@ public abstract class AbstractMenu extends AbstractScene {
 
     /**
      * @param content A String that will be the text that will be displayed visible on the screen.
-     * @param size An integer this will be the font size.
-     * @param color The text color.
+     * @param size    An integer this will be the font size.
+     * @param color   The text color.
      * @return
      */
     protected Text createText(String content, int size, Color color) {

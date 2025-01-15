@@ -12,18 +12,16 @@ import java.util.List;
 
 public class LifesDisplay {
 
-    private List<ImageView> lifeImages = new ArrayList<>();
+    private final List<ImageView> lifeImages = new ArrayList<>();
 
-    private Image fullHeartImg;
-    private Image emptyHeartImg;
+    private final Image fullHeartImg;
+    private final Image emptyHeartImg;
 
 
     public LifesDisplay() {
         this.fullHeartImg = Images.getImage(Constants.IMAGE_PATH + "heart_full.png");
-        this.emptyHeartImg = Images.getImage(Constants.IMAGE_PATH + "heart_empty.png");;
+        this.emptyHeartImg = Images.getImage(Constants.IMAGE_PATH + "heart_empty.png");
     }
-
-
 
 
     public void updateLives(PlayScene playScene, int lives) {

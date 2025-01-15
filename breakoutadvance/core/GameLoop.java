@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Game loop for the game that uses ScheduledExecutorService from java.utils
  * to handle the loop. The loop will run on the same thread as JavaFX.
- *
+ * <p>
  * The Loop will call the callback function every one millisecond.
  */
 public class GameLoop {
@@ -25,6 +25,20 @@ public class GameLoop {
      */
     public GameLoop(Runnable callback) {
         this.callback = callback;
+    }
+
+    /**
+     * Wait for a specified amount of time before executing the callback.
+     *
+     * @param timeInMilliseconds The time to wait in milliseconds
+     * @param callback           The callback to execute after the wait
+     */
+    public static void wait(int timeInMilliseconds, Runnable callback) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> {
+            Platform.runLater(callback); // Ensures the callback runs on the JavaFX Thread
+            scheduler.shutdown();
+        }, timeInMilliseconds, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -58,24 +72,10 @@ public class GameLoop {
 
     /**
      * Check if the loop is running
+     *
      * @return true if it is running, otherwise false
      */
     public boolean isRunning() {
         return isRunning;
-    }
-
-
-    /**
-     * Wait for a specified amount of time before executing the callback.
-     *
-     * @param timeInMilliseconds The time to wait in milliseconds
-     * @param callback The callback to execute after the wait
-     */
-    public static void wait(int timeInMilliseconds, Runnable callback) {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.schedule(() -> {
-            Platform.runLater(callback); // Ensures the callback runs on the JavaFX Thread
-            scheduler.shutdown();
-        }, timeInMilliseconds, TimeUnit.MILLISECONDS);
     }
 }

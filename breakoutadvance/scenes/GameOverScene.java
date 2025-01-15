@@ -18,7 +18,7 @@ import javafx.scene.text.Text;
  */
 public class GameOverScene extends AbstractMenu {
     private int selectedBtn = 0;
-    private Text[] textItems;
+    private final Text[] textItems;
 
     public GameOverScene() {
         super();
@@ -31,7 +31,7 @@ public class GameOverScene extends AbstractMenu {
         gameOverText.setFill(Color.DARKRED);
         gameOverText.setStroke(Color.BLACK);
 
-        Text scoreText = createMenuItem("Score: " + Breakout.getInstance().getDataManager().getData().getPreviousGames()[Breakout.getInstance().getDataManager().getData().getPreviousGames().length-1].getScore(), null);
+        Text scoreText = createMenuItem("Score: " + Breakout.getInstance().getDataManager().getData().getPreviousGames()[Breakout.getInstance().getDataManager().getData().getPreviousGames().length - 1].getScore(), null);
         scoreText.setStyle("-fx-font-size: 72;");
         scoreText.setStroke(Color.BLACK);
 
@@ -46,16 +46,15 @@ public class GameOverScene extends AbstractMenu {
         returnToMenuText.setStroke(Color.BLACK);
 
 
-
         VBox vboxBtns = new VBox(playAgainText, returnToMenuText);
         vboxBtns.setStyle("-fx-border-color: white ;-fx-border-width: 5 ;-fx-border-style: segments(10, 15, 15, 15)  line-cap round ;");
         vboxBtns.setAlignment(Pos.TOP_CENTER);
 
-        Text[] texts = new Text[] {gameOverText, scoreText};
+        Text[] texts = new Text[]{gameOverText, scoreText};
         vbox.getChildren().addAll(texts);
         vbox.getChildren().add(vboxBtns);
 
-        textItems = new Text[] {playAgainText, returnToMenuText};
+        textItems = new Text[]{playAgainText, returnToMenuText};
 
         addBackgroundImage();
 
@@ -109,7 +108,7 @@ public class GameOverScene extends AbstractMenu {
     }
 
     protected void addBackgroundImage() {
-        try  {
+        try {
             Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background12.png");
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,

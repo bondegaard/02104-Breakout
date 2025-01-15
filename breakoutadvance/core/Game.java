@@ -372,24 +372,16 @@ public class Game {
         return playing;
     }
 
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
+    }
+
     public Grid getGrid() {
         return grid;
     }
 
     public int getLives() {
         return lives;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public boolean isDied() {
-        return died;
-    }
-
-    public Level getLevel() {
-        return level;
     }
 
     /**
@@ -402,10 +394,9 @@ public class Game {
         this.playScene.getLifesDisplay().updateLives(this.playScene, lives);
     }
 
-    public void toggleDeath() {
-        died = !died;
+    public int getScore() {
+        return score;
     }
-
 
     /**
      * Set score and update the display
@@ -415,6 +406,26 @@ public class Game {
     public void setScore(int score) {
         this.score = score;
         this.playScene.getDisplayScoreText().setText("Score: " + this.score);
+    }
+
+    public boolean isDied() {
+        return died;
+    }
+
+    public void setDied(boolean died) {
+        this.died = died;
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public void toggleDeath() {
+        died = !died;
     }
 
     public void togglePlaying() {
@@ -437,17 +448,5 @@ public class Game {
     public void increaseHealth() {
         lives++;
         this.playScene.getLifesDisplay().updateLives(this.playScene, lives);
-    }
-
-    public void setDied(boolean died) {
-        this.died = died;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public void setPlaying(boolean playing) {
-        this.playing = playing;
     }
 }

@@ -8,20 +8,20 @@ import javafx.scene.image.WritableImage;
 public class BlockUtil {
     /**
      * Creates a single paddle image composed of:
-     *   - A left segment (fixed width, e.g. 16)
-     *   - A repeated middle segment (1 pixel wide repeated N times)
-     *   - A right segment (fixed width, e.g. 16)
+     * - A left segment (fixed width, e.g. 16)
+     * - A repeated middle segment (1 pixel wide repeated N times)
+     * - A right segment (fixed width, e.g. 16)
      *
-     * @param totalWidth  The total desired width in pixels (including left, middle, right).
+     * @param totalWidth The total desired width in pixels (including left, middle, right).
      * @return A single combined Image of size (totalWidth × height).
-     *
+     * <p>
      * Requirements/Assumptions:
-     *   - totalWidth must be >= (leftWidth + rightWidth).
+     * - totalWidth must be >= (leftWidth + rightWidth).
      */
     public static Image buildBrickImage(int totalWidth, String color) {
-        Image leftImg   = Images.getImage(  Constants.BLOCK_FILEPATH + color + "Left.png");
+        Image leftImg = Images.getImage(Constants.BLOCK_FILEPATH + color + "Left.png");
         Image middleImg = Images.getImage(Constants.BLOCK_FILEPATH + color + "Middle.png");
-        Image rightImg  = Images.getImage(Constants.BLOCK_FILEPATH + color + "Right.png");
+        Image rightImg = Images.getImage(Constants.BLOCK_FILEPATH + color + "Right.png");
 
         int leftWidth = (int) leftImg.getWidth();
         int rightWidth = (int) rightImg.getWidth();
@@ -36,9 +36,9 @@ public class BlockUtil {
 
 
         // Prepare readers for the source images
-        PixelReader leftReader   = leftImg.getPixelReader();
+        PixelReader leftReader = leftImg.getPixelReader();
         PixelReader middleReader = middleImg.getPixelReader();
-        PixelReader rightReader  = rightImg.getPixelReader();
+        PixelReader rightReader = rightImg.getPixelReader();
 
         // Create a writable image for the final combined paddle
         WritableImage writable = new WritableImage(totalWidth, Constants.PADDLE_HEIGHT);

@@ -13,9 +13,9 @@ public enum Fonts {
     OPENSANS(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"),
     BLACKWOOD(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf");
 
-    private final String filename;
     private static final ConcurrentHashMap<String, Font> fonts = new ConcurrentHashMap<>();
     private static final Logger logger = Logger.getLogger(Fonts.class.getName());
+    private final String filename;
 
     Fonts(String filename) {
         this.filename = filename;

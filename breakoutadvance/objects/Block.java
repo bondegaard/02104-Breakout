@@ -17,11 +17,12 @@ public class Block extends AbstractEntity {
 
     /**
      * Create a block
+     *
      * @param blockType type of block
-     * @param posX x position
-     * @param posY y position
-     * @param width the width of the block
-     * @param height the height of the block
+     * @param posX      x position
+     * @param posY      y position
+     * @param width     the width of the block
+     * @param height    the height of the block
      */
     public Block(BlockType blockType, double posX, double posY, double width, double height) {
         super(posX, posY, height, width); // getting coordinates and height/width from parent class
@@ -73,7 +74,8 @@ public class Block extends AbstractEntity {
         GREEN(1, 300, "green", Color.GREEN),
         PINK(3, 500, "pink", Color.PINK),
         RED(4, 700, "red", Color.RED),
-        YELLOW(0, 100, "yellow", Color.YELLOW),;
+        YELLOW(0, 100, "yellow", Color.YELLOW),
+        ;
 
         private final int id;
 
@@ -90,6 +92,19 @@ public class Block extends AbstractEntity {
             this.color = color;
         }
 
+        public static BlockType getBlockType(int id) {
+            for (BlockType blockType : BlockType.values()) {
+                if (blockType.getId() == id) {
+                    return blockType;
+                }
+            }
+            return null;
+        }
+
+        public static BlockType getNextBlockType(BlockType blockType) {
+            return getBlockType(blockType.getId() - 1);
+        }
+
         public int getId() {
             return id;
         }
@@ -104,19 +119,6 @@ public class Block extends AbstractEntity {
 
         public Color getColor() {
             return color;
-        }
-
-        public static BlockType getBlockType(int id) {
-            for (BlockType blockType : BlockType.values()) {
-                if (blockType.getId() == id) {
-                    return blockType;
-                }
-            }
-            return null;
-        }
-
-        public static BlockType getNextBlockType(BlockType blockType) {
-            return getBlockType(blockType.getId()-1);
         }
     }
 }
