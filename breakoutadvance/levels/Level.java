@@ -14,8 +14,6 @@ public class Level {
 
     private double maxBallVelocity = 1.0;
 
-    private LevelPowerUp [] availablePowerUps = new LevelPowerUp[0];
-
     private double powerUpSpeed = 0.01;
 
     private double paddleSpeed = 1.0;
@@ -36,10 +34,6 @@ public class Level {
 
     public double getMaxBallVelocity() {
         return maxBallVelocity;
-    }
-
-    public LevelPowerUp[] getAvailablePowerUps() {
-        return availablePowerUps;
     }
 
     public double getPowerUpSpeed() {
@@ -69,7 +63,6 @@ public class Level {
                 ", paddleWidth=" + paddleWidth +
                 ", ballSpeed=" + ballSpeed +
                 ", maxBallVelocity=" + maxBallVelocity +
-                ", availablePowerUps=" + Arrays.toString(availablePowerUps) +
                 ", powerUpSpeed=" + powerUpSpeed +
                 ", paddleSpeed=" + paddleSpeed +
                 ", levelMap=" + levelMap +
