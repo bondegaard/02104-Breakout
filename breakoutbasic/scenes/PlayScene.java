@@ -126,6 +126,7 @@ public class PlayScene extends AbstractScene {
         addCenterTextListener(this.infoText, 2, 1.8);
         addCenterTextListener(this.addInfoText, 2, 1.6);
     }
+
     private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
         if (text == null) return;
         text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {

@@ -9,11 +9,11 @@ public class Block extends AbstractEntity {
 
     /**
      * Create a block
-     * @param posX x position
-     * @param posY
-     * @param width
-     * @param height
-     * @param color
+     * @param posX x-position of block
+     * @param posY y-position of block
+     * @param width width of block
+     * @param height height of block
+     * @param color color of block
      */
     public Block(double posX, double posY, double width, double height, Color color) {
         super(posX, posY, height, width); // Getting coordinates and height/width from parentclass

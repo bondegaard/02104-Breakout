@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
  * Base class for menu scenes, using AbstractScene's ability
  * to set the Scene on the primary stage from WindowUtils.
  */
-public abstract class AbstractMenu extends AbstractScene {
+public abstract class   AbstractMenu extends AbstractScene {
 
     protected static final int FONT_SIZE = 64;
     protected static final Color NORMAL_COLOR = Color.WHITE;
