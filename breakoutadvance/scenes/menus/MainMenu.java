@@ -63,7 +63,7 @@ public class MainMenu extends AbstractMenu {
         switch (selectedBtn) {
             case 0 -> startGame();
             case 1 -> openSettings();
-            case 2 -> new BombExplosion(500, 500, pane);
+            case 2 -> quitGame();
             default -> throw new IllegalStateException("Unexpected button index: " + selectedBtn);
         }
     }
