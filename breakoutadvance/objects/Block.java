@@ -69,11 +69,11 @@ public class Block extends AbstractEntity {
     }
 
     public enum BlockType {
-        BLUE(0, 10, "blue", Color.BLUE),
-        GREEN(1, 20, "green", Color.GREEN),
-        PINK(2, 30, "pink", Color.PINK),
-        RED(3, 40, "red", Color.RED),
-        YELLOW(4, 50, "yellow", Color.YELLOW),;
+        BLUE(2, 300, "blue", Color.BLUE),
+        GREEN(1, 300, "green", Color.GREEN),
+        PINK(3, 500, "pink", Color.PINK),
+        RED(4, 700, "red", Color.RED),
+        YELLOW(0, 100, "yellow", Color.YELLOW),;
 
         private final int id;
 
