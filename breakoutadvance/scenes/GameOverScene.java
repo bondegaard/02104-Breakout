@@ -20,7 +20,7 @@ public class GameOverScene extends AbstractMenu {
     private int selectedBtn = 0;
     private final Text[] textItems;
 
-    public GameOverScene() {
+    public GameOverScene(int score) {
         super();
 
         VBox vbox = createVBox(Pos.CENTER, 10);
@@ -31,7 +31,7 @@ public class GameOverScene extends AbstractMenu {
         gameOverText.setFill(Color.DARKRED);
         gameOverText.setStroke(Color.BLACK);
 
-        Text scoreText = createMenuItem("Score: " + Breakout.getInstance().getDataManager().getData().getPreviousGames()[Breakout.getInstance().getDataManager().getData().getPreviousGames().length - 1].getScore(), null);
+        Text scoreText = createMenuItem("Score: " + score, null);
         scoreText.setStyle("-fx-font-size: 72;");
         scoreText.setStroke(Color.BLACK);
 
