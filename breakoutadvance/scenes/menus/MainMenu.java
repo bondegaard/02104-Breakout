@@ -5,6 +5,7 @@ import breakoutadvance.scenes.GameOverScene;
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.BombExplosion;
 import breakoutadvance.utils.WindowUtils;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
@@ -62,7 +63,7 @@ public class MainMenu extends AbstractMenu {
         switch (selectedBtn) {
             case 0 -> startGame();
             case 1 -> openSettings();
-            case 2 -> new BombExplosion(500, 500, pane);
+            case 2 -> quitGame();
             default -> throw new IllegalStateException("Unexpected button index: " + selectedBtn);
         }
     }
@@ -98,10 +99,12 @@ public class MainMenu extends AbstractMenu {
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
         this.displayHighScore.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.displayHighScore.setX(10);
-            this.displayHighScore.setY(WindowUtils.getWindowHeight() - (textHeight / 2));
+            Platform.runLater( () -> {
+                double textWidth = newValue.getWidth();
+                double textHeight = newValue.getHeight();
+                this.displayHighScore.setX(10);
+                this.displayHighScore.setY(WindowUtils.getWindowHeight() - (textHeight / 2));
+            });
         });
     }
 
