@@ -15,14 +15,14 @@ import java.io.IOException;
 public class Breakout extends Application {
 
     public static Breakout instance; // Instance of breakout
-
+    public int n; // Amount of rows
+    public int m; // Amount of columns
     private AbstractScene currentScene; // Current displayed scene
-
     private GameLoop gameLoop; // Gameloop which calls the onTick function.
 
-    public int n; // Amount of rows
-
-    public int m; // Amount of columns
+    public static Breakout getInstance() {
+        return instance;
+    }
 
     public Breakout run() {
         launch();
@@ -34,7 +34,7 @@ public class Breakout extends Application {
         instance = this;
         // Setup Stage
         primaryStage.setTitle("Breakout");
-        
+
         // Get the screen bounds
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -56,7 +56,9 @@ public class Breakout extends Application {
         // Start Game Loop
         gameLoop = new GameLoop(this::onTick);
         gameLoop.start();
-        WindowUtils.getPrimaryStage().setOnCloseRequest(event -> { if (gameLoop != null) gameLoop.stop();});
+        WindowUtils.getPrimaryStage().setOnCloseRequest(event -> {
+            if (gameLoop != null) gameLoop.stop();
+        });
     }
 
     /**
@@ -88,10 +90,6 @@ public class Breakout extends Application {
         if (this.currentScene != null) {
             this.currentScene.onTick();
         }
-    }
-
-    public static Breakout getInstance() {
-        return instance;
     }
 
     public AbstractScene getCurrentScene() {

@@ -20,11 +20,11 @@ public class PlayScene extends AbstractScene {
 
     private boolean playing = false;
 
-    private Grid grid;
+    private final Grid grid;
 
     private Ball ball;
 
-    private Paddle paddle;
+    private final Paddle paddle;
 
     private Text startOrPauseText;
 
@@ -32,14 +32,14 @@ public class PlayScene extends AbstractScene {
 
     private Text addInfoText;
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     public PlayScene(int n, int m) {
         this.getScene().setFill(Color.BLACK);
         this.grid = new Grid(this, n, m);
 
         // Creating paddle
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) Constants.PADDLE_WIDTH /2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, Constants.PADDLE_WIDTH);
+        this.paddle = new Paddle(this, WindowUtils.getWindowWidth() / 2 - ((double) Constants.PADDLE_WIDTH / 2), WindowUtils.getWindowHeight() * 0.8, 1.0, Constants.PADDLE_HEIGHT, Constants.PADDLE_WIDTH);
 
         // Spawning ball
         spawnBall();
@@ -56,8 +56,8 @@ public class PlayScene extends AbstractScene {
         double[] vel = calculateStartVelForBall();
 
         // Creating ball
-        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - Constants.BALL_RADIUS/2d, this.paddle.getPosY() - 2*paddle.getHeight(), vel[0] , vel[1], Constants.BALL_RADIUS);
-        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
+        this.ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth() / 2 - Constants.BALL_RADIUS / 2d, this.paddle.getPosY() - 2 * paddle.getHeight(), vel[0], vel[1], Constants.BALL_RADIUS);
+        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth() / 2 - (Constants.BALL_RADIUS / 2), this.paddle.getPosY() - 2 * paddle.getHeight());
     }
 
     private double[] calculateStartVelForBall() {
@@ -66,36 +66,36 @@ public class PlayScene extends AbstractScene {
         // velY is calculated based on (maxVel - velX)
         double maxVel = 1.0;
         boolean positiveNumber = random.nextBoolean();
-        double velX = random.nextDouble(0.2,0.75);
+        double velX = random.nextDouble(0.2, 0.75);
         double velY = maxVel - velX;
         velX = (positiveNumber) ? velX : -velX;
 
-        return new double[]{velX,-velY};
+        return new double[]{velX, -velY};
     }
 
     public void setupKeyPressedEvents() {
         this.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-               playing = !playing;
-               addInfoText.setVisible(false);
+                playing = !playing;
+                addInfoText.setVisible(false);
 
-               if (!playing) this.startOrPauseText.setText("Press ENTER to continue");
+                if (!playing) this.startOrPauseText.setText("Press ENTER to continue");
             }
             if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
                 this.paddle.setMoveLeft(true);
             }
 
-            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT|| event.getCode() == KeyCode.D) {
+            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT || event.getCode() == KeyCode.D) {
                 this.paddle.setMoveRight(true);
             }
         });
 
-        this.getScene().setOnKeyReleased( event -> {
+        this.getScene().setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
                 this.paddle.setMoveLeft(false);
             }
 
-            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT|| event.getCode() == KeyCode.D) {
+            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT || event.getCode() == KeyCode.D) {
                 this.paddle.setMoveRight(false);
             }
         });
@@ -126,6 +126,7 @@ public class PlayScene extends AbstractScene {
         addCenterTextListener(this.infoText, 2, 1.8);
         addCenterTextListener(this.addInfoText, 2, 1.6);
     }
+
     private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
         if (text == null) return;
         text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
@@ -182,8 +183,8 @@ public class PlayScene extends AbstractScene {
 
         // Check Collisions for paddle and ball
         EdgeHit ballPaddleHit = CollisionChecker.checkCollision(this.paddle, this.ball);
-        if(ballPaddleHit == EdgeHit.YAXIS) {
-            this.ball.setPosY(this.paddle.getPosY()-this.ball.getHeight()*2);
+        if (ballPaddleHit == EdgeHit.YAXIS) {
+            this.ball.setPosY(this.paddle.getPosY() - this.ball.getHeight() * 2);
             this.ball.setVelY(-Math.abs(this.ball.getVelY()));
         }
 
@@ -191,23 +192,23 @@ public class PlayScene extends AbstractScene {
         // Check Collisions between ball and any blocks on the screen
         boolean flipX = false; // Should X direction be flippped
         boolean flipY = false;
-        for (int i = 0; i < grid.getGrid().length; i++){
-            for (int j = 0; j < grid.getGrid()[i].length; j++){
+        for (int i = 0; i < grid.getGrid().length; i++) {
+            for (int j = 0; j < grid.getGrid()[i].length; j++) {
                 Block block = grid.getGrid()[i][j];
 
-                if(block == null) {
+                if (block == null) {
                     continue;
                 }
 
                 EdgeHit ballBlockHit = CollisionChecker.checkCollision(block, this.ball);
 
-                if (ballBlockHit == EdgeHit.XAXIS){
+                if (ballBlockHit == EdgeHit.XAXIS) {
                     flipX = true;
-                    grid.removeBlock(i,j);
-                } else if ( ballBlockHit == EdgeHit.YAXIS){
+                    grid.removeBlock(i, j);
+                } else if (ballBlockHit == EdgeHit.YAXIS) {
                     flipY = true;
-                    grid.removeBlock(i,j);
-                } else if (ballBlockHit == EdgeHit.BOTH){
+                    grid.removeBlock(i, j);
+                } else if (ballBlockHit == EdgeHit.BOTH) {
                     flipX = true;
                     flipY = true;
                 }

@@ -34,7 +34,7 @@ public class VictoryScene extends AbstractScene {
             // If all row or columns are still in the given interval, add one to each and play again
             // If not, try to add one to either row or column
             if (n <= 10 && m <= 20)
-                Breakout.getInstance().setCurrentScene(new PlayScene(n+=1, m+=1));
+                Breakout.getInstance().setCurrentScene(new PlayScene(n += 1, m += 1));
         });
     }
 

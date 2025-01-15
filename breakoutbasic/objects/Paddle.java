@@ -1,4 +1,3 @@
-
 package breakoutbasic.objects;
 
 import breakoutbasic.scenes.PlayScene;
@@ -10,21 +9,22 @@ import javafx.scene.shape.Rectangle;
  * Used to create a paddle on the screen
  */
 public class Paddle extends AbstractEntity {
-    private double velX; // Current directional velocity
+    private final double velX; // Current directional velocity
 
     private boolean moveLeft = false; // Is paddle set to move left?
     private boolean moveRight = false; // Is paddle set to move right?
 
     /**
      * Create a paddle
+     *
      * @param playScene current instance of playScene
-     * @param posX x position
-     * @param posY y position
-     * @param velX Starting velocity in the x direction
-     * @param height height of the paddle
-     * @param width width of the paddle
+     * @param posX      x position
+     * @param posY      y position
+     * @param velX      Starting velocity in the x direction
+     * @param height    height of the paddle
+     * @param width     width of the paddle
      */
-    public Paddle(PlayScene playScene, double posX, double posY, double velX, double height, double width /*, String imgPath*/){
+    public Paddle(PlayScene playScene, double posX, double posY, double velX, double height, double width /*, String imgPath*/) {
         super(posX, posY, height, width);
         this.velX = velX;
 
@@ -41,7 +41,7 @@ public class Paddle extends AbstractEntity {
      * Prevent paddle from going out of the screen and update postion visibility.
      */
     public void updatePosXRight() {
-        if (this.getPosX() + velX < WindowUtils.getWindowWidth()-this.getWidth())
+        if (this.getPosX() + velX < WindowUtils.getWindowWidth() - this.getWidth())
             this.setPosX(this.getPosX() + velX);
         this.getNode().relocate(this.getPosX(), this.getPosY());
     }
@@ -55,7 +55,7 @@ public class Paddle extends AbstractEntity {
         this.getNode().relocate(this.getPosX(), this.getPosY());
     }
 
-    public double getVelX(){
+    public double getVelX() {
         return velX;
     }
 

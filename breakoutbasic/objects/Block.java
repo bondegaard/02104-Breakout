@@ -9,7 +9,8 @@ public class Block extends AbstractEntity {
 
     /**
      * Create a block
-     * @param posX x position
+     *
+     * @param posX   x position
      * @param posY
      * @param width
      * @param height
