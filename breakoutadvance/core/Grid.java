@@ -2,7 +2,6 @@ package breakoutadvance.core;
 
 import breakoutadvance.levels.LevelMap;
 import breakoutadvance.objects.Block;
-import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.WindowUtils;
 
@@ -13,23 +12,24 @@ public class Grid {
 
     private final Game game; // Current game instance
 
-    private Block[][] grid; // 2d-Array which is filled with blocks or null depending on if the block is alive.
+    private final Block[][] grid; // 2d-Array which is filled with blocks or null depending on if the block is alive.
 
-    private LevelMap levelMap;
-    public Grid (Game game, LevelMap levelMap) {
+    private final LevelMap levelMap;
+
+    public Grid(Game game, LevelMap levelMap) {
         this.game = game;
         this.levelMap = levelMap;
         grid = new Block[this.getCols()][this.getRows()];
 
         // Long side of the rectangle's length, based on window size
-        double lSize = (WindowUtils.getWindowWidth() * (97.5/100.0) / this.getRows());
+        double lSize = (WindowUtils.getWindowWidth() * (97.5 / 100.0) / this.getRows());
 
         // Short side of the rectangle's length, based on window size
         double sSize = ((WindowUtils.getWindowHeight() / 20.0));
 
         // Starting positions, where blank space is calculated
-        double posXStart = WindowUtils.getWindowWidth() * (1.0/100.0);
-        double posYStart = WindowUtils.getWindowWidth() * (4.0/100.0);
+        double posXStart = WindowUtils.getWindowWidth() * (1.0 / 100.0);
+        double posYStart = WindowUtils.getWindowWidth() * (4.0 / 100.0);
 
         for (int row = 0; row < this.getCols(); row++) {
             for (int col = 0; col < this.getRows(); col++) {
@@ -38,7 +38,6 @@ public class Grid {
                     grid[row][col] = null;
                     continue;
                 }
-
 
 
                 // Calculating positions on screen
@@ -52,7 +51,7 @@ public class Grid {
                     grid[row][col] = null;
                     continue;
                 }
-                Block block = new Block(blockType, posX, posY, lSize - Constants.OFFSET_BETWEEN_BLOCKS, sSize -  Constants.OFFSET_BETWEEN_BLOCKS);
+                Block block = new Block(blockType, posX, posY, lSize - Constants.OFFSET_BETWEEN_BLOCKS, sSize - Constants.OFFSET_BETWEEN_BLOCKS);
 
                 // Adding it to grid
                 grid[row][col] = block;
@@ -68,6 +67,7 @@ public class Grid {
 
     /**
      * Remove a block from the grid and scene
+     *
      * @param n Row in grid
      * @param m Col in grid
      */
@@ -76,7 +76,7 @@ public class Grid {
         if (block == null || block.getBlockType() == null) return;
 
         //add blockValue to score
-        this.game.increaseScore(block.getBlockType().getBreakScore());;
+        this.game.increaseScore(block.getBlockType().getBreakScore());
 
         // Get next block type or Remove from screen
         Block.BlockType nextBlockType = Block.BlockType.getNextBlockType(block.getBlockType());
@@ -89,8 +89,6 @@ public class Grid {
             this.grid[n][m] = null;
         }
     }
-
-
 
 
     //get amount of blocks alive
@@ -111,22 +109,22 @@ public class Grid {
     }
 
     // Get 2d array of Block
-    public Block[][] getGrid(){
+    public Block[][] getGrid() {
         return grid;
     }
 
 
-    private int getRows(){
+    private int getRows() {
         int maxLength = 0;
-        for (int i = 0; i < this.levelMap.getLevelRows().length; i++){
-            if (this.levelMap.getLevelRows()[i].getRow().length > maxLength){
+        for (int i = 0; i < this.levelMap.getLevelRows().length; i++) {
+            if (this.levelMap.getLevelRows()[i].getRow().length > maxLength) {
                 maxLength = this.levelMap.getLevelRows()[i].getRow().length;
             }
         }
         return maxLength;
     }
 
-    private int getCols(){
+    private int getCols() {
         return this.levelMap.getLevelRows().length;
     }
 }

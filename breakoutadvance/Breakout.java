@@ -29,6 +29,10 @@ public class Breakout extends Application {
 
     private LevelManager levelManager; // Manager to handle levels
 
+    public static Breakout getInstance() {
+        return instance;
+    }
+
     public Breakout run() {
         launch();
         return this;
@@ -53,7 +57,7 @@ public class Breakout extends Application {
 
         // Setup Stage
         primaryStage.setTitle("Breakout");
-        
+
         // Get the screen bounds
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
@@ -62,7 +66,7 @@ public class Breakout extends Application {
         primaryStage.setY(screenBounds.getMinY());
         primaryStage.setWidth(screenBounds.getMaxX());
         primaryStage.setHeight(screenBounds.getMaxY());
-        
+
         // Disable resizing
         primaryStage.setResizable(false);
 
@@ -78,7 +82,7 @@ public class Breakout extends Application {
 
         // Save data and save game on close
         WindowUtils.getPrimaryStage().setOnCloseRequest(event -> {
-            if (dataManager!= null && dataManager.getData() != null) dataManager.saveData();
+            if (dataManager != null && dataManager.getData() != null) dataManager.saveData();
             if (gameLoop != null) gameLoop.stop();
         });
     }
@@ -99,10 +103,6 @@ public class Breakout extends Application {
             if (currentScene instanceof PlayScene playScene)
                 playScene.onTick();
         }
-    }
-
-    public static Breakout getInstance() {
-        return instance;
     }
 
     public AbstractScene getCurrentScene() {

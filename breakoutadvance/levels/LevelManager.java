@@ -13,7 +13,7 @@ public class LevelManager {
 
     private final DataManager dataManager;
 
-    private final List <Level> levels = new ArrayList<>();
+    private final List<Level> levels = new ArrayList<>();
 
     private Level currentLevel;
 
