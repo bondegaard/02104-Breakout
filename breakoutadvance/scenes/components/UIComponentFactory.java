@@ -1,7 +1,6 @@
 package breakoutadvance.scenes.components;
 
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.Fonts;
 import javafx.animation.PauseTransition;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -12,6 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+
+import static breakoutadvance.utils.Fonts.getFont;
 
 /**
  * A factory class for creating commonly used UI components (Text, Label, CheckBox, Slider, etc.)
@@ -29,7 +30,7 @@ public class UIComponentFactory {
      */
     public static Text createText(String content, String fontname, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(Fonts.getFont(Constants.FONT_FILEPATH + fontname));
+        text.setFont(getFont(Constants.FONT_FILEPATH + fontname));
         text.setStyle("-fx-font-size: " + size + ";");
         text.setFill(color != null ? color : Color.WHITE);
         return text;

@@ -15,9 +15,6 @@ public abstract class AbstractScene {
 
     protected Pane pane; // Pane which spands the full screen.
 
-    protected Font currentFont = Fonts.getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf");
-
-
     /**
      * Create a basic Scene
      */

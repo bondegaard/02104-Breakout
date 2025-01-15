@@ -15,6 +15,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import static breakoutadvance.utils.Fonts.getFont;
+
 public class PlayScene extends AbstractScene {
 
     private final LifesDisplay lifesDisplay;
@@ -99,55 +101,53 @@ public class PlayScene extends AbstractScene {
 
     public void addStartOrPauseText() {
         this.startOrPauseText = new Text("Press ENTER to start");
-        this.startOrPauseText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
+        this.startOrPauseText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.startOrPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
-        this.startOrPauseText.setFill(Color.BLACK);
-        this.startOrPauseText.setStroke(Color.LIGHTGRAY);
-        this.startOrPauseText.setStrokeWidth(1.25);
+        this.startOrPauseText.setFill(Color.WHITE);
+        this.startOrPauseText.setStroke(Color.BLACK);
+        this.startOrPauseText.setStrokeWidth(0.75);
         this.getPane().getChildren().add(this.startOrPauseText);
 
         this.infoText = new Text("Press 'a' to move left and 'd' to move right");
-        this.infoText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
+        this.infoText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.infoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
-        this.infoText.setFill(Color.BLACK);
-        this.infoText.setStroke(Color.LIGHTGRAY);
-        this.infoText.setStrokeWidth(1.25);
+        this.infoText.setFill(Color.WHITE);
+        this.infoText.setStroke(Color.BLACK);
+        this.infoText.setStrokeWidth(0.5);
         this.getPane().getChildren().add(this.infoText);
 
         this.addInfoText = new Text("When started, you can press ENTER to pause the game");
-        this.addInfoText.setFont(Fonts.getFont(Constants.FONT_FILEPATH + "OpenSans-Regular.ttf"));
+        this.addInfoText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.addInfoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
-        this.addInfoText.setFill(Color.BLACK);
-        this.addInfoText.setStroke(Color.LIGHTGRAY);
-        this.addInfoText.setStrokeWidth(1.25);
+        this.addInfoText.setFill(Color.WHITE);
+        this.addInfoText.setStroke(Color.BLACK);
+        this.addInfoText.setStrokeWidth(0.5);
         this.getPane().getChildren().add(this.addInfoText);
 
         // Manually set the positions initially
         addCenterTextListener(this.startOrPauseText, 2, 2);
         addCenterTextListener(this.infoText, 2, 1.8);
         addCenterTextListener(this.addInfoText, 2, 1.6);
-
-        // Listen for window resize and update positions accordingly
-        //   this.getScene().widthProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
-        //   this.getScene().heightProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
     }
 
     public void addDeathPauseText() {
         // Text to display start or pause information
         this.deathPauseText = new Text("You Died. You have " + this.game.getLives() + " left.");
+        this.deathPauseText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.deathPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
-        this.deathPauseText.setFill(Color.BLACK);
-        this.deathPauseText.setStroke(Color.LIGHTGRAY);
-        this.deathPauseText.setStrokeWidth(1.0);
+        this.deathPauseText.setFill(Color.WHITE);
+        this.deathPauseText.setStroke(Color.BLACK);
+        this.deathPauseText.setStrokeWidth(0.5);
         this.getPane().getChildren().add(this.deathPauseText);
         this.deathPauseText.setVisible(false);
 
         // Text to display controls
         this.deathInfoText = new Text("Press Enter to start again");
+        this.deathInfoText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.deathInfoText.setStyle("-fx-font-size: 32px;-fx-font-weight: bold;");
-        this.deathInfoText.setFill(Color.BLACK);
-        this.deathInfoText.setStroke(Color.LIGHTGRAY);
-        this.deathInfoText.setStrokeWidth(1.25);
+        this.deathInfoText.setFill(Color.WHITE);
+        this.deathInfoText.setStroke(Color.BLACK);
+        this.deathInfoText.setStrokeWidth(0.5);
         this.getPane().getChildren().add(this.deathInfoText);
         this.deathInfoText.setVisible(false);
 
@@ -159,13 +159,11 @@ public class PlayScene extends AbstractScene {
     }
 
     public void addDisplayScore() {
-
-
         // Text to display start or pause information
         this.displayScoreText = new Text("Score: " + this.game.getScore());
-        this.displayScoreText.setFont(Font.font(currentFont.getFamily(), 80));
-        this.displayScoreText.setFill(Color.BLACK);
-        this.displayScoreText.setStroke(Color.LIGHTGRAY);
+        this.displayScoreText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf", 80));
+        this.displayScoreText.setFill(Color.WHITE);
+        this.displayScoreText.setStroke(Color.BLACK);
         this.displayScoreText.setStrokeWidth(1.5);
         this.displayScoreText.setVisible(true);
         this.getPane().getChildren().add(this.displayScoreText);

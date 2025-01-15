@@ -9,6 +9,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import static breakoutadvance.utils.Fonts.getFont;
+
 /**
  * Base class for menu scenes, using AbstractScene's ability
  * to set the Scene on the primary stage from WindowUtils.
@@ -58,7 +60,7 @@ public abstract class   AbstractMenu extends AbstractScene {
      */
     protected Text createText(String content, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(currentFont);
+        text.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf", FONT_SIZE));
         text.setFill(color);
         return text;
     }

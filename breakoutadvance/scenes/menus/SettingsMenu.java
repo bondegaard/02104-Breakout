@@ -19,6 +19,8 @@ import javafx.scene.text.Text;
 import java.util.Arrays;
 import java.util.List;
 
+import static breakoutadvance.utils.Fonts.getFont;
+
 public class SettingsMenu extends AbstractMenu {
 
     private final String[] ballColors = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
@@ -38,7 +40,7 @@ public class SettingsMenu extends AbstractMenu {
         vbox.setStyle("-fx-padding: 20;");
         vbox.setAlignment(Pos.CENTER);
 
-        Text title = UIComponentFactory.createText("Settings", "BlackwoodCastle.ttf", 64, Color.WHITE);
+        Text title = UIComponentFactory.createText("Settings",  "BlackwoodCastle.ttf", 64, Color.WHITE);
 
         // Initialize color indices
         currentBallColorIndex = Arrays.asList(ballColors).indexOf(
@@ -63,7 +65,7 @@ public class SettingsMenu extends AbstractMenu {
         Label volumeLabel = UIComponentFactory.createLabel(
                 String.format("Volume: %3d %%", (int) volumeSlider.getValue()),
                 20,
-                currentFont
+                getFont( Constants.FONT_FILEPATH + "BlackwoodCastle.ttf")
         );
         volumeLabel.setMaxWidth(400);
         volumeLabel.setMinWidth(400);
@@ -80,7 +82,7 @@ public class SettingsMenu extends AbstractMenu {
         CheckBox muteCheckBox = UIComponentFactory.createCheckBox(
                 "Mute",
                 Breakout.getInstance().getDataManager().getData().isMute(),
-                currentFont
+                getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf")
         );
         muteCheckBox.selectedProperty().addListener((observable, oldVal, newVal) -> {
             Breakout.getInstance().getDataManager().getData().setMute(newVal);

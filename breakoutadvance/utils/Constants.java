@@ -17,7 +17,7 @@ public class Constants {
     public static final int BLOCK_HEIGHT = 16;
 
     // Asset paths
-    public static final String IMAGE_PATH = "assets/img/";
+    public static final String IMAGE_PATH = "./assets/img/";
     public static final String BACKGROUND_FILEPATH = "./assets/img/backgrounds/";
     public static final String BALL_FILEPATH = "./assets/img/OpenGameArt/balls/";
     public static final String PADDLE_FILEPATH = "./assets/img/OpenGameArt/paddles/";

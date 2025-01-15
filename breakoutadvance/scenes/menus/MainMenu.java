@@ -1,9 +1,8 @@
 package breakoutadvance.scenes.menus;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.scenes.GameOverScene;
 import breakoutadvance.scenes.PlayScene;
-import breakoutadvance.utils.BombExplosion;
+import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.WindowUtils;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -11,6 +10,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+import static breakoutadvance.utils.Fonts.getFont;
 
 /**
  * Main menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.
@@ -89,7 +90,7 @@ public class MainMenu extends AbstractMenu {
     public void addHighScore() {
         // Text to display HighScore
         this.displayHighScore = new Text("Top Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
-        this.displayHighScore.setFont(currentFont);
+        this.displayHighScore.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.displayHighScore.setStyle("-fx-font-size: 80px;");
         this.displayHighScore.setFill(Color.YELLOW);
         this.displayHighScore.setStrokeWidth(3);
