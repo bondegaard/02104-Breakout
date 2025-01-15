@@ -72,7 +72,7 @@ public abstract class AbstractMenu extends AbstractScene {
         return vbox;
     }
 
-    private void centerNodeInPane(Region node) {
+    protected void centerNodeInPane(Region node) {
         node.layoutXProperty().bind(getPane().widthProperty().subtract(node.widthProperty()).divide(2));
         node.layoutYProperty().bind(getPane().heightProperty().subtract(node.heightProperty()).divide(2));
     }

@@ -56,5 +56,20 @@ public class Constants {
     public static final Color HIGH_SCORE_STROKE_COLOR = Color.BLACK;
     public static final double HIGH_SCORE_STROKE_WIDTH = 3.0;
 
+    // Game Over
+    public static final String GAME_OVER_TEXT_STYLE = "-fx-font-size:" + DEFAULT_FONT_SIZE*2 + ";";
+    public static final String SCORE_TEXT_STYLE = "-fx-font-size: " + DEFAULT_FONT_SIZE*1.125 + ";";
+    public static final String BUTTON_BOX_STYLE = "-fx-border-color: white; -fx-border-width: 5; -fx-border-style: segments(10, 15, 15, 15) line-cap round;";
+    public static final Color GAME_OVER_TEXT_COLOR = Color.DARKRED;
+
+    // Settings menu
+    public static final double SETTINGS_VOLUME_SLIDER_WIDTH = 300;
+    public static final double SETTINGS_VOLUME_LABEL_WIDTH = 400;
+    public static final String ARROW_FONT = FONT_FILEPATH + "BLACEB__.ttf";
+    public static final int ARROW_FONT_SIZE = DEFAULT_FONT_SIZE*3/4;
+    public static final double COLOR_SELECTOR_SPACING = 20;
+
+
+
 }
 

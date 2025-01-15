@@ -3,7 +3,6 @@ package breakoutadvance.scenes.menus;
 import breakoutadvance.Breakout;
 import breakoutadvance.scenes.components.UIComponentFactory;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.Images;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -16,44 +15,44 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+import static breakoutadvance.utils.Fonts.getFont;
+import static breakoutadvance.utils.Images.getImage;
+
 import java.util.Arrays;
 import java.util.List;
-
-import static breakoutadvance.utils.Fonts.getFont;
 
 public class SettingsMenu extends AbstractMenu {
     private int currentBallColorIndex;
     private int currentPaddleColorIndex;
-
-    // Keep references to the ImageViews so we can update them
     private ImageView ballImageView;
     private ImageView paddleImageView;
 
     public SettingsMenu() {
-        super(); // calls AbstractMenu -> AbstractScene -> uses WindowUtils.getPrimaryStage()
+        super();
 
         VBox vbox = createVBox();
         vbox.setStyle("-fx-padding: 20;");
         vbox.setAlignment(Pos.CENTER);
 
-        Text title = UIComponentFactory.createText("Settings",  Constants.DEFAULT_FONT, 64, Color.WHITE);
+        Text title = UIComponentFactory.createText("Settings", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Color.WHITE);
 
-        // Initialize color indices
-        currentBallColorIndex = Arrays.asList(Constants.BALL_COLORS).indexOf(
-                Breakout.getInstance().getDataManager().getData().getBallColor()
-        );
-        if (currentBallColorIndex < 0) currentBallColorIndex = 0;
+        VBox volumeBox = createVolumeBox();
+        CheckBox muteCheckBox = createMuteCheckBox();
+        HBox ballColorSelector = createColorSelector(Constants.BALL_COLORS, currentBallColorIndex, true);
+        HBox paddleColorSelector = createColorSelector(Constants.PADDLE_COLORS, currentPaddleColorIndex, false);
+        Text backBtn = createBackButton();
 
-        currentPaddleColorIndex = Arrays.asList(Constants.PADDLE_COLORS).indexOf(
-                Breakout.getInstance().getDataManager().getData().getPaddleColor()
-        );
-        if (currentPaddleColorIndex < 0) currentPaddleColorIndex = 0;
+        vbox.getChildren().addAll(title, volumeBox, muteCheckBox, ballColorSelector, paddleColorSelector, backBtn);
+        getPane().getChildren().add(vbox);
 
-        // Volume slider
+        setupKeyPressedEvents();
+    }
+
+    private VBox createVolumeBox() {
         Slider volumeSlider = UIComponentFactory.createSlider(
                 0, 100,
                 Breakout.getInstance().getDataManager().getData().getVolume(),
-                300,
+                Constants.SETTINGS_VOLUME_SLIDER_WIDTH,
                 true,
                 10.0,
                 true
@@ -61,10 +60,9 @@ public class SettingsMenu extends AbstractMenu {
         Label volumeLabel = UIComponentFactory.createLabel(
                 String.format("Volume: %3d %%", (int) volumeSlider.getValue()),
                 20,
-                getFont( Constants.DEFAULT_FONT)
+                getFont(Constants.DEFAULT_FONT)
         );
-        volumeLabel.setMaxWidth(400);
-        volumeLabel.setMinWidth(400);
+        volumeLabel.setMinWidth(Constants.SETTINGS_VOLUME_LABEL_WIDTH);
 
         volumeSlider.valueProperty().addListener((observable, oldVal, newVal) -> {
             volumeLabel.setText(String.format("Volume: %3d %%", newVal.intValue()));
@@ -72,9 +70,10 @@ public class SettingsMenu extends AbstractMenu {
             Breakout.getInstance().getDataManager().saveData();
         });
 
-        VBox volumeBox = new VBox(10, volumeSlider, volumeLabel);
+        return new VBox(10, volumeSlider, volumeLabel);
+    }
 
-        // Mute checkbox
+    private CheckBox createMuteCheckBox() {
         CheckBox muteCheckBox = UIComponentFactory.createCheckBox(
                 "Mute",
                 Breakout.getInstance().getDataManager().getData().isMute(),
@@ -84,38 +83,75 @@ public class SettingsMenu extends AbstractMenu {
             Breakout.getInstance().getDataManager().getData().setMute(newVal);
             Breakout.getInstance().getDataManager().saveData();
         });
-
-        // Ball color selector
-        HBox hboxBall = createColorSelector(Constants.BALL_COLORS, currentBallColorIndex, true);
-
-        // Paddle color selector
-        HBox hboxPaddle = createColorSelector(Constants.PADDLE_COLORS, currentPaddleColorIndex, false);
-
-        // Back button
-        Text backBtn = UIComponentFactory.createText("Back", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Constants.HIGHLIGHT_TEXT_COLOR);
-        backBtn.setOnMouseClicked(event -> {
-            Breakout.getInstance().setCurrentScene(new MainMenu());
-        });
-
-        vbox.getChildren().addAll(title, volumeBox, muteCheckBox, hboxBall, hboxPaddle, backBtn);
-        getPane().getChildren().add(vbox);
-
-        setupKeyPressedEvents();
+        return muteCheckBox;
     }
 
-    /**
-     * Creates a color selector UI: [<] [ImageView] [>]
-     */
+    private Text createBackButton() {
+        Text backBtn = UIComponentFactory.createText("Back", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Constants.HIGHLIGHT_TEXT_COLOR);
+        backBtn.setOnMouseClicked(event -> Breakout.getInstance().setCurrentScene(new MainMenu()));
+        return backBtn;
+    }
+
+    private void setupKeyPressedEvents() {
+        getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ESCAPE || event.getCode() == KeyCode.ENTER) {
+                Breakout.getInstance().getDataManager().saveData();
+                Breakout.getInstance().setCurrentScene(new MainMenu());
+            }
+        });
+    }
+
+    private void updateColorImageView(ImageView imageView, String newColor, String filePath) {
+        imageView.setImage(getImage(filePath + newColor + ".png"));
+        Breakout.getInstance().getDataManager().saveData();
+    }
+
+    private <T> void changeColor(List<T> colors, int direction, boolean isBall) {
+        int currentIndex = isBall ? currentBallColorIndex : currentPaddleColorIndex;
+        currentIndex = (currentIndex + direction + colors.size()) % colors.size();
+
+        String newColor = colors.get(currentIndex).toString();
+        if (isBall) {
+            currentBallColorIndex = currentIndex;
+            Breakout.getInstance().getDataManager().getData().setBallColor(newColor);
+            updateColorImageView(ballImageView, newColor, Constants.BALL_FILEPATH);
+        } else {
+            currentPaddleColorIndex = currentIndex;
+            Breakout.getInstance().getDataManager().getData().setPaddleColor(newColor);
+            updateColorImageView(paddleImageView, newColor, Constants.PADDLE_FILEPATH);
+        }
+    }
+
+    private Text createArrow(String content, Runnable action) {
+        Text arrow = UIComponentFactory.createText(content, Constants.ARROW_FONT, Constants.ARROW_FONT_SIZE, Constants.NORMAL_TEXT_COLOR);
+        arrow.setOnMouseClicked(event -> action.run());
+        return arrow;
+    }
+
+    private ImageView createColorImageView(String colorName, boolean isBall) {
+        String imagePath = isBall
+                ? Constants.BALL_FILEPATH + colorName + ".png"
+                : Constants.PADDLE_FILEPATH + colorName + ".png";
+
+        Image image = getImage(imagePath); // Assumes Images.getImage handles loading or returns a default image in case of errors
+        ImageView imageView = new ImageView(image);
+
+        if (isBall) {
+            imageView.setFitWidth(Constants.BALL_RADIUS * 2);
+            imageView.setFitHeight(Constants.BALL_RADIUS * 2);
+        } else {
+            imageView.setFitWidth(Constants.PADDLE_WIDTH);
+            imageView.setFitHeight(Constants.PADDLE_HEIGHT);
+        }
+
+        return imageView;
+    }
+
+
     private <T> HBox createColorSelector(T[] colors, int currentIndex, boolean isBall) {
         List<T> colorList = Arrays.asList(colors);
-
-        Text leftArrow = UIComponentFactory.createText("<", Constants.FONT_FILEPATH + "BLACEB__.ttf", Constants.DEFAULT_FONT_SIZE*3/4, Constants.NORMAL_TEXT_COLOR);
-        Text rightArrow = UIComponentFactory.createText(">", Constants.FONT_FILEPATH + "BLACEB__.ttf", Constants.DEFAULT_FONT_SIZE*3/4, Constants.NORMAL_TEXT_COLOR);
-
-        // Initialize ImageView with the current color image
         ImageView colorImageView = createColorImageView(colorList.get(currentIndex).toString(), isBall);
 
-        // Store references so we can update them in changeColor(...)
         if (isBall) {
             ballImageView = colorImageView;
             colorImageView.setFitWidth(Constants.BALL_RADIUS * 2);
@@ -126,69 +162,12 @@ public class SettingsMenu extends AbstractMenu {
             colorImageView.setFitHeight(Constants.PADDLE_HEIGHT);
         }
 
-        leftArrow.setOnMouseClicked(event -> changeColor(colorList, -1, isBall));
-        rightArrow.setOnMouseClicked(event -> changeColor(colorList, 1, isBall));
-
-        // Create and center them in the HBox
-        HBox hbox = UIComponentFactory.createHBox(20, leftArrow, colorImageView, rightArrow);
+        HBox hbox = new HBox(Constants.COLOR_SELECTOR_SPACING,
+                createArrow("<", () -> changeColor(colorList, -1, isBall)),
+                colorImageView,
+                createArrow(">", () -> changeColor(colorList, 1, isBall))
+        );
         hbox.setAlignment(Pos.CENTER);
-
         return hbox;
-    }
-
-    /**
-     * Helper for building the ImageView from path.
-     */
-    private ImageView createColorImageView(String colorName, boolean isBall) {
-        String imagePath;
-        if (isBall) {
-            imagePath = Constants.BALL_FILEPATH + colorName + ".png";
-        } else {
-            imagePath = Constants.PADDLE_FILEPATH + colorName + ".png";
-        }
-        Image image = Images.getImage(imagePath);
-        return new ImageView(image);
-    }
-
-    /**
-     * Changes the color in the specified direction and updates the ImageView + persistent data.
-     */
-    private <T> void changeColor(List<T> colors, int direction, boolean isBall) {
-        if (isBall) {
-            currentBallColorIndex = (currentBallColorIndex + direction + colors.size()) % colors.size();
-            String newBallColor = colors.get(currentBallColorIndex).toString();
-
-            Breakout.getInstance().getDataManager().getData().setBallColor(newBallColor);
-            Breakout.getInstance().getDataManager().saveData();
-
-            // Update the ImageView
-            if (ballImageView != null) {
-                ballImageView.setImage(Images.getImage(Constants.BALL_FILEPATH + newBallColor + ".png"));
-            }
-        } else {
-            currentPaddleColorIndex = (currentPaddleColorIndex + direction + colors.size()) % colors.size();
-            String newPaddleColor = colors.get(currentPaddleColorIndex).toString();
-
-            Breakout.getInstance().getDataManager().getData().setPaddleColor(newPaddleColor);
-            Breakout.getInstance().getDataManager().saveData();
-
-            // Update the ImageView
-            if (paddleImageView != null) {
-                paddleImageView.setImage(Images.getImage(Constants.PADDLE_FILEPATH + newPaddleColor + ".png"));
-            }
-        }
-    }
-
-    /**
-     * Sets up the event handler for arrow key navigation.
-     */
-    private void setupKeyPressedEvents() {
-        // 'scene' is inherited from AbstractScene
-        getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ESCAPE || event.getCode() == KeyCode.ENTER) {
-                Breakout.getInstance().getDataManager().saveData();
-                Breakout.getInstance().setCurrentScene(new MainMenu());
-            }
-        });
     }
 }
