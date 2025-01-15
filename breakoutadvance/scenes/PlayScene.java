@@ -177,6 +177,12 @@ public class PlayScene extends AbstractScene {
      //   this.getScene().heightProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
     }
 
+    /**
+     * Makes sure the text is at the middle of the screen
+     * @param text
+     * @param xOffset
+     * @param yOffSet
+     */
     private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
         if (text == null) return;
 
@@ -241,6 +247,11 @@ public class PlayScene extends AbstractScene {
         this.lifesDisplay.updateLives(this, lives);
     }
 
+    /**
+     * When the player dies, 1 will be subtracted from the players lives.
+     * It will also display how many lives you have left, while updating the visual hearts in the bottom right
+     * Furthermore it will save a potential highscore
+     */
     public void hasDied(){
         lives--;
         this.lifesDisplay.updateLives(this, lives);
@@ -280,8 +291,9 @@ public class PlayScene extends AbstractScene {
     }
 
 
-
-
+    /**
+     * Every tick, this function will run
+     */
     @Override
     public void onTick() {
         // Handle unstarted or paused game
@@ -427,6 +439,11 @@ public class PlayScene extends AbstractScene {
         powerups.forEach(p -> p.onTick(this.level.getPowerUpSpeed()));
     }
 
+    /**
+     * Calculating a new velocity based on where the ball hits the paddle
+     * @param ball The ball which hit the paddle
+     * @return Returning an array with a new x-vel and y-vel
+     */
     private double[] calcNewVelAfterPaddleColl(Ball ball) {
         // Getting the middle of the paddle
         double paddleMiddlePosX = this.paddle.getPosX() + paddle.getWidth() / 2;
@@ -443,10 +460,10 @@ public class PlayScene extends AbstractScene {
         // Prevent it from going too straight horizontally and vertically
         double min = 0.25 * this.level.getBallSpeed();
         double max = 0.75 * this.level.getBallSpeed();
-        if (velX < 0 && velX > -min) velX -= min;
-        else if (velX > 0 && velX < min) velX += min;
-        else if (velX > max) velX -= (velX - max);
-        else if (velX < -max) velX += (velX - max);
+        if (velX < 0 && velX > -min) velX = -min;
+        else if (velX > 0 && velX < min) velX = min;
+        else if (velX > max) velX = max;
+        else if (velX < -max) velX = -max;
 
         double velY = this.level.getMaxBallVelocity() - Math.abs(velX);
         if (velY < 0) velY = -velY;
@@ -454,6 +471,9 @@ public class PlayScene extends AbstractScene {
         return new double[]{-velX, -velY};
     }
 
+    /**
+     * After the player has died, or a new level has begun, the ball and the paddle will spawn at the middle
+     */
     public void resetBallAndPaddle(){
         // remove all balls
         this.balls.forEach(ball -> this.getPane().getChildren().remove(ball.getNode()));
@@ -489,7 +509,9 @@ public class PlayScene extends AbstractScene {
         return paddle.getWidth();
     }
 
-
+    /**
+     * Spawning the ball
+     */
     public void spawnBall() {
         // Reset ball position and velocity
         double[] vel = calculateStartVelForBall();
@@ -499,7 +521,9 @@ public class PlayScene extends AbstractScene {
         ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
     }
 
-    // Increase paddle width
+    /**
+     * Increasing paddle width if its not already at max width
+     */
     public void increasePaddleWidth(){
         if(paddle.getWidth() <= WindowUtils.getWindowWidth()/4 ){
 
@@ -515,7 +539,12 @@ public class PlayScene extends AbstractScene {
         }
     }
 
-    // Bomb kills you when hit
+    /**
+     * When a bomb has been hit, the player loses a life, and a animation will be played
+     * The game will also wait 200 ms, to show th bomb animation
+     * @param posX Where it hit on the x-axis
+     * @param posY Where it hit on the y-axis
+     */
     public void hitBombObstacle(double posX, double posY){
         // Give Bomb animation enough time to play
         playing = false;
@@ -528,6 +557,10 @@ public class PlayScene extends AbstractScene {
         });
     }
 
+    /**
+     * Calculating a random start velocity/angle for the ball
+     * @return Returning the start x- and y-velocity
+     */
     private double[] calculateStartVelForBall() {
         // Creating a random angle to start from
         // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
@@ -542,6 +575,11 @@ public class PlayScene extends AbstractScene {
         return new double[]{velX,-velY};
     }
 
+    /**
+     * Attempting to spawn a powerup
+     * @param xPos Where to spawn it on the x-axis
+     * @param yPos Where to spawn it on the y-axis
+     */
     public void attemptPowerupSpawn(double xPos, double yPos) {
         for (PowerupType type : PowerupType.values()) {
             int randomNumber = random.nextInt(1000);
