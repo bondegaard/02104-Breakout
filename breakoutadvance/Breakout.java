@@ -1,10 +1,11 @@
 package breakoutadvance;
 
-import breakoutadvance.levels.LevelManager;
-import breakoutadvance.scenes.menus.MainMenu;
 import breakoutadvance.core.GameLoop;
+import breakoutadvance.levels.LevelManager;
 import breakoutadvance.persistentdata.DataManager;
 import breakoutadvance.scenes.AbstractScene;
+import breakoutadvance.scenes.PlayScene;
+import breakoutadvance.scenes.menus.MainMenu;
 import breakoutadvance.utils.Fonts;
 import breakoutadvance.utils.Images;
 import breakoutadvance.utils.Sound;
@@ -95,7 +96,8 @@ public class Breakout extends Application {
      */
     public void onTick() {
         if (this.currentScene != null) {
-            this.currentScene.onTick();
+            if (currentScene instanceof PlayScene playScene)
+                playScene.onTick();
         }
     }
 

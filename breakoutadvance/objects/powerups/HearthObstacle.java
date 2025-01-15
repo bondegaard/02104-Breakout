@@ -24,6 +24,6 @@ public class HearthObstacle extends Powerup {
     public void onCollision() {
         if (hasCollided) return;
         hasCollided = true;
-        this.playScene.increaseHealth();
+        this.playScene.getGame().increaseHealth();
     }
 }

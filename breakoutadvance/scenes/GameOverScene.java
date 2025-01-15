@@ -11,7 +11,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 /**
  * This class is used to display the game is over scene
@@ -133,9 +132,5 @@ public class GameOverScene extends AbstractMenu {
         for (int i = 0; i < textItems.length; i++) {
             textItems[i].setFill(i == btnIndex ? HIGHLIGHT_COLOR : NORMAL_COLOR);
         }
-    }
-
-    public void onTick() {
-
     }
 }

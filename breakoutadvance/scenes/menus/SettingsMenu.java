@@ -195,10 +195,4 @@ public class SettingsMenu extends AbstractMenu {
             }
         });
     }
-
-
-    @Override
-    public void onTick() {
-        // Typically not needed in a static settings menu
-    }
 }

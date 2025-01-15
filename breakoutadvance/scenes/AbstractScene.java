@@ -1,6 +1,5 @@
 package breakoutadvance.scenes;
 
-import breakoutadvance.Breakout;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.Fonts;
 import breakoutadvance.utils.WindowUtils;
@@ -47,9 +46,4 @@ public abstract class AbstractScene {
         WindowUtils.getPrimaryStage().setScene(scene);
         WindowUtils.getPrimaryStage().show();
     }
-
-    /**
-     * A function that is called every tick.
-     */
-    public abstract void onTick();
 }

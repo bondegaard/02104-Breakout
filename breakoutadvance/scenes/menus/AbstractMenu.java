@@ -81,7 +81,4 @@ public abstract class AbstractMenu extends AbstractScene {
         vbox.layoutYProperty().bind(pane.heightProperty().subtract(vbox.heightProperty()).divide(2));
         return vbox;
     }
-
-    @Override
-    public abstract void onTick();
 }

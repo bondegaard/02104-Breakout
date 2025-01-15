@@ -1,7 +1,7 @@
 package breakoutbasic.utils;
 
-import breakoutbasic.objects.Ball;
 import breakoutbasic.objects.AbstractEntity;
+import breakoutbasic.objects.Ball;
 
 public class CollisionChecker {
 

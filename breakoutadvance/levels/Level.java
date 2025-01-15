@@ -1,7 +1,5 @@
 package breakoutadvance.levels;
 
-import java.util.Arrays;
-
 public class Level {
 
     private String name = "level_unknown";

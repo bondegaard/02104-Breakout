@@ -90,14 +90,6 @@ public class MainMenu extends AbstractMenu {
         });
     }
 
-    /**
-     * Periodic callback - not needed for the main menu.
-     */
-    @Override
-    public void onTick() {
-        // Currently not used
-    }
-
     public void addHighScore() {
         // Text to display HighScore
         this.displayHighScore = new Text("Top Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());

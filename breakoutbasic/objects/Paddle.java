@@ -3,8 +3,6 @@ package breakoutbasic.objects;
 
 import breakoutbasic.scenes.PlayScene;
 import breakoutbasic.utils.WindowUtils;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 

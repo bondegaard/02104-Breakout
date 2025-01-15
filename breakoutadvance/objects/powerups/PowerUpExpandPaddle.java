@@ -24,6 +24,6 @@ public class PowerUpExpandPaddle extends Powerup {
     public void onCollision() {
         if (hasCollided) return;
         hasCollided = true;
-        this.playScene.increasePaddleWidth();
+        this.playScene.getGame().increasePaddleWidth();
     }
 }

@@ -3,23 +3,21 @@ package breakoutadvance.core;
 import breakoutadvance.levels.LevelMap;
 import breakoutadvance.objects.Block;
 import breakoutadvance.scenes.PlayScene;
+import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.WindowUtils;
-import javafx.scene.paint.Color;
 
 /**
  * Grid is used to display blocks on top of the screen in a grid format.
  */
 public class Grid {
 
-    private final PlayScene playScene; // Instance of current playScene
+    private final Game game; // Current game instance
 
     private Block[][] grid; // 2d-Array which is filled with blocks or null depending on if the block is alive.
 
-    private final int OFFSET = 3; // Offset between the blocks
-
     private LevelMap levelMap;
-    public Grid (PlayScene playScene, LevelMap levelMap) {
-        this.playScene = playScene;
+    public Grid (Game game, LevelMap levelMap) {
+        this.game = game;
         this.levelMap = levelMap;
         grid = new Block[this.getCols()][this.getRows()];
 
@@ -54,13 +52,13 @@ public class Grid {
                     grid[row][col] = null;
                     continue;
                 }
-                Block block = new Block(blockType, posX, posY, lSize - OFFSET, sSize - OFFSET);
+                Block block = new Block(blockType, posX, posY, lSize - Constants.OFFSET_BETWEEN_BLOCKS, sSize -  Constants.OFFSET_BETWEEN_BLOCKS);
 
                 // Adding it to grid
                 grid[row][col] = block;
 
                 // Adding it to the scene
-                playScene.getPane().getChildren().add(block.getNode());
+                this.game.getPlayScene().getPane().getChildren().add(block.getNode());
             }
         }
     }
@@ -78,7 +76,7 @@ public class Grid {
         if (block == null || block.getBlockType() == null) return;
 
         //add blockValue to score
-        playScene.score += block.getBlockType().getBreakScore();
+        this.game.increaseScore(block.getBlockType().getBreakScore());;
 
         // Get next block type or Remove from screen
         Block.BlockType nextBlockType = Block.BlockType.getNextBlockType(block.getBlockType());
@@ -87,12 +85,9 @@ public class Grid {
             block.setBlockType(nextBlockType);
             block.updateImage();
         } else {
-            playScene.getPane().getChildren().remove(block.getNode());
+            this.game.getPlayScene().getPane().getChildren().remove(block.getNode());
             this.grid[n][m] = null;
         }
-
-        //Update score on the scene when block gets removed
-        playScene.getDisplayScore().setText("Score: " + playScene.getScore());
     }
 
 

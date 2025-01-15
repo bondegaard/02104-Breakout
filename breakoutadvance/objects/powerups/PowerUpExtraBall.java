@@ -23,6 +23,6 @@ public class PowerUpExtraBall extends Powerup {
     public void onCollision() {
         if (hasCollided) return;
         hasCollided = true;
-        this.playScene.spawnBall();
+        this.playScene.getGame().spawnBall();
     }
 }

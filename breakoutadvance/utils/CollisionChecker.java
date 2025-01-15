@@ -1,7 +1,7 @@
 package breakoutadvance.utils;
 
-import breakoutadvance.objects.Ball;
 import breakoutadvance.objects.AbstractEntity;
+import breakoutadvance.objects.Ball;
 import breakoutadvance.objects.Paddle;
 import breakoutadvance.objects.Powerup;
 

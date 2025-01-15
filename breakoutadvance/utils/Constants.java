@@ -5,9 +5,12 @@ public class Constants {
     // Paddle constants
     public static final int PADDLE_WIDTH = 200;
     public static final int PADDLE_HEIGHT = 16;
+    public static final double MAX_PADDLE_SIZE_TO_SCREEN = 0.25;
+    public static final double PADDLE_EXTEND_PER_POWERUP = 1.2;
 
     // Ball constants
     public static final int BALL_RADIUS = 16;
+    public static final double MINIMUN_BALL_Y_VELOCITY = 0.2;
 
     // Block constants
     public static final int BLOCK_WIDTH = 128;
@@ -23,5 +26,8 @@ public class Constants {
 
     // Starting hearts
     public static final int STARTING_HEARTS = 3;
+
+    // Grid constants
+    public static final int OFFSET_BETWEEN_BLOCKS = 3;
 }
 

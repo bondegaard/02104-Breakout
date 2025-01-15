@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 public enum Images {
 

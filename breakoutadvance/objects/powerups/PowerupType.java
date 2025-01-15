@@ -36,14 +36,14 @@ public enum PowerupType {
         return switch (type) {
             case PLUS_ONE -> new PowerUpExtraBall(playScene, posX, posY, height, width, velX, velY);
             case PLUS_WIDTH -> {
-                if (playScene.getPaddleWidth() <= WindowUtils.getWindowWidth() / 4) {
+                if (playScene.getGame().getPaddle().getWidth() <= WindowUtils.getWindowWidth() / 4) {
                     yield new PowerUpExpandPaddle(playScene, posX, posY, height, width, velX, velY);
                 }
                 yield null;
             }
             case BOMB -> new BombObstacle(playScene, posX, posY, height, width, velX, velY);
             case HEART -> {
-                if (playScene.getLives() <= 5) {
+                if (playScene.getGame().getLives() <= 5) {
                     yield new HearthObstacle(playScene, posX, posY, height, width, velX, velY);
                 }
                 yield null;
