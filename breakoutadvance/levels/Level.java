@@ -2,19 +2,19 @@ package breakoutadvance.levels;
 
 public class Level {
 
-    private final String name = "level_unknown";
+    private String name = "level_unknown";
 
-    private final String nextLevel = "level_unknown";
+    private String nextLevel = "level_unknown";
 
-    private final double paddleWidth = 200;
+    private double paddleWidth = 200;
 
-    private final double ballSpeed = 1.0;
+    private double ballSpeed = 1.0;
 
-    private final double maxBallVelocity = 1.0;
+    private double maxBallVelocity = 1.0;
 
-    private final double powerUpSpeed = 0.01;
+    private double powerUpSpeed = 0.01;
 
-    private final double paddleSpeed = 1.0;
+    private double paddleSpeed = 1.0;
 
     private LevelMap levelMap = new LevelMap();
 
