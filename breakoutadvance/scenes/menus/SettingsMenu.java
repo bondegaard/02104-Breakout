@@ -22,10 +22,6 @@ import java.util.List;
 import static breakoutadvance.utils.Fonts.getFont;
 
 public class SettingsMenu extends AbstractMenu {
-
-    private final String[] ballColors = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
-    private final String[] paddleColors = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
-
     private int currentBallColorIndex;
     private int currentPaddleColorIndex;
 
@@ -36,19 +32,19 @@ public class SettingsMenu extends AbstractMenu {
     public SettingsMenu() {
         super(); // calls AbstractMenu -> AbstractScene -> uses WindowUtils.getPrimaryStage()
 
-        VBox vbox = createVBox(Pos.CENTER, 10);
+        VBox vbox = createVBox();
         vbox.setStyle("-fx-padding: 20;");
         vbox.setAlignment(Pos.CENTER);
 
-        Text title = UIComponentFactory.createText("Settings",  "BlackwoodCastle.ttf", 64, Color.WHITE);
+        Text title = UIComponentFactory.createText("Settings",  Constants.DEFAULT_FONT, 64, Color.WHITE);
 
         // Initialize color indices
-        currentBallColorIndex = Arrays.asList(ballColors).indexOf(
+        currentBallColorIndex = Arrays.asList(Constants.BALL_COLORS).indexOf(
                 Breakout.getInstance().getDataManager().getData().getBallColor()
         );
         if (currentBallColorIndex < 0) currentBallColorIndex = 0;
 
-        currentPaddleColorIndex = Arrays.asList(paddleColors).indexOf(
+        currentPaddleColorIndex = Arrays.asList(Constants.PADDLE_COLORS).indexOf(
                 Breakout.getInstance().getDataManager().getData().getPaddleColor()
         );
         if (currentPaddleColorIndex < 0) currentPaddleColorIndex = 0;
@@ -65,7 +61,7 @@ public class SettingsMenu extends AbstractMenu {
         Label volumeLabel = UIComponentFactory.createLabel(
                 String.format("Volume: %3d %%", (int) volumeSlider.getValue()),
                 20,
-                getFont( Constants.FONT_FILEPATH + "BlackwoodCastle.ttf")
+                getFont( Constants.DEFAULT_FONT)
         );
         volumeLabel.setMaxWidth(400);
         volumeLabel.setMinWidth(400);
@@ -82,7 +78,7 @@ public class SettingsMenu extends AbstractMenu {
         CheckBox muteCheckBox = UIComponentFactory.createCheckBox(
                 "Mute",
                 Breakout.getInstance().getDataManager().getData().isMute(),
-                getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf")
+                getFont(Constants.DEFAULT_FONT)
         );
         muteCheckBox.selectedProperty().addListener((observable, oldVal, newVal) -> {
             Breakout.getInstance().getDataManager().getData().setMute(newVal);
@@ -90,19 +86,19 @@ public class SettingsMenu extends AbstractMenu {
         });
 
         // Ball color selector
-        HBox hboxBall = createColorSelector(ballColors, currentBallColorIndex, true);
+        HBox hboxBall = createColorSelector(Constants.BALL_COLORS, currentBallColorIndex, true);
 
         // Paddle color selector
-        HBox hboxPaddle = createColorSelector(paddleColors, currentPaddleColorIndex, false);
+        HBox hboxPaddle = createColorSelector(Constants.PADDLE_COLORS, currentPaddleColorIndex, false);
 
         // Back button
-        Text backBtn = UIComponentFactory.createText("Back", "BlackwoodCastle.ttf", 64, Color.YELLOW);
+        Text backBtn = UIComponentFactory.createText("Back", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Constants.HIGHLIGHT_TEXT_COLOR);
         backBtn.setOnMouseClicked(event -> {
             Breakout.getInstance().setCurrentScene(new MainMenu());
         });
 
         vbox.getChildren().addAll(title, volumeBox, muteCheckBox, hboxBall, hboxPaddle, backBtn);
-        pane.getChildren().add(vbox);
+        getPane().getChildren().add(vbox);
 
         setupKeyPressedEvents();
     }
@@ -113,8 +109,8 @@ public class SettingsMenu extends AbstractMenu {
     private <T> HBox createColorSelector(T[] colors, int currentIndex, boolean isBall) {
         List<T> colorList = Arrays.asList(colors);
 
-        Text leftArrow = UIComponentFactory.createText("<", "BLACEB__.ttf", 48, Color.WHITE);
-        Text rightArrow = UIComponentFactory.createText(">", "BLACEB__.ttf", 48, Color.WHITE);
+        Text leftArrow = UIComponentFactory.createText("<", Constants.FONT_FILEPATH + "BLACEB__.ttf", Constants.DEFAULT_FONT_SIZE*3/4, Constants.NORMAL_TEXT_COLOR);
+        Text rightArrow = UIComponentFactory.createText(">", Constants.FONT_FILEPATH + "BLACEB__.ttf", Constants.DEFAULT_FONT_SIZE*3/4, Constants.NORMAL_TEXT_COLOR);
 
         // Initialize ImageView with the current color image
         ImageView colorImageView = createColorImageView(colorList.get(currentIndex).toString(), isBall);
@@ -144,13 +140,11 @@ public class SettingsMenu extends AbstractMenu {
      * Helper for building the ImageView from path.
      */
     private ImageView createColorImageView(String colorName, boolean isBall) {
-        // If you have different paths for ball/paddle, change accordingly:
-        // e.g. "assets/img/paddles/" + colorName + "_paddle.png" for paddles
         String imagePath;
         if (isBall) {
             imagePath = Constants.BALL_FILEPATH + colorName + ".png";
         } else {
-            imagePath = Constants.PADDLE_FILEPATH + colorName + ".png"; // adjust for paddle if needed
+            imagePath = Constants.PADDLE_FILEPATH + colorName + ".png";
         }
         Image image = Images.getImage(imagePath);
         return new ImageView(image);
@@ -190,7 +184,7 @@ public class SettingsMenu extends AbstractMenu {
      */
     private void setupKeyPressedEvents() {
         // 'scene' is inherited from AbstractScene
-        scene.setOnKeyPressed(event -> {
+        getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE || event.getCode() == KeyCode.ENTER) {
                 Breakout.getInstance().getDataManager().saveData();
                 Breakout.getInstance().setCurrentScene(new MainMenu());

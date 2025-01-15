@@ -28,11 +28,11 @@ public class UIComponentFactory {
      * @param color   the color to fill the text with; if {@code null}, defaults to {@link Color#WHITE}.
      * @return a {@link Text} node with the specified content, font size, color, and font.
      */
-    public static Text createText(String content, String fontname, int size, Color color) {
+    public static Text createText(String content, String fontpath, int size, Color color) {
         Text text = new Text(content);
-        text.setFont(getFont(Constants.FONT_FILEPATH + fontname));
+        text.setFont(getFont(fontpath));
         text.setStyle("-fx-font-size: " + size + ";");
-        text.setFill(color != null ? color : Color.WHITE);
+        text.setFill(color != null ? color : Constants.NORMAL_TEXT_COLOR);
         return text;
     }
 

@@ -1,7 +1,6 @@
 package breakoutadvance.levels;
 
 public class Level {
-
     private String name = "level_unknown";
 
     private String nextLevel = "level_unknown";

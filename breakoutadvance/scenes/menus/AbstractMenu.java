@@ -2,25 +2,19 @@ package breakoutadvance.scenes.menus;
 
 import breakoutadvance.scenes.AbstractScene;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.Images;
-import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import static breakoutadvance.utils.Fonts.getFont;
+import static breakoutadvance.utils.Images.getImage;
 
 /**
  * Base class for menu scenes, using AbstractScene's ability
  * to set the Scene on the primary stage from WindowUtils.
  */
-public abstract class    AbstractMenu extends AbstractScene {
-
-    protected static final int FONT_SIZE = 64;
-    protected static final Color NORMAL_COLOR = Color.WHITE;
-    protected static final Color HIGHLIGHT_COLOR = Color.YELLOW;
-
+public abstract class AbstractMenu extends AbstractScene {
     /**
      * Default constructor uses the WindowUtils' primary stage.
      */
@@ -32,12 +26,19 @@ public abstract class    AbstractMenu extends AbstractScene {
         addBackgroundImage();
     }
 
-    /**
-     * Sets the background image to a default background image. If any errors it falls back to a completely black background.
-     */
     protected void addBackgroundImage() {
+        Image image;
         try {
-            Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background2.png");
+            image = getImage(Constants.MENU_BACKGROUND);
+        } catch (Exception e) {
+            System.err.println("Error loading background image, using black background instead.");
+            image = null;
+        }
+        setPaneBackground(image);
+    }
+
+    private void setPaneBackground(Image image) {
+        if (image != null) {
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,
                     BackgroundRepeat.REPEAT,
@@ -45,42 +46,34 @@ public abstract class    AbstractMenu extends AbstractScene {
                     BackgroundPosition.CENTER,
                     BackgroundSize.DEFAULT
             );
-            pane.setBackground(new Background(backgroundImage));
-        } catch (Exception e) {
-            System.err.println("Error loading background image, using black background instead.");
-            pane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, null)));
+            getPane().setBackground(new Background(backgroundImage));
+        } else {
+            getPane().setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, null)));
         }
     }
 
-    /**
-     * @param content A String that will be the text that will be displayed visible on the screen.
-     * @param size    An integer this will be the font size.
-     * @param color   The text color.
-     * @return
-     */
-    protected Text createText(String content, int size, Color color) {
-        Text text = new Text(content);
-        text.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf", FONT_SIZE));
-        text.setFill(color);
-        return text;
-    }
 
     /**
      * Creates a Text item for the menu with given label and on-click action.
      */
     protected Text createMenuItem(String label, Runnable onClickAction) {
-        Text text = createText(label, FONT_SIZE, NORMAL_COLOR);
+        Text text = new Text(label);
+        text.setFont(getFont(Constants.DEFAULT_FONT));
+        text.setFill(Constants.NORMAL_TEXT_COLOR);
         text.setOnMouseClicked(e -> onClickAction.run());
         return text;
     }
 
-    protected VBox createVBox(Pos alignment, int spacing) {
-        VBox vbox = new VBox(spacing);
-        vbox.setAlignment(alignment);
+    protected VBox createVBox() {
+        VBox vbox = new VBox(Constants.DEFAULT_VBOX_SPACING);
+        vbox.setAlignment(Constants.DEFAULT_VBOX_ALIGNMENT);
+        centerNodeInPane(vbox);
 
-        // Center the VBox in the pane
-        vbox.layoutXProperty().bind(pane.widthProperty().subtract(vbox.widthProperty()).divide(2));
-        vbox.layoutYProperty().bind(pane.heightProperty().subtract(vbox.heightProperty()).divide(2));
         return vbox;
+    }
+
+    private void centerNodeInPane(Region node) {
+        node.layoutXProperty().bind(getPane().widthProperty().subtract(node.widthProperty()).divide(2));
+        node.layoutYProperty().bind(getPane().heightProperty().subtract(node.heightProperty()).divide(2));
     }
 }

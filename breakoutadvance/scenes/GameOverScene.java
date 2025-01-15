@@ -23,7 +23,7 @@ public class GameOverScene extends AbstractMenu {
     public GameOverScene(int score) {
         super();
 
-        VBox vbox = createVBox(Pos.CENTER, 10);
+        VBox vbox = createVBox();
         //vbox.setStyle("-fx-background-color: black; -fx-padding: 50");
 
         Text gameOverText = createMenuItem("Game Over!", null);
@@ -61,7 +61,7 @@ public class GameOverScene extends AbstractMenu {
         // Setup Keyboard events
         setupKeyPressedEvents();
 
-        pane.getChildren().add(vbox);
+        getPane().getChildren().add(vbox);
     }
 
     private Runnable mainMenu() {
@@ -117,10 +117,10 @@ public class GameOverScene extends AbstractMenu {
                     BackgroundPosition.CENTER,
                     BackgroundSize.DEFAULT
             );
-            pane.setBackground(new Background(backgroundImage));
+            getPane().setBackground(new Background(backgroundImage));
         } catch (Exception e) {
             System.err.println("Error loading background image, using black background instead.");
-            pane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, null)));
+            getPane().setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, null)));
         }
     }
 
@@ -129,7 +129,7 @@ public class GameOverScene extends AbstractMenu {
      */
     private void selectText(int btnIndex) {
         for (int i = 0; i < textItems.length; i++) {
-            textItems[i].setFill(i == btnIndex ? HIGHLIGHT_COLOR : NORMAL_COLOR);
+            textItems[i].setFill(i == btnIndex ? Constants.HIGHLIGHT_TEXT_COLOR : Constants.NORMAL_TEXT_COLOR);
         }
     }
 }

@@ -11,9 +11,9 @@ import javafx.scene.text.Font;
  * Abstract class to handle different kinds of scenes
  */
 public abstract class AbstractScene {
-    protected Scene scene; // Scene that is displayed
+    private Scene scene; // Scene that is displayed
 
-    protected Pane pane; // Pane which spands the full screen.
+    private Pane pane; // Pane which spands the full screen.
 
     /**
      * Create a basic Scene

@@ -88,6 +88,7 @@ public class Game {
 
     public boolean checkVictory() {
         if (this.grid.getAliveAmount() <= 0) {
+            togglePlaying();
             Breakout.getInstance().getLevelManager().setNextLevel();
             this.level = Breakout.getInstance().getLevelManager().getCurrentLevel();
             resetBallAndPaddle();

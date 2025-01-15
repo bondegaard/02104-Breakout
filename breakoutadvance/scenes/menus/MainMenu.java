@@ -5,10 +5,8 @@ import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.WindowUtils;
 import javafx.application.Platform;
-import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import static breakoutadvance.utils.Fonts.getFont;
@@ -17,49 +15,62 @@ import static breakoutadvance.utils.Fonts.getFont;
  * Main menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.
  */
 public class MainMenu extends AbstractMenu {
-
-    private final Text[] textItems;
+    private Text[] textItems;
     private int selectedBtn = 0;
-    private Text displayHighScore;
 
     public MainMenu() {
         super();
 
-        VBox vbox = createVBox(Pos.CENTER, 10);
+        VBox vbox = createVBox();
+        setupMenuItems(vbox);
+        getPane().getChildren().add(vbox);
 
-        // Prepare menu text items
-        Text startText = createMenuItem("Start", this::startGame);
-        Text settingsText = createMenuItem("Settings", this::openSettings);
-        Text quitText = createMenuItem("Quit", this::quitGame);
-
-        textItems = new Text[]{startText, settingsText, quitText};
-
-        vbox.getChildren().addAll(textItems);
-        pane.getChildren().add(vbox);
-
-        // Highlight the initially selected item
-        selectText(selectedBtn);
-
-        // Setup keyboard navigation
         setupKeyPressedEvents();
-
-        // Add highScore
         addHighScore();
     }
 
+    private void setupMenuItems(VBox vbox) {
+        String[] labels = {"Start", "Settings", "Quit"};
+        Runnable[] actions = {this::startGame, this::openSettings, this::quitGame};
 
-    /**
-     * Update the highlighting for the currently selected menu item.
-     */
+        textItems = new Text[labels.length];
+        for (int i = 0; i < labels.length; i++) {
+            textItems[i] = createMenuItem(labels[i], actions[i]);
+        }
+        vbox.getChildren().addAll(textItems);
+        selectText(selectedBtn);
+    }
+
+    private void setupKeyPressedEvents() {
+        getScene().setOnKeyPressed(event -> {
+            KeyCode code = event.getCode();
+            if (code == KeyCode.ENTER) {
+                btnEnter();
+            } else {
+                handleNavigation(code);
+            }
+        });
+    }
+
+    private void handleNavigation(KeyCode code) {
+        if (code == KeyCode.UP || code == KeyCode.W) {
+            selectedBtn = (selectedBtn - 1 + textItems.length) % textItems.length;
+        } else if (code == KeyCode.DOWN || code == KeyCode.S) {
+            selectedBtn = (selectedBtn + 1) % textItems.length;
+        }
+        selectText(selectedBtn);
+    }
+
     private void selectText(int btnIndex) {
         for (int i = 0; i < textItems.length; i++) {
-            textItems[i].setFill(i == btnIndex ? HIGHLIGHT_COLOR : NORMAL_COLOR);
+            highlightMenuItem(textItems[i], i == btnIndex);
         }
     }
 
-    /**
-     * Handles “Enter” key presses according to which item is currently selected.
-     */
+    private void highlightMenuItem(Text item, boolean isSelected) {
+        item.setFill(isSelected ? Constants.HIGHLIGHT_TEXT_COLOR : Constants.NORMAL_TEXT_COLOR);
+    }
+
     private void btnEnter() {
         switch (selectedBtn) {
             case 0 -> startGame();
@@ -69,49 +80,35 @@ public class MainMenu extends AbstractMenu {
         }
     }
 
-    /**
-     * Sets up the event handler for arrow key navigation.
-     */
-    private void setupKeyPressedEvents() {
-        // 'scene' is inherited from AbstractScene
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                btnEnter();
-            } else if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.W) {
-                selectedBtn = (selectedBtn - 1 + textItems.length) % textItems.length;
-                selectText(selectedBtn);
-            } else if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.S) {
-                selectedBtn = (selectedBtn + 1) % textItems.length;
-                selectText(selectedBtn);
-            }
-        });
+    public void addHighScore() {
+        Text displayHighScore = new Text("High Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
+        displayHighScore.setFont(getFont(Constants.DEFAULT_FONT));
+        displayHighScore.setStyle(Constants.HIGH_SCORE_STYLE);
+        displayHighScore.setFill(Constants.HIGH_SCORE_COLOR);
+        displayHighScore.setStrokeWidth(Constants.HIGH_SCORE_STROKE_WIDTH);
+        displayHighScore.setStroke(Constants.HIGH_SCORE_STROKE_COLOR);
+
+        getPane().getChildren().add(displayHighScore);
+        alignHighScore(displayHighScore);
     }
 
-    public void addHighScore() {
-        // Text to display HighScore
-        this.displayHighScore = new Text("Top Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
-        this.displayHighScore.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
-        this.displayHighScore.setStyle("-fx-font-size: 80px;");
-        this.displayHighScore.setFill(Color.YELLOW);
-        this.displayHighScore.setStrokeWidth(3);
-        this.displayHighScore.setStroke(Color.BLACK);
-        this.getPane().getChildren().add(this.displayHighScore);
-
-        // Center the text after it is added to the scene as it needs to be visible and text changes
-        // This makes sure that it is centered no matter what
-        this.displayHighScore.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
+    private void alignHighScore(Text text) {
+        text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
             Platform.runLater( () -> {
-                double textWidth = newValue.getWidth();
                 double textHeight = newValue.getHeight();
-                this.displayHighScore.setX(10);
-                this.displayHighScore.setY(WindowUtils.getWindowHeight() - (textHeight / 2));
+                text.setX(10);
+                text.setY(WindowUtils.getWindowHeight() - (textHeight / 2));
             });
         });
     }
 
-    /* Convenience methods for each action */
     private void startGame() {
-        Breakout.getInstance().setCurrentScene(new PlayScene());
+        try {
+            Breakout.getInstance().setCurrentScene(new PlayScene());
+        } catch (Exception e) {
+            System.err.println("Failed to start the game: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void openSettings() {
@@ -122,4 +119,3 @@ public class MainMenu extends AbstractMenu {
         System.exit(0);
     }
 }
-
