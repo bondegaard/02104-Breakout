@@ -19,8 +19,8 @@ import java.util.Random;
 public class BombExplosion {
 
     private final int animationTime = 200; // Animation time
-    private final Random rand = new Random();
-    private final Color[] colors = new Color[]{Color.RED, Color.YELLOW, Color.ORANGE, Color.ORANGERED};
+    private final Random rand = new Random(); // Used to get random numbers
+    private final Color[] colors = new Color[]{Color.RED, Color.YELLOW, Color.ORANGE, Color.ORANGERED}; // Possible colors of particles
 
     public BombExplosion(double posX, double posY, Pane pane) {
 
@@ -55,9 +55,9 @@ public class BombExplosion {
         bombExplosion.play();
     }
 
-    private ScaleTransition createScaleTransition(Circle circle, double scaleFactor) {
+    private ScaleTransition createScaleTransition(Circle particle, double scaleFactor) {
         // Creating a scale transition, based on animationTime and the given object
-        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(animationTime), circle);
+        ScaleTransition scaleTransition = new ScaleTransition(Duration.millis(animationTime), particle);
 
         // Changing the scale from 100% to a random given number (scaleFactor)
         scaleTransition.setFromX(1);
@@ -69,9 +69,9 @@ public class BombExplosion {
         return scaleTransition;
     }
 
-    private FadeTransition createFadeTransition(Circle circle) {
+    private FadeTransition createFadeTransition(Circle particle) {
         // Creating a fade transition, based on animationTime * 2, since we want to see the particles all the time
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(animationTime *2), circle);
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(animationTime *2), particle);
 
         // Changing the opacity from 100% to 0
         fadeTransition.setFromValue(1.0);
@@ -81,9 +81,9 @@ public class BombExplosion {
         return fadeTransition;
     }
 
-    private TranslateTransition createTranslateTransition(Circle circle, double x, double y) {
+    private TranslateTransition createTranslateTransition(Circle particle, double x, double y) {
         // Creating a translation transition, which changes the location of the particles
-        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(animationTime), circle);
+        TranslateTransition translateTransition = new TranslateTransition(Duration.millis(animationTime), particle);
 
         // Setting the particle to move a set position in both its x- and y-axis
         translateTransition.setByX(x);
