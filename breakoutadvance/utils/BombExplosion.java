@@ -9,7 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-
 import java.util.Random;
 
 /**
@@ -34,7 +33,7 @@ public class BombExplosion {
 
         for (int i = 0; i < numberOfParticles; i++) {
             // Creating new particle, with a randomly selected color from the colors array
-            Circle eParticle = new Circle(posX, posY, rand.nextInt(2,5), colors[rand.nextInt(3)]);
+            Circle eParticle = new Circle(posX, posY, rand.nextInt(2, 5), colors[rand.nextInt(3)]);
 
             // Scaling transition
             ScaleTransition scaling = createScaleTransition(eParticle, rand.nextDouble());
@@ -44,7 +43,7 @@ public class BombExplosion {
 
             // Adding translating transition, to make the particles move
             // Interval from [-100, 99]
-            TranslateTransition translating = createTranslateTransition(eParticle, rand.nextInt(200)-100, rand.nextInt(200)-100);
+            TranslateTransition translating = createTranslateTransition(eParticle, rand.nextInt(200) - 100, rand.nextInt(200) - 100);
 
             // Combining the animations
             bombExplosion.getChildren().add(new ParallelTransition(scaling, fading, translating));
@@ -62,7 +61,8 @@ public class BombExplosion {
 
     /**
      * Creating a scale transition, which makes the particles/circles smaller from their start size
-     * @param particle What to scale
+     *
+     * @param particle    What to scale
      * @param scaleFactor Factor to scale with
      * @return ScaleTransition
      */
@@ -82,12 +82,13 @@ public class BombExplosion {
 
     /**
      * Fading the particles, making them more transparent over time
+     *
      * @param particle What to fade
      * @return FadeTransition
      */
     private FadeTransition createFadeTransition(Circle particle) {
         // Creating a fade transition, based on animationTime * 2, since we want to see the particles all the time
-        FadeTransition fadeTransition = new FadeTransition(Duration.millis(animationTime *2), particle);
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(animationTime * 2), particle);
 
         // Changing the opacity from 100% to 0
         fadeTransition.setFromValue(1.0);
@@ -99,9 +100,10 @@ public class BombExplosion {
 
     /**
      * Making the particles move, from a start position, to a random location
+     *
      * @param particle The particle/circle to move
-     * @param x How far to move along the x-axis
-     * @param y How far to move along the y-axis
+     * @param x        How far to move along the x-axis
+     * @param y        How far to move along the y-axis
      * @return TranslateTransition
      */
     private TranslateTransition createTranslateTransition(Circle particle, double x, double y) {

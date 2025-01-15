@@ -22,29 +22,25 @@ public enum Sound {
     WON("./assets/sound/won.wav"),
     LOSE("./assets/sound/lose.wav");
 
+    // Map to store the media objects
+    private static final Map<Sound, Media> mediaMap = new HashMap<>();
+    // MediaPlayer object to play the sound
+    private static MediaPlayer mediaPlayer;
     // File name of the sound
     private final String fileName;
 
-    // Map to store the media objects
-    private static final Map<Sound, Media> mediaMap = new HashMap<>();
-
-    // MediaPlayer object to play the sound
-    private static MediaPlayer mediaPlayer;
-
     /**
      * Constructor for the Sound enum
+     *
      * @param fileName The file name of the sound
      */
     Sound(String fileName) {
         this.fileName = fileName;
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
     /**
      * Get a random hit sound
+     *
      * @return A random hit sound
      */
     public static Sound getRandomHitSound() {
@@ -53,6 +49,7 @@ public enum Sound {
 
     /**
      * Play a sound
+     *
      * @param sound The sound to play
      */
     public static void playSound(Sound sound) {
@@ -85,5 +82,9 @@ public enum Sound {
                 }
             });
         }
+    }
+
+    public String getFileName() {
+        return fileName;
     }
 }

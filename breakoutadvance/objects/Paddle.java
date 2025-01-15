@@ -1,4 +1,3 @@
-
 package breakoutadvance.objects;
 
 import breakoutadvance.scenes.PlayScene;
@@ -22,14 +21,15 @@ public class Paddle extends AbstractEntity {
 
     /**
      * Create a paddle
+     *
      * @param playScene current instance of playScene
-     * @param posX x position
-     * @param posY y position
-     * @param velX Starting velocity in the x direction
-     * @param height height of the paddle
-     * @param width width of the paddle
+     * @param posX      x position
+     * @param posY      y position
+     * @param velX      Starting velocity in the x direction
+     * @param height    height of the paddle
+     * @param width     width of the paddle
      */
-    public Paddle(PlayScene playScene, double posX, double posY, double velX, double height, double width /*, String imgPath*/){
+    public Paddle(PlayScene playScene, double posX, double posY, double velX, double height, double width /*, String imgPath*/) {
         super(posX, posY, height, width);
         this.velX = velX;
 
@@ -57,7 +57,7 @@ public class Paddle extends AbstractEntity {
      * Prevent paddle from going out of the screen and update postion visibility.
      */
     public void updatePosXRight() {
-        if (this.getPosX() + velX < WindowUtils.getWindowWidth()-this.getWidth())
+        if (this.getPosX() + velX < WindowUtils.getWindowWidth() - this.getWidth())
             this.setPosX(this.getPosX() + velX);
         this.getNode().relocate(this.getPosX(), this.getPosY());
     }
@@ -71,20 +71,20 @@ public class Paddle extends AbstractEntity {
         this.getNode().relocate(this.getPosX(), this.getPosY());
     }
 
-    public double getVelX(){
+    public double getVelX() {
         return velX;
     }
 
-    public void setVelX(double velX){
+    public void setVelX(double velX) {
         this.velX = velX;
     }
 
-    public void setImg(Image img){
-        imgView.setImage(img);
+    public Image getImg() {
+        return img;
     }
 
-    public Image getImg(){
-        return img;
+    public void setImg(Image img) {
+        imgView.setImage(img);
     }
 
     public ImageView getImgView() {

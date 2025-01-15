@@ -1,20 +1,11 @@
 package breakoutadvance.scenes;
 
-import breakoutadvance.Breakout;
-import breakoutadvance.core.GameLoop;
-import breakoutadvance.core.Grid;
-import breakoutadvance.levels.Level;
-import breakoutadvance.objects.*;
-import breakoutadvance.objects.powerups.PowerupType;
-import breakoutadvance.persistentdata.data.Data;
-import breakoutadvance.persistentdata.data.Game;
-import breakoutadvance.utils.*;
-import breakoutadvance.utils.BombExplosion;
-import breakoutadvance.utils.CollisionChecker;
-import breakoutadvance.utils.EdgeHit;
+import breakoutadvance.core.Game;
+import breakoutadvance.objects.Ball;
+import breakoutadvance.objects.LifesDisplay;
+import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.Fonts;
 import breakoutadvance.utils.Images;
-import breakoutadvance.utils.Sound;
 import breakoutadvance.utils.WindowUtils;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
@@ -24,56 +15,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-
 public class PlayScene extends AbstractScene {
 
-    private boolean playing = false;
-
-    private Grid grid;
-
-    private List<Ball> balls = new ArrayList<>();
-
-    private List<Powerup> powerups = new ArrayList<>();
-
-    private Paddle paddle;
-
+    private final LifesDisplay lifesDisplay;
+    private final breakoutadvance.core.Game game;
     private Text startOrPauseText;
-
     private Text infoText;
-
     private Text addInfoText;
-
-    private final Random random = new Random();
-
-    private int lives;
     private Text deathPauseText;
     private Text deathInfoText;
-    private boolean died = false;
-
-    private Text displayScore;
-    public int score = 0;
-
-    private final LifesDisplay lifesDisplay;
-
-    private Level level;
-
+    private Text displayScoreText;
 
 
     public PlayScene() {
-        this.level = Breakout.getInstance().getLevelManager().getCurrentLevel();
+        this.game = new breakoutadvance.core.Game(this);
 
         this.addBackgroundImage();
-        this.grid = new Grid(this, this.level.getLevelMap());
-
-        // Creating paddle
-        this.paddle = new Paddle(this, WindowUtils.getWindowWidth()/2 - ((double) this.level.getPaddleWidth() /2), WindowUtils.getWindowHeight() * 0.8, this.level.getPaddleSpeed(), Constants.PADDLE_HEIGHT, this.level.getPaddleWidth());
-
-        // Set Hearts
-        this.lives = Constants.STARTING_HEARTS;
 
         // Add start or pause text
         addStartOrPauseText();
@@ -86,16 +43,41 @@ public class PlayScene extends AbstractScene {
 
         // Add lives
         this.lifesDisplay = new LifesDisplay();
-        this.lifesDisplay.updateLives(this, lives);
+        this.lifesDisplay.updateLives(this, this.game.getLives());
 
         // Add score
         addDisplayScore();
-
-        // Spawn ball
-        spawnBall();
     }
 
-    public void addBackgroundImage(){
+    public void setupKeyPressedEvents() {
+        this.getScene().setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                this.game.togglePlaying();
+                addInfoText.setVisible(false);
+
+                if (!this.game.isPlaying()) this.startOrPauseText.setText("Press ENTER to continue");
+            }
+            if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
+                this.game.getPaddle().setMoveLeft(true);
+            }
+
+            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT || event.getCode() == KeyCode.D) {
+                this.game.getPaddle().setMoveRight(true);
+            }
+        });
+
+        this.getScene().setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
+                this.game.getPaddle().setMoveLeft(false);
+            }
+
+            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT || event.getCode() == KeyCode.D) {
+                this.game.getPaddle().setMoveRight(false);
+            }
+        });
+    }
+
+    public void addBackgroundImage() {
         this.getScene().setFill(Color.BLACK);
         try {
             Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background12.png");
@@ -114,33 +96,6 @@ public class PlayScene extends AbstractScene {
         }
     }
 
-    public void setupKeyPressedEvents() {
-        this.getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-               playing = !playing;
-               addInfoText.setVisible(false);
-
-               if (!playing) this.startOrPauseText.setText("Press ENTER to continue");
-            }
-            if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
-                this.paddle.setMoveLeft(true);
-            }
-
-            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT|| event.getCode() == KeyCode.D) {
-                this.paddle.setMoveRight(true);
-            }
-        });
-
-        this.getScene().setOnKeyReleased( event -> {
-            if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
-                this.paddle.setMoveLeft(false);
-            }
-
-            if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT|| event.getCode() == KeyCode.D) {
-                this.paddle.setMoveRight(false);
-            }
-        });
-    }
 
     public void addStartOrPauseText() {
         this.startOrPauseText = new Text("Press ENTER to start");
@@ -173,35 +128,13 @@ public class PlayScene extends AbstractScene {
         addCenterTextListener(this.addInfoText, 2, 1.6);
 
         // Listen for window resize and update positions accordingly
-     //   this.getScene().widthProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
-     //   this.getScene().heightProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
-    }
-
-    /**
-     * Makes sure the text is at the middle of the screen
-     * @param text
-     * @param xOffset
-     * @param yOffSet
-     */
-    private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
-        if (text == null) return;
-
-        text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-
-            // Make sure bounds of text are updated correctly before calculating new position
-            Platform.runLater(() -> {
-                double textWidth = newValue.getWidth();
-                double textHeight = newValue.getHeight();
-
-                text.setX((WindowUtils.getWindowWidth() - textWidth) / xOffset);
-                text.setY((WindowUtils.getWindowHeight() - textHeight) / yOffSet);
-            });
-        });
+        //   this.getScene().widthProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
+        //   this.getScene().heightProperty().addListener((observable, oldValue, newValue) -> updateTextPositions());
     }
 
     public void addDeathPauseText() {
         // Text to display start or pause information
-        this.deathPauseText = new Text("You Died. You have " + lives + " left.");
+        this.deathPauseText = new Text("You Died. You have " + this.game.getLives() + " left.");
         this.deathPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
         this.deathPauseText.setFill(Color.BLACK);
         this.deathPauseText.setStroke(Color.LIGHTGRAY);
@@ -229,370 +162,126 @@ public class PlayScene extends AbstractScene {
 
 
         // Text to display start or pause information
-        this.displayScore = new Text("Score: " + this.getScore());
-        this.displayScore.setFont(Font.font(currentFont.getFamily(), 80));
-        this.displayScore.setFill(Color.BLACK);
-        this.displayScore.setStroke(Color.LIGHTGRAY);
-        this.displayScore.setStrokeWidth(1.5);
-        this.displayScore.setVisible(true);
-        this.getPane().getChildren().add(this.displayScore);
+        this.displayScoreText = new Text("Score: " + this.game.getScore());
+        this.displayScoreText.setFont(Font.font(currentFont.getFamily(), 80));
+        this.displayScoreText.setFill(Color.BLACK);
+        this.displayScoreText.setStroke(Color.LIGHTGRAY);
+        this.displayScoreText.setStrokeWidth(1.5);
+        this.displayScoreText.setVisible(true);
+        this.getPane().getChildren().add(this.displayScoreText);
 
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
-        addCenterTextListener(this.displayScore, 20, 1);
-    }
-
-    public void increaseHealth() {
-        lives++;
-        this.lifesDisplay.updateLives(this, lives);
+        addCenterTextListener(this.displayScoreText, 20, 1);
     }
 
     /**
-     * When the player dies, 1 will be subtracted from the players lives.
-     * It will also display how many lives you have left, while updating the visual hearts in the bottom right
-     * Furthermore it will save a potential highscore
+     * Makes sure the text is at the middle of the screen
+     *
+     * @param text
+     * @param xOffset
+     * @param yOffSet
      */
-    public void hasDied(){
-        lives--;
-        this.lifesDisplay.updateLives(this, lives);
+    private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
+        if (text == null) return;
 
-        //reset and update paddle width of paddle when die
-        resetBallAndPaddle();
+        text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
 
+            // Make sure bounds of text are updated correctly before calculating new position
+            Platform.runLater(() -> {
+                double textWidth = newValue.getWidth();
+                double textHeight = newValue.getHeight();
 
-//        this.paddle.setWidth(Constants.PADDLE_WIDTH);
-//        this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
-//        this.paddle.setImg(PaddleUtil.buildPaddleImage(Constants.PADDLE_WIDTH));
-//        this.paddle.getImgView().setFitWidth(Constants.PADDLE_WIDTH);
-//        this.paddle.setWidth(Constants.PADDLE_WIDTH);
-
-        // Prettier
-        if (lives == 1)
-            this.deathPauseText.setText("You Died! You have " + lives + " life left.");
-        else
-            this.deathPauseText.setText("You Died! You have " + lives + " lives left.");
-
-        died = true;
-        playing = false;
-        if (lives <= 0) {
-            // Save new highscore
-            Data data = Breakout.getInstance().getDataManager().getData();
-            if (data.getHighscore() < this.score) {
-                data.setHighscore(this.score);
-
-                data.addGame(new Game(this.score));
-                Breakout.getInstance().getDataManager().saveData();
-                return;
-            }
-
-            Breakout.getInstance().setCurrentScene(new GameOverScene());
-            Sound.playSound(Sound.LOSE);
-        }
+                text.setX((WindowUtils.getWindowWidth() - textWidth) / xOffset);
+                text.setY((WindowUtils.getWindowHeight() - textHeight) / yOffSet);
+            });
+        });
     }
 
 
     /**
      * Every tick, this function will run
      */
-    @Override
     public void onTick() {
-        // Handle unstarted or paused game
-        if (!playing) {
-            if (died) {
+        // Handle text on screen
+        if (handleTextChangeAndVisibility()) return;
+
+        // Check for Victory and return if victory has been reached
+        if (this.game.checkVictory()) return;
+
+
+        // Check if each ball is out of bounds
+        this.game.checkBallOutOfBounds();
+
+        // Move paddle left
+        if (this.game.getPaddle().isMoveLeft()) {
+            this.game.getPaddle().updatePosXLeft();
+        }
+
+        // Move paddle right
+        if (this.game.getPaddle().isMoveRight()) {
+            this.game.getPaddle().updatePosXRight();
+        }
+
+        // Check Collisions for paddle and ball
+        this.game.checkBallPaddleCollision();
+
+        // Handle ontick for each ball
+        this.game.getBalls().forEach(Ball::onTick);
+
+
+        // Remove powerups under screen or collides with paddle
+        this.game.checkPowerupCollision();
+
+        // handle ontick for each powerup
+        this.game.getPowerups().forEach(p -> p.onTick(this.game.getLevel().getPowerUpSpeed()));
+    }
+
+    /**
+     * Handles when text should be displayed on the screen.
+     * It also handles which text should be displayed!
+     *
+     * @return if text should be displayed and stop game from running when displayed
+     */
+    private boolean handleTextChangeAndVisibility() {
+        if (!this.game.isPlaying()) {
+            if (this.game.isDied()) {
                 startOrPauseText.setVisible(false);
                 infoText.setVisible(false);
                 deathPauseText.setVisible(true);
                 deathInfoText.setVisible(true);
-            }
-            else {
+            } else {
                 deathInfoText.setVisible(false);
                 deathPauseText.setVisible(false);
                 startOrPauseText.setVisible(true);
                 infoText.setVisible(true);
             }
-            return;
+            return true;
         }
 
         // Dont display info text
         startOrPauseText.setVisible(false);
         infoText.setVisible(false);
 
-        died = false;
+        this.game.setDied(false);
         deathPauseText.setVisible(false);
         deathInfoText.setVisible(false);
-
-        // Check for Victory
-        if (this.grid.getAliveAmount() <= 0) {
-            Breakout.getInstance().getLevelManager().setNextLevel();
-            this.level = Breakout.getInstance().getLevelManager().getCurrentLevel();
-            resetBallAndPaddle();
-
-            this.grid = new Grid(this, this.level.getLevelMap());
-
-            Sound.playSound(Sound.WON);
-
-            // Save new highscore
-            Data data = Breakout.getInstance().getDataManager().getData();
-            if (data.getHighscore() < this.score)
-                data.setHighscore(this.score);
-
-            Breakout.getInstance().getDataManager().saveData();
-            return;
-        }
-
-        // Check if each ball is out of bounds
-        Iterator<Ball> iterator = balls.iterator();
-        while (iterator.hasNext()) {
-            Ball ball = iterator.next();
-            if (ball.getPosY() >= WindowUtils.getWindowHeight()) {
-                iterator.remove();
-                this.getPane().getChildren().remove(ball.getNode());
-
-                // Check for lives
-                if (balls.isEmpty()) {
-                    hasDied();
-                }
-            }
-        }
-
-        // Move paddle left
-        if (paddle.isMoveLeft()) {
-            paddle.updatePosXLeft();
-        }
-
-        // Move paddle right
-        if (paddle.isMoveRight()) {
-            paddle.updatePosXRight();
-        }
-
-        // Check Collisions for paddle and ball
-        for (Ball ball : balls) {
-            EdgeHit ballPaddleHit = CollisionChecker.checkCollision(this.paddle, ball);
-            if (ballPaddleHit == EdgeHit.YAXIS) {
-                //double[] vel = calculateNewXVelocityAfterPaddleHit(ball);
-
-                ball.setPosY(this.paddle.getPosY() - ball.getHeight() * 2); // Making sure the ball only hits the paddle once
-                //ball.setVelY(-Math.abs(ball.getVelY()));
-                double[] vel = calcNewVelAfterPaddleColl(ball);
-                ball.setVelX(vel[0]);
-                ball.setVelY(vel[1]);
-
-                Sound.playSound(Sound.PADDLE);
-            }
-
-
-            // Check Collisions between ball and any blocks on the screen
-            boolean flipX = false; // Should X direction be flipped
-            boolean flipY = false;
-            for (int i = 0; i < grid.getGrid().length; i++) {
-                for (int j = 0; j < grid.getGrid()[i].length; j++) {
-                    Block block = grid.getGrid()[i][j];
-
-                    if (block == null) {
-                        continue;
-                    }
-
-                    EdgeHit ballBlockHit = CollisionChecker.checkCollision(block, ball);
-
-                    if (ballBlockHit == EdgeHit.XAXIS) {
-                        flipX = true;
-                        attemptPowerupSpawn(block.getPosX()+block.getWidth()/2, block.getPosY()+block.getHeight()/2);
-
-                        grid.removeBlock(i, j);
-                        Sound.playSound(Sound.getRandomHitSound());
-                    } else if (ballBlockHit == EdgeHit.YAXIS) {
-                        flipY = true;
-                        attemptPowerupSpawn(block.getPosX()+block.getWidth()/2, block.getPosY()+block.getHeight()/2);
-
-                        grid.removeBlock(i, j);
-                        Sound.playSound(Sound.getRandomHitSound());
-                    } else if (ballBlockHit == EdgeHit.BOTH) {
-                        flipX = true;
-                        flipY = true;
-                    }
-                }
-            }
-            if (flipX) ball.flipVelX();
-            if (flipY) ball.flipVelY();
-
-            // Call the ball onTick function for it to move.
-            ball.onTick();
-        }
-
-
-        // Remove powerups under screen or collides with paddle
-        Iterator<Powerup> powerupIterator = powerups.iterator();
-        while (powerupIterator.hasNext()) {
-            Powerup powerup = powerupIterator.next();
-            if (powerup.getPosY() > WindowUtils.getWindowHeight()) {
-                this.getPane().getChildren().remove(powerup.getNode());
-                powerupIterator.remove();
-                continue;
-            }
-            if(CollisionChecker.checkCollision(this.paddle, powerup)) {
-                this.getPane().getChildren().remove(powerup.getNode());
-                powerupIterator.remove();
-                powerup.onCollision();
-            }
-        }
-
-        powerups.forEach(p -> p.onTick(this.level.getPowerUpSpeed()));
+        return false;
     }
 
-    /**
-     * Calculating a new velocity based on where the ball hits the paddle
-     * @param ball The ball which hit the paddle
-     * @return Returning an array with a new x-vel and y-vel
-     */
-    private double[] calcNewVelAfterPaddleColl(Ball ball) {
-        // Getting the middle of the paddle
-        double paddleMiddlePosX = this.paddle.getPosX() + paddle.getWidth() / 2;
-        // Ball position when hitting the paddle
-        double ballHitPosX = ball.getPosX();
-
-        // x = y / 0.75
-        // y = (paddle width) / 2
-        double scaling = (this.getPaddleWidth() / 2.0) / 0.75;
-
-        // Calculating velocities
-        double velX = (paddleMiddlePosX - ballHitPosX) / scaling;
-
-        // Prevent it from going too straight horizontally and vertically
-        double min = 0.25 * this.level.getBallSpeed();
-        double max = 0.75 * this.level.getBallSpeed();
-        if (velX < 0 && velX > -min) velX = -min;
-        else if (velX > 0 && velX < min) velX = min;
-        else if (velX > max) velX = max;
-        else if (velX < -max) velX = -max;
-
-        double velY = this.level.getMaxBallVelocity() - Math.abs(velX);
-        if (velY < 0) velY = -velY;
-
-        return new double[]{-velX, -velY};
+    public Text getDisplayScoreText() {
+        return displayScoreText;
     }
 
-    /**
-     * After the player has died, or a new level has begun, the ball and the paddle will spawn at the middle
-     */
-    public void resetBallAndPaddle(){
-        // remove all balls
-        this.balls.forEach(ball -> this.getPane().getChildren().remove(ball.getNode()));
-        this.balls.clear();
-
-        // remove all powerups
-        this.powerups.forEach(powerup -> this.getPane().getChildren().remove(powerup.getNode()));
-        this.powerups.clear();
-
-        //relocate paddle
-        this.paddle.setWidth(this.level.getPaddleWidth());
-        this.paddle.getImgView().setFitWidth(this.paddle.getWidth());
-        this.paddle.setVelX(this.level.getPaddleSpeed());
-        this.paddle.setPosX(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2);
-        this.paddle.getNode().relocate(WindowUtils.getWindowWidth()/2 - paddle.getWidth()/2, WindowUtils.getWindowHeight() * 0.8);
-
-        spawnBall();
+    public LifesDisplay getLifesDisplay() {
+        return lifesDisplay;
     }
 
-    public Grid getGrid() {
-        return grid;
+    public Text getDeathPauseText() {
+        return deathPauseText;
     }
 
-    public int getScore(){
-        return score;
-    }
-
-    public Text getDisplayScore(){
-        return displayScore;
-    }
-
-    public double getPaddleWidth(){
-        return paddle.getWidth();
-    }
-
-    /**
-     * Spawning the ball
-     */
-    public void spawnBall() {
-        // Reset ball position and velocity
-        double[] vel = calculateStartVelForBall();
-
-        Ball ball = new Ball(this, this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 3* paddle.getHeight() , vel[0], vel[1], Constants.BALL_RADIUS);
-        balls.add(ball);
-        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth()/2 - (int) (Constants.BALL_RADIUS /2)  , this.paddle.getPosY() - 2* paddle.getHeight() );
-    }
-
-    /**
-     * Increasing paddle width if its not already at max width
-     */
-    public void increasePaddleWidth(){
-        if(paddle.getWidth() <= WindowUtils.getWindowWidth()/4 ){
-
-            //increase and update paddle Width
-            this.paddle.setWidth(this.paddle.getWidth() * 1.2);
-
-            //relocate and set new paddle
-            this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
-
-            // Update the paddle image
-            this.paddle.setImg(PaddleUtil.buildPaddleImage((int) this.paddle.getWidth()));
-            this.paddle.getImgView().setFitWidth(this.paddle.getWidth());
-        }
-    }
-
-    /**
-     * When a bomb has been hit, the player loses a life, and a animation will be played
-     * The game will also wait 200 ms, to show th bomb animation
-     * @param posX Where it hit on the x-axis
-     * @param posY Where it hit on the y-axis
-     */
-    public void hitBombObstacle(double posX, double posY){
-        // Give Bomb animation enough time to play
-        playing = false;
-        died = true;
-        lifesDisplay.updateLives(this,lives);
-        new BombExplosion(posX, posY, this.pane);
-
-        GameLoop.wait(200, () -> {
-            hasDied();
-        });
-    }
-
-    /**
-     * Calculating a random start velocity/angle for the ball
-     * @return Returning the start x- and y-velocity
-     */
-    private double[] calculateStartVelForBall() {
-        // Creating a random angle to start from
-        // Interval for velX is 0.2 to 0.75, and it varies from a negative and a positive number
-        // velY is calculated based on (maxVel - velX)
-        double ballSpeed = this.level.getBallSpeed();
-        boolean positiveNumber = random.nextBoolean();
-        double velX = random.nextDouble(0.2,0.75) * ballSpeed;
-        double velY = this.level.getMaxBallVelocity() - velX;
-        velX = (positiveNumber) ? velX : -velX;
-        velY = Math.max(0.2, velY);
-
-        return new double[]{velX,-velY};
-    }
-
-    /**
-     * Attempting to spawn a powerup
-     * @param xPos Where to spawn it on the x-axis
-     * @param yPos Where to spawn it on the y-axis
-     */
-    public void attemptPowerupSpawn(double xPos, double yPos) {
-        for (PowerupType type : PowerupType.values()) {
-            int randomNumber = random.nextInt(1000);
-            if (randomNumber < type.getSpawnChance()) { // Convert spawn chance to a comparable value
-                Powerup powerup = type.createPowerup(this, type,xPos, yPos, 8, 8, 0, 0.01);
-                if (powerup == null) break;
-                powerups.add(powerup);
-                break;
-            }
-        }
-    }
-
-    public int getLives() {
-        return lives;
+    public Game getGame() {
+        return game;
     }
 }

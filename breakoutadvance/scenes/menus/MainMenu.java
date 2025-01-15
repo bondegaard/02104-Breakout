@@ -16,9 +16,8 @@ import javafx.scene.text.Text;
  */
 public class MainMenu extends AbstractMenu {
 
-    private int selectedBtn = 0;
     private final Text[] textItems;
-
+    private int selectedBtn = 0;
     private Text displayHighScore;
 
     public MainMenu() {
@@ -31,7 +30,7 @@ public class MainMenu extends AbstractMenu {
         Text settingsText = createMenuItem("Settings", this::openSettings);
         Text quitText = createMenuItem("Quit", this::quitGame);
 
-        textItems = new Text[] { startText, settingsText, quitText };
+        textItems = new Text[]{startText, settingsText, quitText};
 
         vbox.getChildren().addAll(textItems);
         pane.getChildren().add(vbox);
@@ -45,8 +44,6 @@ public class MainMenu extends AbstractMenu {
         // Add highScore
         addHighScore();
     }
-
-
 
 
     /**
@@ -65,7 +62,7 @@ public class MainMenu extends AbstractMenu {
         switch (selectedBtn) {
             case 0 -> startGame();
             case 1 -> openSettings();
-            case 2 -> new BombExplosion(500,500, pane);
+            case 2 -> new BombExplosion(500, 500, pane);
             default -> throw new IllegalStateException("Unexpected button index: " + selectedBtn);
         }
     }
@@ -90,14 +87,6 @@ public class MainMenu extends AbstractMenu {
         });
     }
 
-    /**
-     * Periodic callback - not needed for the main menu.
-     */
-    @Override
-    public void onTick() {
-        // Currently not used
-    }
-
     public void addHighScore() {
         // Text to display HighScore
         this.displayHighScore = new Text("Top Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
@@ -114,7 +103,7 @@ public class MainMenu extends AbstractMenu {
             double textWidth = newValue.getWidth();
             double textHeight = newValue.getHeight();
             this.displayHighScore.setX(10);
-            this.displayHighScore.setY(WindowUtils.getWindowHeight() - (textHeight/2));
+            this.displayHighScore.setY(WindowUtils.getWindowHeight() - (textHeight / 2));
         });
     }
 

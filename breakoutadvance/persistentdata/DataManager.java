@@ -1,7 +1,8 @@
 package breakoutadvance.persistentdata;
 
 import breakoutadvance.persistentdata.data.Data;
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.io.FileReader;

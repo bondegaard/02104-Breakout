@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
  * This class is used to display the game is over scene
  * You can also restart the game after the game has been lost
  */
-public class GameOverScene extends AbstractScene{
+public class GameOverScene extends AbstractScene {
 
     // Text for scene
     private Text gameOver;

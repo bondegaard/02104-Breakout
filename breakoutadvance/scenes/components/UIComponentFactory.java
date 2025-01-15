@@ -3,11 +3,11 @@ package breakoutadvance.scenes.components;
 import breakoutadvance.utils.Constants;
 import breakoutadvance.utils.Fonts;
 import javafx.animation.PauseTransition;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
-import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -115,10 +115,10 @@ public class UIComponentFactory {
     /**
      * Creates a JavaFX Slider with the specified min, max, initial value, and preferred width.
      *
-     * @param min    the minimum value of the slider.
-     * @param max    the maximum value of the slider.
-     * @param value  the initial value (thumb position).
-     * @param width  the preferred width of the slider, in pixels.
+     * @param min   the minimum value of the slider.
+     * @param max   the maximum value of the slider.
+     * @param value the initial value (thumb position).
+     * @param width the preferred width of the slider, in pixels.
      * @return a {@link Slider} configured with the given parameters.
      */
     public static Slider createSlider(double min, double max, double value, double width, boolean showTicks, double majorTickUnit, boolean snapToTicks) {
@@ -135,7 +135,7 @@ public class UIComponentFactory {
     /**
      * Creates a JavaFX HBox (horizontal box) with a given spacing and an array of child nodes.
      *
-     * @param spacing the horizontal spacing (in pixels) between child nodes.
+     * @param spacing  the horizontal spacing (in pixels) between child nodes.
      * @param children one or more JavaFX {@link Node} elements to add to the HBox.
      * @return an {@link HBox} containing the specified child nodes, spaced horizontally.
      */

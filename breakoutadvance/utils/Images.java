@@ -4,7 +4,6 @@ import javafx.scene.image.Image;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 public enum Images {
 
@@ -86,11 +85,10 @@ public enum Images {
     POWERUP_PADDLE(Constants.IMAGE_PATH + "paddleWidthPowerUp.png"),
     POWERUP_BALL(Constants.IMAGE_PATH + "powerup_plus_one.png");
 
-    // File name of image
-    private final String filename;
-
     // Map to store the image objects
     private static final Map<String, Image> images = new HashMap<>();
+    // File name of image
+    private final String filename;
 
     Images(String filename) {
         this.filename = filename;

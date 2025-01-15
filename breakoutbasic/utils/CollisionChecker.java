@@ -1,7 +1,7 @@
 package breakoutbasic.utils;
 
-import breakoutbasic.objects.Ball;
 import breakoutbasic.objects.AbstractEntity;
+import breakoutbasic.objects.Ball;
 
 public class CollisionChecker {
 
@@ -24,17 +24,17 @@ public class CollisionChecker {
                 // Calculate centers
                 double entityCenterX = entity.getPosX() + entity.getWidth() / 2.0;
                 double entityCenterY = entity.getPosY() + entity.getHeight() / 2.0;
-                double ballCenterX   = ball.getPosX() + ball.getWidth() / 2.0;
-                double ballCenterY   = ball.getPosY() + ball.getWidth() / 2.0;
+                double ballCenterX = ball.getPosX() + ball.getWidth() / 2.0;
+                double ballCenterY = ball.getPosY() + ball.getWidth() / 2.0;
 
                 // Distances to each edge
-                double distanceToTop    = ballEdge[1] - entity.getPosY();
+                double distanceToTop = ballEdge[1] - entity.getPosY();
                 double distanceToBottom = (entity.getPosY() + entity.getHeight()) - ballEdge[1];
-                double distanceToLeft   = ballEdge[0] - entity.getPosX();
-                double distanceToRight  = (entity.getPosX() + entity.getWidth()) - ballEdge[0];
+                double distanceToLeft = ballEdge[0] - entity.getPosX();
+                double distanceToRight = (entity.getPosX() + entity.getWidth()) - ballEdge[0];
 
                 // Determine quadrant
-                boolean ballLeft  = ballCenterX < entityCenterX;
+                boolean ballLeft = ballCenterX < entityCenterX;
                 boolean ballAbove = ballCenterY < entityCenterY;
 
                 if (ballLeft) {
@@ -88,17 +88,16 @@ public class CollisionChecker {
 
 
     /**
-     *
      * @param Ball ball
-     * @param int ballEdgesToCheck
+     * @param int  ballEdgesToCheck
      * @return double[ballEdgesToCheck][2] : foreach there are an x and y coordinate at double[i][0] = x, and double[i][1] = y
      */
     public static double[][] ballCollision(Ball ball, int ballEdgesToCheck) {
         double[][] ballEdges = new double[ballEdgesToCheck][2];
 
         for (int i = 0; i < ballEdgesToCheck; i++) {
-            double x = ball.getPosX()+ball.getWidth()+ball.getWidth()*Math.cos(((double) i*Math.PI*2/ballEdgesToCheck));
-            double y = ball.getPosY()+ball.getWidth()+ball.getWidth()*Math.sin(((double) i*Math.PI*2/ballEdgesToCheck));
+            double x = ball.getPosX() + ball.getWidth() + ball.getWidth() * Math.cos(((double) i * Math.PI * 2 / ballEdgesToCheck));
+            double y = ball.getPosY() + ball.getWidth() + ball.getWidth() * Math.sin(((double) i * Math.PI * 2 / ballEdgesToCheck));
 
             ballEdges[i][0] = x;
             ballEdges[i][1] = y;

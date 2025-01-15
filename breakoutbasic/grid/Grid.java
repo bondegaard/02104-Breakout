@@ -11,32 +11,30 @@ import javafx.scene.paint.Color;
 public class Grid {
 
     private final PlayScene playScene; // Instance of current playScene
-
-    private Block[][] grid; // 2d-Array which is filled with blocks or null depending on if the block is alive.
-
     private final int OFFSET = 3; // Offset between the blocks
-
     private final Color[] colors = {Color.RED, Color.ORANGE, Color.GREEN, Color.YELLOW, Color.BURLYWOOD}; // Colors for rows of blocks
+    private final Block[][] grid; // 2d-Array which is filled with blocks or null depending on if the block is alive.
 
     /**
      * Setup a grid of blocks which is displayed on the scene.
+     *
      * @param playScene Current instance of playScene
-     * @param n Amount of rows
-     * @param m Amount of columns
+     * @param n         Amount of rows
+     * @param m         Amount of columns
      */
-    public Grid (PlayScene playScene, int n, int m) {
+    public Grid(PlayScene playScene, int n, int m) {
         this.playScene = playScene;
         grid = new Block[n][m];
 
         // Long side of the rectangle's length, based on window size
-        double lSize = (WindowUtils.getWindowWidth() * (97.5/100.0) / m);
+        double lSize = (WindowUtils.getWindowWidth() * (97.5 / 100.0) / m);
 
         // Short side of the rectangle's length, based on window size
         double sSize = ((WindowUtils.getWindowHeight() / 30.0));
 
         // Starting positions, where blank space is calculated
-        double posXStart = WindowUtils.getWindowWidth() * (1.0/100.0);
-        double posYStart = WindowUtils.getWindowWidth() * (4.0/100.0);
+        double posXStart = WindowUtils.getWindowWidth() * (1.0 / 100.0);
+        double posYStart = WindowUtils.getWindowWidth() * (4.0 / 100.0);
 
         for (int row = 0; row < n; row++) {
             for (int col = 0; col < m; col++) {
@@ -44,7 +42,7 @@ public class Grid {
                 double posX = posXStart + col * lSize; // Horizontal position for each rectangle
                 double posY = posYStart + row * sSize; // Vertical position for each rectangle
 
-                Block block = new Block(posX, posY, lSize - OFFSET, sSize - OFFSET, colors[(int) Math.floor(row/2)]);
+                Block block = new Block(posX, posY, lSize - OFFSET, sSize - OFFSET, colors[(int) Math.floor(row / 2)]);
 
                 // Adding it to grid
                 grid[row][col] = block;
@@ -58,6 +56,7 @@ public class Grid {
 
     /**
      * Remove a block from the grid and scene
+     *
      * @param n Row in grid
      * @param m Col in grid
      */
@@ -88,7 +87,7 @@ public class Grid {
     }
 
     // Get 2d array of Block
-    public Block[][] getGrid(){
+    public Block[][] getGrid() {
         return grid;
     }
 }

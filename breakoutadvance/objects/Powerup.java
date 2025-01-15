@@ -7,18 +7,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import java.io.FileInputStream;
-
 public abstract class Powerup extends AbstractEntity {
 
     protected final PlayScene playScene;
-
-    private double velX;
+    protected boolean hasCollided = false;
+    private final double velX;
     private double velY;
     private Image img;
     private ImageView imgView = new ImageView();
-
-    protected boolean hasCollided = false;
 
     /**
      * Basic setup for an entity
@@ -38,15 +34,15 @@ public abstract class Powerup extends AbstractEntity {
             Image image = type.getImg();
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
-            imgView.setFitHeight(this.getHeight()*4);
-            imgView.setFitWidth(this.getWidth()*4);
+            imgView.setFitHeight(this.getHeight() * 4);
+            imgView.setFitWidth(this.getWidth() * 4);
 
             playScene.getPane().getChildren().add(imgView);
             this.setNode(imgView);
         } catch (Exception e) {
             // Drawing ball
             // Adding radius (this.getHeight()) to accommodate how a circle is drawn
-            Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight()/2);
+            Circle ball = new Circle(this.getPosX(), this.getPosY(), this.getHeight() / 2);
             ball.setFill(Color.YELLOW);
             playScene.getPane().getChildren().add(ball);
 
@@ -64,7 +60,7 @@ public abstract class Powerup extends AbstractEntity {
 
     public void onTick(double speed) {
         updatePosition();
-        velY+=speed;
+        velY += speed;
     }
 
     public abstract void onCollision();

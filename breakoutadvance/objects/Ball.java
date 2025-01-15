@@ -17,7 +17,7 @@ public class Ball extends AbstractEntity {
     private ImageView imgView = new ImageView();
 
     //Ball constructor
-    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius/*, String imgPath*/){
+    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius/*, String imgPath*/) {
         super(posX, posY, radius, radius);
         this.velX = velX;
         this.velY = velY;
@@ -29,8 +29,8 @@ public class Ball extends AbstractEntity {
             }
             imgView = new ImageView(image);
             imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
-            imgView.setFitHeight(this.getHeight()*2);
-            imgView.setFitWidth(this.getWidth()*2);
+            imgView.setFitHeight(this.getHeight() * 2);
+            imgView.setFitWidth(this.getWidth() * 2);
 
             playScene.getPane().getChildren().add(imgView);
             this.setNode(imgView);
@@ -48,9 +48,9 @@ public class Ball extends AbstractEntity {
      * Update x position of the ball
      */
     public void updateX() {
-        if(this.getPosX() + velX >= WindowUtils.getWindowWidth() - this.getWidth()*2){
+        if (this.getPosX() + velX >= WindowUtils.getWindowWidth() - this.getWidth() * 2) {
             this.flipVelX(); //flip velocity if ball goes out of bounds (sides)
-        } else if(this.getPosX() +  velX <= 0){
+        } else if (this.getPosX() + velX <= 0) {
             this.flipVelX(); //flip velocity if ball goes out of bounds (sides)
         }
     }
@@ -59,9 +59,9 @@ public class Ball extends AbstractEntity {
      * Update y position of the ball
      */
     public void updateY() {
-        if(this.getPosY() + velY >= WindowUtils.getWindowHeight() - this.getHeight()*2){
-            return; // Do nothing as the ball hits the bottom of the screen.
-        } else if (this.getPosY() + velY <= 0){
+        if (this.getPosY() + velY >= WindowUtils.getWindowHeight() - this.getHeight() * 2) {
+            // Do nothing as the ball hits the bottom of the screen.
+        } else if (this.getPosY() + velY <= 0) {
             this.flipVelY(); // Flip velocity if ball goes out of bounds (top)
         }
     }
@@ -73,11 +73,15 @@ public class Ball extends AbstractEntity {
         this.getNode().relocate(this.getPosX(), this.getPosY()); // Relocates points in scene
     }
 
-    public double getVelX(){
+    public double getVelX() {
         return velX;
     }
 
-    public double getVelY(){
+    public void setVelX(double velX) {
+        this.velX = velX;
+    }
+
+    public double getVelY() {
         return velY;
     }
 
@@ -85,21 +89,17 @@ public class Ball extends AbstractEntity {
         this.velY = velY;
     }
 
-    public void setVelX(double velX) {
-        this.velX = velX;
-    }
-
     /**
      * Flip the direction of the x velocity
      */
-    public void flipVelX(){
+    public void flipVelX() {
         velX = -velX;
     }
 
     /**
      * Flip the direction of the y velocity
      */
-    public void flipVelY(){
+    public void flipVelY() {
         velY = -velY;
     }
 

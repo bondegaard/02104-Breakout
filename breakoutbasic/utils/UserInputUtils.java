@@ -9,6 +9,7 @@ public class UserInputUtils {
 
     /**
      * Get a number from the user in the terminal
+     *
      * @param textStatement what kind of text
      * @return a number or run it again if the number was invalid
      */

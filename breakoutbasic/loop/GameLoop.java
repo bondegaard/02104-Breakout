@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Game loop for the game that uses ScheduledExecutorService from java.utils
  * to handle the loop. The loop will run on the same thread as JavaFX.
- *
+ * <p>
  * The Loop will call the callback function every one milisecond.
  */
 public class GameLoop {
@@ -58,6 +58,7 @@ public class GameLoop {
 
     /**
      * Check if the loop is running
+     *
      * @return true if it is running, otherwise false
      */
     public boolean isRunning() {

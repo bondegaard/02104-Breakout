@@ -1,12 +1,9 @@
 package breakoutadvance.levels;
 
-import breakoutadvance.Breakout;
-import breakoutadvance.objects.Block;
 import breakoutadvance.persistentdata.DataManager;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +13,7 @@ public class LevelManager {
 
     private final DataManager dataManager;
 
-    private final List <Level> levels = new ArrayList<>();
+    private final List<Level> levels = new ArrayList<>();
 
     private Level currentLevel;
 

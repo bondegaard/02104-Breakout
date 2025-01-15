@@ -38,7 +38,7 @@ public class SettingsMenu extends AbstractMenu {
         vbox.setStyle("-fx-padding: 20;");
         vbox.setAlignment(Pos.CENTER);
 
-        Text title = UIComponentFactory.createText("Settings", "BlackwoodCastle.ttf",64, Color.WHITE);
+        Text title = UIComponentFactory.createText("Settings", "BlackwoodCastle.ttf", 64, Color.WHITE);
 
         // Initialize color indices
         currentBallColorIndex = Arrays.asList(ballColors).indexOf(
@@ -94,7 +94,7 @@ public class SettingsMenu extends AbstractMenu {
         HBox hboxPaddle = createColorSelector(paddleColors, currentPaddleColorIndex, false);
 
         // Back button
-        Text backBtn = UIComponentFactory.createText("Back", "BlackwoodCastle.ttf",64, Color.YELLOW);
+        Text backBtn = UIComponentFactory.createText("Back", "BlackwoodCastle.ttf", 64, Color.YELLOW);
         backBtn.setOnMouseClicked(event -> {
             Breakout.getInstance().setCurrentScene(new MainMenu());
         });
@@ -120,8 +120,8 @@ public class SettingsMenu extends AbstractMenu {
         // Store references so we can update them in changeColor(...)
         if (isBall) {
             ballImageView = colorImageView;
-            colorImageView.setFitWidth(Constants.BALL_RADIUS*2);
-            colorImageView.setFitHeight(Constants.BALL_RADIUS*2);
+            colorImageView.setFitWidth(Constants.BALL_RADIUS * 2);
+            colorImageView.setFitHeight(Constants.BALL_RADIUS * 2);
         } else {
             paddleImageView = colorImageView;
             colorImageView.setFitWidth(Constants.PADDLE_WIDTH);
@@ -178,7 +178,7 @@ public class SettingsMenu extends AbstractMenu {
 
             // Update the ImageView
             if (paddleImageView != null) {
-                paddleImageView.setImage(Images.getImage( Constants.PADDLE_FILEPATH + newPaddleColor + ".png"));
+                paddleImageView.setImage(Images.getImage(Constants.PADDLE_FILEPATH + newPaddleColor + ".png"));
             }
         }
     }
@@ -194,11 +194,5 @@ public class SettingsMenu extends AbstractMenu {
                 Breakout.getInstance().setCurrentScene(new MainMenu());
             }
         });
-    }
-
-
-    @Override
-    public void onTick() {
-        // Typically not needed in a static settings menu
     }
 }
