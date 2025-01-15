@@ -81,7 +81,7 @@ public class Game {
                 return;
             }
 
-            Breakout.getInstance().setCurrentScene(new GameOverScene());
+            Breakout.getInstance().setCurrentScene(new GameOverScene(score));
             Sound.playSound(Sound.LOSE);
         }
     }

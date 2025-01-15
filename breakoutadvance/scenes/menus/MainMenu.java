@@ -82,8 +82,6 @@ public class MainMenu extends AbstractMenu {
             } else if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.S) {
                 selectedBtn = (selectedBtn + 1) % textItems.length;
                 selectText(selectedBtn);
-            } else if (event.getCode() == KeyCode.Q) {
-                Breakout.getInstance().setCurrentScene(new GameOverScene());
             }
         });
     }
