@@ -17,21 +17,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * This class contains all non-graphical content in the game
+ */
 public class Game {
 
-    private final PlayScene playScene;
-    private final List<Ball> balls = new ArrayList<>();
-    private final List<Powerup> powerups = new ArrayList<>();
-    private final Paddle paddle;
+    private final PlayScene playScene; // PlayScene
+    private final List<Ball> balls = new ArrayList<>(); // List of balls
+    private final List<Powerup> powerups = new ArrayList<>(); // List of powerups
+    private final Paddle paddle; // The paddle
     private final Random random = new Random(); // Random generator used for direction of the ball when calculating the velocity
-    private boolean playing = false;
-    private Grid grid;
-    private int lives;
-    private int score = 0;
-    private boolean died = false;
-    private Level level;
+    private boolean playing = false; // Playing or not
+    private Grid grid; // The block grid
+    private int lives; // Amount of lives
+    private int score = 0; // The score
+    private boolean died = false; // If the player has died
+    private Level level; // What level is playing
 
+    /**
+     * Constructor for setting up the game
+     * @param playScene Where to display content
+     */
     public Game(PlayScene playScene) {
+        // Setting playscene
         this.playScene = playScene;
 
         // Set level variable to the current level
@@ -56,6 +64,7 @@ public class Game {
      * Furthermore it will save a potential highscore
      */
     public void hasDied() {
+        // Lives will be updated
         lives--;
         this.playScene.getLifesDisplay().updateLives(this.playScene, lives);
 
@@ -68,36 +77,47 @@ public class Game {
         else
             this.playScene.getDeathPauseText().setText("You Died! You have " + lives + " lives left.");
 
+        // Updating variables, to tell the user that they died
         died = true;
         playing = false;
+
+        // Checking if the player has lost all his lives
         if (lives <= 0) {
-            // Save new highscore
+            // Save new highscore, if score is higher than highscore
             Data data = Breakout.getInstance().getDataManager().getData();
             if (data.getHighscore() < this.score) {
                 data.setHighscore(this.score);
-
                 data.addGame(new breakoutadvance.persistentdata.data.Game(this.score));
                 Breakout.getInstance().getDataManager().saveData();
                 return;
             }
 
+            // Setting game over scene
             Breakout.getInstance().setCurrentScene(new GameOverScene(score));
             Sound.playSound(Sound.LOSE);
         }
     }
 
+    /**
+     * Checking if any blocks are left in the grid
+     * Starting new level if no blocks are alive
+     * @return true - if no blocks are alive, false - if at least one block is alive
+     */
     public boolean checkVictory() {
         if (this.grid.getAliveAmount() <= 0) {
+            // Setting next level
             togglePlaying();
             Breakout.getInstance().getLevelManager().setNextLevel();
             this.level = Breakout.getInstance().getLevelManager().getCurrentLevel();
             resetBallAndPaddle();
 
+            // Creating a new grid, based on the level
             this.grid = new Grid(this, this.level.getLevelMap());
 
+            // Playing winning sound
             Sound.playSound(Sound.WON);
 
-            // Save new highscore
+            // Save new highscore if score is greater than saved highscore
             Data data = Breakout.getInstance().getDataManager().getData();
             if (data.getHighscore() < this.score)
                 data.setHighscore(this.score);
@@ -108,6 +128,10 @@ public class Game {
         return false;
     }
 
+    /**
+     * Checking if the ball has reached the bottom of the screen
+     * If its the last ball, the player will die / lose a life
+     */
     public void checkBallOutOfBounds() {
         // Collect balls to be removed
         List<Ball> toRemove = balls.stream()
@@ -126,60 +150,93 @@ public class Game {
         }
     }
 
-
+    /**
+     * Checking when a ball collides with the paddle
+     * Also checks when a ball collides with a block
+     * Furthermore it will calculate what happens after it hits a paddle/block
+     */
     public void checkBallPaddleCollision() {
+        // Checking for all balls
         for (Ball ball : balls) {
+            // Checking if the ball hits the paddle, and in what axis
             EdgeHit ballPaddleHit = CollisionChecker.checkCollision(this.paddle, ball);
             if (ballPaddleHit == EdgeHit.YAXIS) {
+                // Making sure the ball only hits the paddle once
+                ball.setPosY(this.paddle.getPosY() - ball.getHeight() * 2);
 
-                ball.setPosY(this.paddle.getPosY() - ball.getHeight() * 2); // Making sure the ball only hits the paddle once
+                // Calculating new velocity
                 double[] vel = calcNewVelAfterPaddleColl(ball);
+
+                // Setting new velocity
                 ball.setVelX(vel[0]);
                 ball.setVelY(vel[1]);
 
+                // Playing paddle hit sound
                 Sound.playSound(Sound.PADDLE);
             }
 
-
             // Check Collisions between ball and any blocks on the screen
-            boolean flipX = false; // Should X direction be flipped
+            boolean flipX = false;
             boolean flipY = false;
+
+            // Checking the full grid
             for (int i = 0; i < grid.getGrid().length; i++) {
                 for (int j = 0; j < grid.getGrid()[i].length; j++) {
+                    // Setting the current block
                     Block block = grid.getGrid()[i][j];
 
+                    // Continue if block is null
                     if (block == null) {
                         continue;
                     }
 
+                    // Checking for collision
                     EdgeHit ballBlockHit = CollisionChecker.checkCollision(block, ball);
 
-                    if (ballBlockHit == EdgeHit.XAXIS) {
+
+                    if (ballBlockHit == EdgeHit.XAXIS) { // If ball hits the blocks horizontal side
+                        // Flipping the ball, changing its direction
                         flipX = true;
+
+                        // Attempting to spawn a powerup
                         attemptPowerupSpawn(block.getPosX() + block.getWidth() / 2, block.getPosY() + block.getHeight() / 2);
 
+                        // Removing the ball and playing the hit sound
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
-                    } else if (ballBlockHit == EdgeHit.YAXIS) {
+                    } else if (ballBlockHit == EdgeHit.YAXIS) { // If ball hits the blocks vertical side
+                        // Flipping the ball, changing its direction
                         flipY = true;
+
+                        // Attempting to spawn a powerup
                         attemptPowerupSpawn(block.getPosX() + block.getWidth() / 2, block.getPosY() + block.getHeight() / 2);
 
+                        // Remove the ball and playing the hit sound
                         grid.removeBlock(i, j);
                         Sound.playSound(Sound.getRandomHitSound());
-                    } else if (ballBlockHit == EdgeHit.BOTH) {
+                    } else if (ballBlockHit == EdgeHit.BOTH) { // If a corner is hit on a block
+                        // Flipping both axis for the ball
                         flipX = true;
                         flipY = true;
                     }
                 }
             }
+            // Doing the flipping
             if (flipX) ball.flipVelX();
             if (flipY) ball.flipVelY();
         }
     }
 
+    /**
+     * Checking whether the players paddle has collided with a powerup
+     */
     public void checkPowerupCollision() {
+        // Iterator is used to loop through the powerups
         Iterator<Powerup> powerupIterator = powerups.iterator();
+
+        // Running while a next powerup exists
         while (powerupIterator.hasNext()) {
+            // Updating the powerup to the next
             Powerup powerup = powerupIterator.next();
 
             // Check out of bounds
@@ -200,12 +257,11 @@ public class Game {
 
     /**
      * Calculating a new velocity based on where the ball hits the paddle
-     *
      * @param ball The ball which hit the paddle
      * @return Returning an array with a new x-vel and y-vel
      */
     private double[] calcNewVelAfterPaddleColl(Ball ball) {
-        // Getting the middle of the paddle
+        // Getting the middle x-position of the paddle
         double paddleMiddlePosX = this.paddle.getPosX() + paddle.getWidth() / 2;
         // Ball position when hitting the paddle
         double ballHitPosX = ball.getPosX();
@@ -217,7 +273,7 @@ public class Game {
         // Calculating velocities
         double velX = (paddleMiddlePosX - ballHitPosX) / scaling;
 
-        // Prevent it from going too straight horizontally and vertically
+        // Prevent it from going too straight horizontally and vertically, for the x-velocity
         double min = 0.25 * this.level.getBallSpeed();
         double max = 0.75 * this.level.getBallSpeed();
         if (velX < 0 && velX > -min) velX = -min;
@@ -229,7 +285,7 @@ public class Game {
         double velY = this.level.getMaxBallVelocity() - Math.abs(velX);
         if (velY < 0) velY = -velY;
 
-        // Prevent it from going too straight horizontally and vertically
+        // Prevent it from going too straight horizontally and vertically, for the y-velocity
         if (velY == 0) velY = Constants.MINIMUN_BALL_Y_VELOCITY;
         else if (velY < 0) {
             velY = Math.min(velY, -Constants.MINIMUN_BALL_Y_VELOCITY);
@@ -237,6 +293,7 @@ public class Game {
             velY = Math.max(velY, Constants.MINIMUN_BALL_Y_VELOCITY);
         }
 
+        // Returning the x- and y-velocity
         return new double[]{-velX, -velY};
     }
 
@@ -244,21 +301,22 @@ public class Game {
      * After the player has died, or a new level has begun, the ball and the paddle will spawn at the middle
      */
     public void resetBallAndPaddle() {
-        // remove all balls
+        // Remove all balls
         this.balls.forEach(ball -> this.playScene.getPane().getChildren().remove(ball.getNode()));
         this.balls.clear();
 
-        // remove all powerups
+        // Remove all powerups
         this.powerups.forEach(powerup -> this.playScene.getPane().getChildren().remove(powerup.getNode()));
         this.powerups.clear();
 
-        //relocate paddle
+        // Relocate paddle
         this.paddle.setWidth(this.level.getPaddleWidth());
         this.paddle.getImgView().setFitWidth(this.paddle.getWidth());
         this.paddle.setVelX(this.level.getPaddleSpeed());
         this.paddle.setPosX(WindowUtils.getWindowWidth() / 2 - paddle.getWidth() / 2);
         this.paddle.getNode().relocate(WindowUtils.getWindowWidth() / 2 - paddle.getWidth() / 2, WindowUtils.getWindowHeight() * 0.8);
 
+        // Spawn a new ball
         spawnBall();
     }
 
@@ -269,9 +327,14 @@ public class Game {
         // Reset ball position and velocity
         double[] vel = calculateStartVelForBall();
 
-        Ball ball = new Ball(playScene, this.paddle.getPosX() + paddle.getWidth() / 2 - (Constants.BALL_RADIUS / 2), this.paddle.getPosY() - 3 * paddle.getHeight(), vel[0], vel[1], Constants.BALL_RADIUS);
+        // Drawing the ball
+        Ball ball = new Ball(playScene, this.paddle.getPosX() + paddle.getWidth() / 2 - (Constants.BALL_RADIUS / 2.0), this.paddle.getPosY() - 3 * paddle.getHeight(), vel[0], vel[1], Constants.BALL_RADIUS);
+
+        // Adding the ball, to the balls list
         balls.add(ball);
-        ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth() / 2 - (Constants.BALL_RADIUS / 2), this.paddle.getPosY() - 2 * paddle.getHeight());
+
+        // Relocating the ball to be over the
+        //ball.getNode().relocate(this.paddle.getPosX() + paddle.getWidth() / 2 - (Constants.BALL_RADIUS / 2.0), this.paddle.getPosY() - 2 * paddle.getHeight());
     }
 
     /**
