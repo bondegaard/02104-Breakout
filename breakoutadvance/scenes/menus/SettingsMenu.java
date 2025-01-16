@@ -21,34 +21,52 @@ import static breakoutadvance.utils.Images.getImage;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Settings menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.
+ */
 public class SettingsMenu extends AbstractMenu {
-    private int currentBallColorIndex;
-    private int currentPaddleColorIndex;
-    private ImageView ballImageView;
-    private ImageView paddleImageView;
+    private int currentBallColorIndex; // Current chosen ball
+    private int currentPaddleColorIndex; // Current chosen paddle
+    private ImageView ballImageView; // Used to draw/view the ball
+    private ImageView paddleImageView; // Used to draw/view the paddle
 
+    /**
+     * Constructor for settings menu, consisting of basic setup
+     */
     public SettingsMenu() {
+        // Parent class
         super();
 
+        // Creating vbox and adding styles
         VBox vbox = createVBox();
         vbox.setStyle("-fx-padding: 20;");
         vbox.setAlignment(Pos.CENTER);
 
+        // Creating title
         Text title = UIComponentFactory.createText("Settings", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Color.WHITE);
 
+        // Creating various items, which the user can configurate
         VBox volumeBox = createVolumeBox();
         CheckBox muteCheckBox = createMuteCheckBox();
         HBox ballColorSelector = createColorSelector(Constants.BALL_COLORS, currentBallColorIndex, true);
         HBox paddleColorSelector = createColorSelector(Constants.PADDLE_COLORS, currentPaddleColorIndex, false);
         Text backBtn = createBackButton();
 
+        // Adding it to the vbox, and adding the vbox to the pane
         vbox.getChildren().addAll(title, volumeBox, muteCheckBox, ballColorSelector, paddleColorSelector, backBtn);
         getPane().getChildren().add(vbox);
 
+        // Setting up key events
         setupKeyPressedEvents();
     }
 
+    /**
+     * Creating the volume vbox
+     *
+     * @return volume Vbox
+     */
     private VBox createVolumeBox() {
+        // Creating a slider to change the volume
         Slider volumeSlider = UIComponentFactory.createSlider(
                 0, 100,
                 Breakout.getInstance().getDataManager().getData().getVolume(),
@@ -57,6 +75,7 @@ public class SettingsMenu extends AbstractMenu {
                 10.0,
                 true
         );
+        // Creating a label for it
         Label volumeLabel = UIComponentFactory.createLabel(
                 String.format("Volume: %3d %%", (int) volumeSlider.getValue()),
                 20,
@@ -64,21 +83,28 @@ public class SettingsMenu extends AbstractMenu {
         );
         volumeLabel.setMinWidth(Constants.SETTINGS_VOLUME_LABEL_WIDTH);
 
+        // Saving user data
         volumeSlider.valueProperty().addListener((observable, oldVal, newVal) -> {
             volumeLabel.setText(String.format("Volume: %3d %%", newVal.intValue()));
             Breakout.getInstance().getDataManager().getData().setVolume(newVal.intValue());
             Breakout.getInstance().getDataManager().saveData();
         });
-
         return new VBox(10, volumeSlider, volumeLabel);
     }
 
+    /**
+     * Creating a checkbox for muting the volume
+     *
+     * @return mute checkbox
+     */
     private CheckBox createMuteCheckBox() {
+        // Creating the checkbox
         CheckBox muteCheckBox = UIComponentFactory.createCheckBox(
                 "Mute",
                 Breakout.getInstance().getDataManager().getData().isMute(),
                 getFont(Constants.DEFAULT_FONT)
         );
+        // Saving user data
         muteCheckBox.selectedProperty().addListener((observable, oldVal, newVal) -> {
             Breakout.getInstance().getDataManager().getData().setMute(newVal);
             Breakout.getInstance().getDataManager().saveData();
@@ -86,6 +112,10 @@ public class SettingsMenu extends AbstractMenu {
         return muteCheckBox;
     }
 
+    /**
+     * Creating a back text button
+     * @return
+     */
     private Text createBackButton() {
         Text backBtn = UIComponentFactory.createText("Back", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Constants.HIGHLIGHT_TEXT_COLOR);
         backBtn.setOnMouseClicked(event -> Breakout.getInstance().setCurrentScene(new MainMenu()));

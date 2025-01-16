@@ -19,7 +19,7 @@ public class HearthObstacle extends Powerup {
         super(playScene, PowerupType.HEART, posX, posY, height, width, velX, velY);
     }
 
-    //method calls increasePaddleWidth on collisions between Power Ups and paddle
+    // Method calls increaseHealth on collisions between power up and paddle
     @Override
     public void onCollision() {
         if (hasCollided) return;

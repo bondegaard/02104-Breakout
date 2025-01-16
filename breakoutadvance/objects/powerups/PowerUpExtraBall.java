@@ -19,6 +19,7 @@ public class PowerUpExtraBall extends Powerup {
         super(playScene, PowerupType.PLUS_ONE, posX, posY, height, width, velX, velY);
     }
 
+    // Method calls spawnBall on collisions between power up and paddle
     @Override
     public void onCollision() {
         if (hasCollided) return;

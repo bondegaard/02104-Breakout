@@ -1,21 +1,25 @@
 package breakoutadvance.levels;
 
+/**
+ * Level class is used to store data for a game level
+ */
+
 public class Level {
-    private String name = "level_unknown";
+    private String name = "level_unknown"; // Name of level
 
-    private String nextLevel = "level_unknown";
+    private String nextLevel = "level_unknown"; // Name of next level
 
-    private double paddleWidth = 200;
+    private double paddleWidth = 200; // Paddle width
 
-    private double ballSpeed = 1.0;
+    private double ballSpeed = 1.0; // Ball speed
 
-    private double maxBallVelocity = 1.0;
+    private double maxBallVelocity = 1.0; // Maximum amount of ball velocity
 
-    private double powerUpSpeed = 0.01;
+    private double powerUpSpeed = 0.01; // Speed of powerups falling
 
-    private double paddleSpeed = 1.0;
+    private double paddleSpeed = 1.0; // Paddle speed
 
-    private LevelMap levelMap = new LevelMap();
+    private LevelMap levelMap = new LevelMap(); // A representation of a level
 
     public String getName() {
         return name;

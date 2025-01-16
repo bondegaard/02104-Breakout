@@ -26,6 +26,9 @@ public abstract class AbstractMenu extends AbstractScene {
         addBackgroundImage();
     }
 
+    /**
+     * Trying to add the background image
+     */
     protected void addBackgroundImage() {
         Image image;
         try {
@@ -37,7 +40,13 @@ public abstract class AbstractMenu extends AbstractScene {
         setPaneBackground(image);
     }
 
+    /**
+     * Setting background for current pane
+     * @param image image to display
+     */
     private void setPaneBackground(Image image) {
+        // If image is not null, it will change the background
+        // Furthermore, it will repeat the background to fill out the whole screen
         if (image != null) {
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,
@@ -52,7 +61,6 @@ public abstract class AbstractMenu extends AbstractScene {
         }
     }
 
-
     /**
      * Creates a Text item for the menu with given label and on-click action.
      */
@@ -64,6 +72,10 @@ public abstract class AbstractMenu extends AbstractScene {
         return text;
     }
 
+    /**
+     * Create a VBox
+     * @return VBox
+     */
     protected VBox createVBox() {
         VBox vbox = new VBox(Constants.DEFAULT_VBOX_SPACING);
         vbox.setAlignment(Constants.DEFAULT_VBOX_ALIGNMENT);
@@ -72,6 +84,10 @@ public abstract class AbstractMenu extends AbstractScene {
         return vbox;
     }
 
+    /**
+     * Centering the given parameter
+     * @param node node
+     */
     protected void centerNodeInPane(Region node) {
         node.layoutXProperty().bind(getPane().widthProperty().subtract(node.widthProperty()).divide(2));
         node.layoutYProperty().bind(getPane().heightProperty().subtract(node.heightProperty()).divide(2));

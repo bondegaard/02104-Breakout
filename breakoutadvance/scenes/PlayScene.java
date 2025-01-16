@@ -2,9 +2,8 @@ package breakoutadvance.scenes;
 
 import breakoutadvance.core.Game;
 import breakoutadvance.objects.Ball;
-import breakoutadvance.objects.LifesDisplay;
+import breakoutadvance.objects.LivesDisplay;
 import breakoutadvance.utils.Constants;
-import breakoutadvance.utils.Fonts;
 import breakoutadvance.utils.Images;
 import breakoutadvance.utils.WindowUtils;
 import javafx.application.Platform;
@@ -12,14 +11,13 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import static breakoutadvance.utils.Fonts.getFont;
 
 public class PlayScene extends AbstractScene {
 
-    private final LifesDisplay lifesDisplay;
+    private final LivesDisplay lifesDisplay;
     private final breakoutadvance.core.Game game;
     private Text startOrPauseText;
     private Text infoText;
@@ -44,7 +42,7 @@ public class PlayScene extends AbstractScene {
         setupKeyPressedEvents();
 
         // Add lives
-        this.lifesDisplay = new LifesDisplay();
+        this.lifesDisplay = new LivesDisplay();
         this.lifesDisplay.updateLives(this, this.game.getLives());
 
         // Add score
@@ -271,7 +269,7 @@ public class PlayScene extends AbstractScene {
         return displayScoreText;
     }
 
-    public LifesDisplay getLifesDisplay() {
+    public LivesDisplay getLifesDisplay() {
         return lifesDisplay;
     }
 

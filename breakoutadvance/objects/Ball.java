@@ -11,27 +11,46 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Ball extends AbstractEntity {
-    private double velX;
-    private double velY;
-    private Image img;
-    private ImageView imgView = new ImageView();
+    private double velX; // x-velocity
+    private double velY; // y-velocity
+    private Image img; // Image to draw
+    private ImageView imgView = new ImageView(); // To draw/view to image on screen
 
-    //Ball constructor
-    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius/*, String imgPath*/) {
+    /**
+     * Creating a ball, based on the given parameters
+     * It will try to use an image to display the ball on the screen,
+     * but will draw a circle, if no image is found
+     *
+     * @param playScene current instance of playScene
+     * @param posX      x-position of the ball to draw
+     * @param posY      y-position of the ball to draw
+     * @param velX      x-velocity for the ball
+     * @param velY      y-velocity for the ball
+     * @param radius    radius of the ball
+     */
+    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius) {
+        // Getting coordinates and height/width from parent class
         super(posX, posY, radius, radius);
         this.velX = velX;
         this.velY = velY;
 
+        // Trying to display the ball using an image
         try {
+            // Getting image and adding it to an ImageView
             Image image = Images.getImage(Constants.BALL_FILEPATH + Breakout.getInstance().getDataManager().getData().getBallColor() + ".png");
             if (image == null) {
                 throw new Exception("Image not found");
             }
             imgView = new ImageView(image);
-            imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
+
+            // Setting dimensions
             imgView.setFitHeight(this.getHeight() * 2);
             imgView.setFitWidth(this.getWidth() * 2);
 
+            // Setting position
+            imgView.relocate(this.getPosX() + this.getHeight(), this.getPosY() + this.getHeight());
+
+            // Adding it to the pane
             playScene.getPane().getChildren().add(imgView);
             this.setNode(imgView);
         } catch (Exception e) {
@@ -45,7 +64,7 @@ public class Ball extends AbstractEntity {
     }
 
     /**
-     * Update x position of the ball
+     * Update x-position of the ball
      */
     public void updateX() {
         if (this.getPosX() + velX >= WindowUtils.getWindowWidth() - this.getWidth() * 2) {
@@ -56,7 +75,7 @@ public class Ball extends AbstractEntity {
     }
 
     /**
-     * Update y position of the ball
+     * Update y-position of the ball
      */
     public void updateY() {
         if (this.getPosY() + velY >= WindowUtils.getWindowHeight() - this.getHeight() * 2) {
@@ -66,7 +85,7 @@ public class Ball extends AbstractEntity {
         }
     }
 
-    //sets new X , Y position
+    //sets new X-, Y-position
     public void updatePosition() {
         this.setPosX(this.getPosX() + velX);
         this.setPosY(this.getPosY() + velY);
@@ -106,7 +125,7 @@ public class Ball extends AbstractEntity {
     //updates ball position
 
     /**
-     * Function called every tick which updates the position of the ball.
+     * Function called every tick which updates the position of the ball
      */
     public void onTick() {
         this.updateX();

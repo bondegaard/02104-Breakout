@@ -7,11 +7,10 @@ import javafx.scene.Node;
  */
 public abstract class AbstractEntity {
 
-    // JavaFX node on the screen
-    protected Node node;
+    protected Node node; // JavaFX node on the screen
 
-    protected double posX; // x position on screen
-    protected double posY; // y position on screen
+    protected double posX; // x-position on screen
+    protected double posY; // y-position on screen
 
     protected double height; // Height of the entity
     protected double width; // Width of the entity
@@ -25,6 +24,7 @@ public abstract class AbstractEntity {
      * @param width  width of entity
      */
     public AbstractEntity(double posX, double posY, double height, double width) {
+        // Setting values
         this.posX = posX;
         this.posY = posY;
         this.height = height;

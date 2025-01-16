@@ -10,20 +10,30 @@ import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LifesDisplay {
+/**
+ * Class to display how many lives the user has graphically
+ */
+public class LivesDisplay {
+    private final List<ImageView> lifeImages = new ArrayList<>(); // List of images
 
-    private final List<ImageView> lifeImages = new ArrayList<>();
+    private final Image fullHeartImg; // Image of full heart
+    private final Image emptyHeartImg; // Image of heart outline
 
-    private final Image fullHeartImg;
-    private final Image emptyHeartImg;
-
-
-    public LifesDisplay() {
+    /**
+     * Constructor for LivesDisplay, to set values
+     */
+    public LivesDisplay() {
+        // Setting values
         this.fullHeartImg = Images.getImage(Constants.IMAGE_PATH + "heart_full.png");
         this.emptyHeartImg = Images.getImage(Constants.IMAGE_PATH + "heart_empty.png");
     }
 
-
+    /**
+     * Updating lives on screen, based on the current amount of lives the player has
+     *
+     * @param playScene where to draw it on
+     * @param lives     amount of lives
+     */
     public void updateLives(PlayScene playScene, int lives) {
         // Clear existing life images
         lifeImages.forEach(image -> playScene.getPane().getChildren().remove(image));

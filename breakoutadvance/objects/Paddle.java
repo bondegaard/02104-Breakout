@@ -13,14 +13,16 @@ import javafx.scene.shape.Rectangle;
  */
 public class Paddle extends AbstractEntity {
     private double velX; // Current directional velocity
-    private Image img;
-    private ImageView imgView = new ImageView();
+    private Image img; // Image to draw
+    private ImageView imgView = new ImageView(); // To draw/view to image on screen
 
     private boolean moveLeft = false; // Is paddle set to move left?
     private boolean moveRight = false; // Is paddle set to move right?
 
     /**
-     * Create a paddle
+     * Creating a paddle, based on the given parameters
+     * It will try to use an image to display the paddle on the screen,
+     * but will draw a rectangle, if no image is found
      *
      * @param playScene current instance of playScene
      * @param posX      x position
@@ -29,17 +31,24 @@ public class Paddle extends AbstractEntity {
      * @param height    height of the paddle
      * @param width     width of the paddle
      */
-    public Paddle(PlayScene playScene, double posX, double posY, double velX, double height, double width /*, String imgPath*/) {
+    public Paddle(PlayScene playScene, double posX, double posY, double velX, double height, double width) {
         super(posX, posY, height, width);
         this.velX = velX;
 
+        // Trying to display the paddle using an image
         try {
+            // Getting image and adding it to an ImageView
             Image image = PaddleUtil.buildPaddleImage((int) this.width);
             imgView = new ImageView(image);
-            imgView.relocate(this.getPosX(), this.getPosY());
+
+            // Setting dimensions
             imgView.setFitHeight(this.getHeight());
             imgView.setFitWidth(this.getWidth());
 
+            // Setting position
+            imgView.relocate(this.getPosX(), this.getPosY());
+
+            // Adding it to the pane
             playScene.getPane().getChildren().add(imgView);
             this.setNode(imgView);
         } catch (Exception e) {
@@ -54,7 +63,7 @@ public class Paddle extends AbstractEntity {
     }
 
     /**
-     * Prevent paddle from going out of the screen and update postion visibility.
+     * Prevent paddle from going out of the screen and update position visibility.
      */
     public void updatePosXRight() {
         if (this.getPosX() + velX < WindowUtils.getWindowWidth() - this.getWidth())
@@ -63,7 +72,7 @@ public class Paddle extends AbstractEntity {
     }
 
     /**
-     * Prevent paddle from going out of the screen and update postion visibility.
+     * Prevent paddle from going out of the screen and update position visibility.
      */
     public void updatePosXLeft() {
         if (this.getPosX() - velX > 0)

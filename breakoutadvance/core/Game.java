@@ -35,7 +35,8 @@ public class Game {
     private Level level; // What level is playing
 
     /**
-     * Constructor for setting up the game
+     * Constructor for setting up the game, containing methods adding the elementary parts of the game
+     *
      * @param playScene Where to display content
      */
     public Game(PlayScene playScene) {
@@ -100,6 +101,7 @@ public class Game {
     /**
      * Checking if any blocks are left in the grid
      * Starting new level if no blocks are alive
+     *
      * @return true - if no blocks are alive, false - if at least one block is alive
      */
     public boolean checkVictory() {
@@ -256,6 +258,7 @@ public class Game {
 
     /**
      * Calculating a new velocity based on where the ball hits the paddle
+     *
      * @param ball The ball which hit the paddle
      * @return Returning an array with a new x-vel and y-vel
      */
@@ -337,15 +340,15 @@ public class Game {
     }
 
     /**
-     * Increasing paddle width if its not already at max width
+     * Increasing paddle width if it's not already at max width
      */
     public void increasePaddleWidth() {
         if (paddle.getWidth() <= WindowUtils.getWindowWidth() * Constants.MAX_PADDLE_SIZE_TO_SCREEN) {
 
-            //increase and update paddle Width
+            // Increase and update paddle width
             this.paddle.setWidth(this.paddle.getWidth() * Constants.PADDLE_EXTEND_PER_POWERUP);
 
-            //relocate and set new paddle
+            // Relocate and set new paddle
             this.paddle.getNode().relocate(this.paddle.getPosX(), this.paddle.getPosY());
 
             // Update the paddle image
@@ -355,19 +358,24 @@ public class Game {
     }
 
     /**
-     * When a bomb has been hit, the player loses a life, and a animation will be played
+     * When a bomb has been hit, the player loses a life, and an animation will be played
      * The game will also wait 200 ms, to show th bomb animation
      *
      * @param posX Where it hit on the x-axis
      * @param posY Where it hit on the y-axis
      */
     public void hitBombObstacle(double posX, double posY) {
-        // Give Bomb animation enough time to play
+        // Telling the program, that the player has died
         playing = false;
         died = true;
+
+        // Updating lives
         this.playScene.getLifesDisplay().updateLives(playScene, lives);
+
+        // Playing bomb animation
         new BombExplosion(posX, posY, this.playScene.getPane());
 
+        // Waiting 200 ms
         GameLoop.wait(200, this::hasDied);
     }
 
@@ -397,10 +405,16 @@ public class Game {
      * @param yPos Where to spawn it on the y-axis
      */
     public void attemptPowerupSpawn(double xPos, double yPos) {
+        // Checking all powerups
         for (PowerupType type : PowerupType.values()) {
+            // Getting a random number, to check if powerup should spawn
             int randomNumber = random.nextInt(1000);
-            if (randomNumber < type.getSpawnChance()) { // Convert spawn chance to a comparable value
+            // Convert spawn chance to a comparable value
+            if (randomNumber < type.getSpawnChance()) {
+                // Creating the powerup
                 Powerup powerup = type.createPowerup(playScene, type, xPos, yPos, 8, 8, 0, 0.01);
+
+                // If powerup is null - break, if not, add it to powerups / spawn it
                 if (powerup == null) break;
                 powerups.add(powerup);
                 break;
@@ -408,6 +422,23 @@ public class Game {
         }
     }
 
+    /**
+     * Add score and update the display
+     *
+     * @param score number of score
+     */
+    public void increaseScore(int score) {
+        this.score += score;
+        this.playScene.getDisplayScoreText().setText("Score: " + this.score);
+    }
+
+    /**
+     * Add one to health and update the display
+     */
+    public void increaseHealth() {
+        lives++;
+        this.playScene.getLifesDisplay().updateLives(this.playScene, lives);
+    }
 
     /*
         # ######################### #
@@ -449,7 +480,6 @@ public class Game {
 
     /**
      * Set lives and update the display
-     *
      * @param lives number of lives
      */
     public void setLives(int lives) {
@@ -495,21 +525,4 @@ public class Game {
         playing = !playing;
     }
 
-    /**
-     * Add score and update the display
-     *
-     * @param score number of score
-     */
-    public void increaseScore(int score) {
-        this.score += score;
-        this.playScene.getDisplayScoreText().setText("Score: " + this.score);
-    }
-
-    /**
-     * Add one to health and update the display
-     */
-    public void increaseHealth() {
-        lives++;
-        this.playScene.getLifesDisplay().updateLives(this.playScene, lives);
-    }
 }

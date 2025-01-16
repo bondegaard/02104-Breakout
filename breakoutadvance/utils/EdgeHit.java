@@ -1,7 +1,7 @@
 package breakoutadvance.utils;
 
 /**
- * Enum used to determind on which axis two enities collided.
+ * Enum used to determine on which axis two entities collided.
  */
 public enum EdgeHit {
     XAXIS,
