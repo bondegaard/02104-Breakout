@@ -81,7 +81,7 @@ public class MainMenu extends AbstractMenu {
     }
 
     public void addHighScore() {
-        Text displayHighScore = new Text("High Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
+        Text displayHighScore = new Text("Highscore: " + Breakout.getInstance().getDataManager().getData().getHighscore());
         displayHighScore.setFont(getFont(Constants.DEFAULT_FONT));
         displayHighScore.setStyle(Constants.HIGH_SCORE_STYLE);
         displayHighScore.setFill(Constants.HIGH_SCORE_COLOR);
