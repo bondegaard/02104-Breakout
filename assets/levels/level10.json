@@ -1,11 +1,11 @@
 {
-    "name": "level_4",
-    "nextLevel": "level_5",
-    "paddleWidth": 170,
-    "ballSpeed": 1.1,
+    "name": "level_10",
+    "nextLevel": "level_11",
+    "paddleWidth": 125,
+    "ballSpeed": 1.45,
     "availablePowerUps": [],
     "powerUpSpeed": 0.0001,
-    "paddleSpeed": 1.3,
+    "paddleSpeed": 1.9,
     "levelMap": {
         "levelRows": [
             {
@@ -84,53 +84,7 @@
                     "",
                     "RED"
                 ]
-            },
-            {
-                "row": [
-                    "YELLOW",
-                    "GREEN",
-                    "GREEN",
-                    "YELLOW",
-                    "GREEN",
-                    "GREEN",
-                    "YELLOW"
-                ]
             }
         ]
-      },
-      {
-        "row": [
-          "",
-          "GREEN",
-          "",
-          "GREEN",
-          ""
-        ]
-      },{
-        "row": [
-          "BLUE",
-          "",
-          "BLUE",
-          "",
-          "BLUE"
-        ]
-      },{
-        "row": [
-          "BLUE",
-          "",
-          "RED",
-          "",
-          "BLUE"
-        ]
-      },{
-        "row": [
-          "BLUE",
-          "",
-          "YELLOW",
-          "",
-          "BLUE"
-        ]
-      }
-    ]
-  }
+    }
 }
