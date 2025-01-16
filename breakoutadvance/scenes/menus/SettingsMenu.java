@@ -114,7 +114,7 @@ public class SettingsMenu extends AbstractMenu {
 
     /**
      * Creating a back text button
-     * @return
+     * @return back text button
      */
     private Text createBackButton() {
         Text backBtn = UIComponentFactory.createText("Back", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Constants.HIGHLIGHT_TEXT_COLOR);
@@ -122,6 +122,10 @@ public class SettingsMenu extends AbstractMenu {
         return backBtn;
     }
 
+    /**
+     * Setting up key pressed events, making the user able to press ENTER,
+     * and call a function which determines what happens
+     */
     private void setupKeyPressedEvents() {
         getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ESCAPE || event.getCode() == KeyCode.ENTER) {
@@ -131,11 +135,25 @@ public class SettingsMenu extends AbstractMenu {
         });
     }
 
+    /**
+     * Updating the image shown to the user
+     *
+     * @param imageView ImageView
+     * @param newColor the new color
+     * @param filePath the file path
+     */
     private void updateColorImageView(ImageView imageView, String newColor, String filePath) {
         imageView.setImage(getImage(filePath + newColor + ".png"));
         Breakout.getInstance().getDataManager().saveData();
     }
 
+    /**
+     * 
+     * @param colors
+     * @param direction
+     * @param isBall
+     * @param <T>
+     */
     private <T> void changeColor(List<T> colors, int direction, boolean isBall) {
         int currentIndex = isBall ? currentBallColorIndex : currentPaddleColorIndex;
         currentIndex = (currentIndex + direction + colors.size()) % colors.size();
