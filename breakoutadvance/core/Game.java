@@ -256,7 +256,6 @@ public class Game {
 
     /**
      * Calculating a new velocity based on where the ball hits the paddle
-     *
      * @param ball The ball which hit the paddle
      * @return Returning an array with a new x-vel and y-vel
      */
