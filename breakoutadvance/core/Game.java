@@ -71,22 +71,14 @@ public class Game {
         //reset and update paddle width of paddle when die
         resetBallAndPaddle();
 
-        // Prettier
-        if (lives == 1)
-            this.playScene.getDeathPauseText().setText("You Died! You have " + lives + " life left.");
-        else
-            this.playScene.getDeathPauseText().setText("You Died! You have " + lives + " lives left.");
-
-        // Updating variables, to tell the user that they died
         died = true;
         playing = false;
-
-        // Checking if the player has lost all his lives
         if (lives <= 0) {
             // Save new highscore, if score is higher than highscore
             Data data = Breakout.getInstance().getDataManager().getData();
             if (data.getHighscore() < this.score) {
                 data.setHighscore(this.score);
+
                 data.addGame(new breakoutadvance.persistentdata.data.Game(this.score));
                 Breakout.getInstance().getDataManager().saveData();
                 return;
@@ -95,7 +87,14 @@ public class Game {
             // Setting game over scene
             Breakout.getInstance().setCurrentScene(new GameOverScene(score));
             Sound.playSound(Sound.LOSE);
+            return;
         }
+
+        // Prettier
+        if (lives == 1)
+            this.playScene.getDeathPauseText().setText("You Died! You have " + lives + " life left.");
+        else
+            this.playScene.getDeathPauseText().setText("You Died! You have " + lives + " lives left.");
     }
 
     /**
@@ -257,6 +256,7 @@ public class Game {
 
     /**
      * Calculating a new velocity based on where the ball hits the paddle
+     *
      * @param ball The ball which hit the paddle
      * @return Returning an array with a new x-vel and y-vel
      */

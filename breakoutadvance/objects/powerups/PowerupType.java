@@ -9,10 +9,10 @@ import breakoutadvance.utils.WindowUtils;
 import javafx.scene.image.Image;
 
 public enum PowerupType {
-    PLUS_ONE(Images.getImage(Constants.BALL_FILEPATH + Breakout.getInstance().getDataManager().getData().getBallColor() + ".png"), 200), // 1 is equal to 0.1%
-    PLUS_WIDTH(Images.getImage(Constants.IMAGE_PATH + "paddleWidthPowerUp.png"), 200),
-    BOMB(Images.getImage(Constants.IMAGE_PATH + "bomb.png"), 200),
-    HEART(Images.getImage(Constants.IMAGE_PATH + "heart_full.png"), 25);
+    PLUS_ONE(Images.getImage(Constants.BALL_FILEPATH + Breakout.getInstance().getDataManager().getData().getBallColor() + ".png"), 50), // 1 is equal to 0.1%
+    PLUS_WIDTH(Images.getImage(Constants.IMAGE_PATH + "paddleWidthPowerUp.png"), 50),
+    BOMB(Images.getImage(Constants.IMAGE_PATH + "bomb.png"), 50),
+    HEART(Images.getImage(Constants.IMAGE_PATH + "heart_full.png"), 10);
 
 
     private final Image img;
