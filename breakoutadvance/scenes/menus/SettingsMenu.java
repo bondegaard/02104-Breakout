@@ -148,34 +148,53 @@ public class SettingsMenu extends AbstractMenu {
     }
 
     /**
-     * 
-     * @param colors
-     * @param direction
-     * @param isBall
-     * @param <T>
+     * Function to change color of either the ball or the paddle
+     *
+     * @param colors list of colors
+     * @param direction direction
+     * @param isBall is ball or not (paddle)
+     * @param <T> function is generic, works with different variables
      */
     private <T> void changeColor(List<T> colors, int direction, boolean isBall) {
+        // Getting current index, based on whether its a ball or a paddle
         int currentIndex = isBall ? currentBallColorIndex : currentPaddleColorIndex;
+
+        // Calculating new index
         currentIndex = (currentIndex + direction + colors.size()) % colors.size();
 
+        // Changing color of ball or paddle, based on the newly found current index
         String newColor = colors.get(currentIndex).toString();
         if (isBall) {
-            currentBallColorIndex = currentIndex;
-            Breakout.getInstance().getDataManager().getData().setBallColor(newColor);
-            updateColorImageView(ballImageView, newColor, Constants.BALL_FILEPATH);
+            currentBallColorIndex = currentIndex; // Updating current color index
+            Breakout.getInstance().getDataManager().getData().setBallColor(newColor); // Setting new color in userdata
+            updateColorImageView(ballImageView, newColor, Constants.BALL_FILEPATH); // Updating ball on screen
         } else {
-            currentPaddleColorIndex = currentIndex;
-            Breakout.getInstance().getDataManager().getData().setPaddleColor(newColor);
-            updateColorImageView(paddleImageView, newColor, Constants.PADDLE_FILEPATH);
+            currentPaddleColorIndex = currentIndex; // Updating current color index
+            Breakout.getInstance().getDataManager().getData().setPaddleColor(newColor); // Setting new color in userdata
+            updateColorImageView(paddleImageView, newColor, Constants.PADDLE_FILEPATH); // Updating paddle on screen
         }
     }
 
+    /**
+     * Function creating a text arrow
+     *
+     * @param content content of text
+     * @param action action
+     * @return arrow Text
+     */
     private Text createArrow(String content, Runnable action) {
+        // Creating the text using UIComponentFactory, and assigning an action to it
         Text arrow = UIComponentFactory.createText(content, Constants.ARROW_FONT, Constants.ARROW_FONT_SIZE, Constants.NORMAL_TEXT_COLOR);
         arrow.setOnMouseClicked(event -> action.run());
         return arrow;
     }
 
+    /**
+     *
+     * @param colorName
+     * @param isBall
+     * @return
+     */
     private ImageView createColorImageView(String colorName, boolean isBall) {
         String imagePath = isBall
                 ? Constants.BALL_FILEPATH + colorName + ".png"
