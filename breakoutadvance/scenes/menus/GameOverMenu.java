@@ -1,8 +1,7 @@
-package breakoutadvance.scenes;
+package breakoutadvance.scenes.menus;
 
 import breakoutadvance.Breakout;
-import breakoutadvance.scenes.menus.AbstractMenu;
-import breakoutadvance.scenes.menus.MainMenu;
+import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.Constants;
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyCode;
@@ -16,11 +15,11 @@ import static breakoutadvance.utils.Fonts.getFont;
  * This class is used to display the game over scene
  * You can also restart the game after the game has been lost.
  */
-public class GameOverScene extends AbstractMenu {
+public class GameOverMenu extends AbstractMenu {
     private int selectedBtn = 0;
     private final Text[] textItems;
 
-    public GameOverScene(int score) {
+    public GameOverMenu(int score) {
         super();
 
         // Create menu items

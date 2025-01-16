@@ -53,11 +53,11 @@ public class PlayScene extends AbstractScene {
 
     public void setupKeyPressedEvents() {
         this.getScene().setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
+            if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE) {
                 this.game.togglePlaying();
                 addInfoText.setVisible(false);
 
-                if (!this.game.isPlaying()) this.startOrPauseText.setText("Press ENTER to continue");
+                if (!this.game.isPlaying()) this.startOrPauseText.setText("Press ENTER/SPACE to continue");
             }
             if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
                 this.game.getPaddle().setMoveLeft(true);

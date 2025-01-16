@@ -26,6 +26,9 @@ public abstract class AbstractMenu extends AbstractScene {
         addBackgroundImage();
     }
 
+    /**
+     * Protected function to add the default background to the menus
+     */
     protected void addBackgroundImage() {
         Image image;
         try {
@@ -37,6 +40,12 @@ public abstract class AbstractMenu extends AbstractScene {
         setPaneBackground(image);
     }
 
+    /**
+     * A private function that sets an image as the background. The image is to repeat so it
+     * fills the entire screen. Furthermore, it is as positioned in the center of the screen.
+     *
+     * @param image takes an Image as input.
+     */
     private void setPaneBackground(Image image) {
         if (image != null) {
             BackgroundImage backgroundImage = new BackgroundImage(
@@ -55,6 +64,9 @@ public abstract class AbstractMenu extends AbstractScene {
 
     /**
      * Creates a Text item for the menu with given label and on-click action.
+     *
+     * @param label contains a string with the message that should be added.
+     * @param onClickAction a Runnable click action that is run whenever the menu item is clicked.
      */
     protected Text createMenuItem(String label, Runnable onClickAction) {
         Text text = new Text(label);
@@ -64,6 +76,12 @@ public abstract class AbstractMenu extends AbstractScene {
         return text;
     }
 
+    /**
+     * Creates a VBox with some standard properties: A default spacing between elements and a default alignment, along
+     * with being placed center on the screen.
+     *
+     * @return VBox with the
+     */
     protected VBox createVBox() {
         VBox vbox = new VBox(Constants.DEFAULT_VBOX_SPACING);
         vbox.setAlignment(Constants.DEFAULT_VBOX_ALIGNMENT);
