@@ -1,8 +1,8 @@
 {
     "name": "level_6",
     "nextLevel": "level_7",
-    "paddleWidth": 150,
-    "ballSpeed": 1.25,
+    "paddleWidth": 260,
+    "ballSpeed": 1.2,
     "availablePowerUps": [],
     "powerUpSpeed": 0.0001,
     "paddleSpeed": 1.5,
