@@ -5,8 +5,6 @@ import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Enum used to setting font paths, and loading these
@@ -17,7 +15,6 @@ public enum Fonts {
     BLACKWOOD(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf");
 
     private static final ConcurrentHashMap<String, Font> fonts = new ConcurrentHashMap<>(); // String and fonts
-    private static final Logger logger = Logger.getLogger(Fonts.class.getName()); // Logger
     private final String filename; // File name
 
     Fonts(String filename) {
@@ -30,9 +27,9 @@ public enum Fonts {
     public static void load() {
         for (Fonts font : Fonts.values()) {
             try {
-                loadFont(font.filename, 64); // Default size
+                loadFont(font.filename, Constants.DEFAULT_FONT_SIZE);
             } catch (IOException e) {
-                logger.log(Level.SEVERE, "Failed to load font: " + font.filename, e);
+                e.printStackTrace();
             }
         }
     }
@@ -40,7 +37,7 @@ public enum Fonts {
     /**
      * Method to load fonts
      *
-     * @param filePath file path
+     * @param filePath filepath
      * @param size size
      * @throws IOException if unable to load font
      */
@@ -58,7 +55,7 @@ public enum Fonts {
      *
      * @param filePath filepath
      * @param size size
-     * @return Font
+     * @return Font; or null if the loading fails.
      */
     public static Font getFont(String filePath, double size) {
         // If the font is not loaded, load it on demand
@@ -67,13 +64,19 @@ public enum Fonts {
                 loadFont(path, size);
                 return fonts.get(path);
             } catch (IOException e) {
-                logger.log(Level.SEVERE, "Failed to load font on demand: " + path, e);
+                e.printStackTrace();
                 return null; // Return null if font cannot be loaded
             }
         });
     }
 
+    /**
+     * Overload of getting font, if there is not specified a font size.
+     *
+     * @param filePath filepath
+     * @return Font
+     */
     public static Font getFont(String filePath) {
-        return getFont(filePath, 64); // Default size
+        return getFont(filePath, Constants.DEFAULT_FONT_SIZE);
     }
 }
