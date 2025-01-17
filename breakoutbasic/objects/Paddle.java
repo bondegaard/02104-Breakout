@@ -15,12 +15,12 @@ public class Paddle extends AbstractEntity {
     private boolean moveRight = false; // Is paddle set to move right?
 
     /**
-     * Create a paddle
+     * Creating a paddle, based on the given parameters
      *
      * @param playScene current instance of playScene
-     * @param posX      x position
-     * @param posY      y position
-     * @param velX      Starting velocity in the x direction
+     * @param posX      x-position
+     * @param posY      y-position
+     * @param velX      Starting velocity in the x-direction
      * @param height    height of the paddle
      * @param width     width of the paddle
      */
@@ -33,12 +33,12 @@ public class Paddle extends AbstractEntity {
         paddle.setFill(Color.RED);
         playScene.getPane().getChildren().add(paddle);
 
-        // Update position
+        // Setting node
         this.setNode(paddle);
     }
 
     /**
-     * Prevent paddle from going out of the screen and update postion visibility.
+     * Prevent paddle from going out of the screen and update position visibility.
      */
     public void updatePosXRight() {
         if (this.getPosX() + velX < WindowUtils.getWindowWidth() - this.getWidth())
@@ -47,7 +47,7 @@ public class Paddle extends AbstractEntity {
     }
 
     /**
-     * Prevent paddle from going out of the screen and update postion visibility.
+     * Prevent paddle from going out of the screen and update position visibility.
      */
     public void updatePosXLeft() {
         if (this.getPosX() - velX > 0)

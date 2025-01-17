@@ -5,12 +5,25 @@ import breakoutbasic.utils.WindowUtils;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * Used to create balls on the screen
+ */
 public class Ball extends AbstractEntity {
-    private double velX;
-    private double velY;
+    private double velX; // x-velocity
+    private double velY; // y-velocity
 
-    //Ball constructor
-    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius/*, String imgPath*/) {
+    /**
+     * Creating a ball, based on the given parameters
+     *
+     * @param playScene current instance of playScene
+     * @param posX      x-position of the ball to draw
+     * @param posY      y-position of the ball to draw
+     * @param velX      x-velocity for the ball
+     * @param velY      y-velocity for the ball
+     * @param radius    radius of the ball
+     */
+    public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius) {
+        // Setting values
         super(posX, posY, radius, radius);
         this.velX = velX;
         this.velY = velY;
@@ -24,7 +37,7 @@ public class Ball extends AbstractEntity {
     }
 
     /**
-     * Update x position of the ball
+     * Update x-position of the ball
      */
     public void updateX() {
         if (this.getPosX() + velX >= WindowUtils.getWindowWidth() - this.getWidth() * 2) {
@@ -35,7 +48,7 @@ public class Ball extends AbstractEntity {
     }
 
     /**
-     * Update y position of the ball
+     * Update y-position of the ball
      */
     public void updateY() {
         if (this.getPosY() + velY >= WindowUtils.getWindowHeight() - this.getHeight() * 2) {
@@ -45,7 +58,9 @@ public class Ball extends AbstractEntity {
         }
     }
 
-    //sets new X , Y position
+    /**
+     * Sets new x-, y-position
+     */
     public void updatePosition() {
         this.setPosX(this.getPosX() + velX);
         this.setPosY(this.getPosY() + velY);

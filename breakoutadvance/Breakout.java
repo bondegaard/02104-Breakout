@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Class to set up the game (window)
+ * Class to set up the JavaFX game
  */
 public class Breakout extends Application {
 

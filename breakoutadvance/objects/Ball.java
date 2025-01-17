@@ -10,6 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+/**
+ * Used to create balls on the screen
+ */
 public class Ball extends AbstractEntity {
     private double velX; // x-velocity
     private double velY; // y-velocity
@@ -29,7 +32,7 @@ public class Ball extends AbstractEntity {
      * @param radius    radius of the ball
      */
     public Ball(PlayScene playScene, double posX, double posY, double velX, double velY, double radius) {
-        // Getting coordinates and height/width from parent class
+        // Setting values
         super(posX, posY, radius, radius);
         this.velX = velX;
         this.velY = velY;
@@ -85,7 +88,9 @@ public class Ball extends AbstractEntity {
         }
     }
 
-    //sets new X-, Y-position
+    /**
+     * Sets new x-, y-position
+     */
     public void updatePosition() {
         this.setPosX(this.getPosX() + velX);
         this.setPosY(this.getPosY() + velY);

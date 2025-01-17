@@ -1,5 +1,9 @@
 package breakoutbasic.utils;
 
+/**
+ * This class is used to save constants used throughout the program
+ */
+
 public class Constants {
     // Paddle constants
     public static final int PADDLE_WIDTH = 200;
