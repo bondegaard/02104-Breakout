@@ -11,43 +11,52 @@ import static breakoutadvance.utils.Fonts.getFont;
 import static breakoutadvance.utils.Images.getImage;
 
 /**
- * Base class for menu scenes, using AbstractScene's ability
- * to set the Scene on the primary stage from WindowUtils.
+ * An abstract base class for all menu scenes in the game. This class extends
+ * {@link AbstractScene}, which automatically sets the scene on the primary stage
+ * via WindowUtils. Concrete menu classes (e.g., MainMenu, SettingsMenu) should
+ * inherit from this class and define their own layout and behavior.
  */
 public abstract class AbstractMenu extends AbstractScene {
+
     /**
-     * Default constructor uses the WindowUtils' primary stage.
+     * Default constructor that initializes the menu scene on the primary stage,
+     * sets a black fill color, and attempts to apply a background image.
      */
     public AbstractMenu() {
-        super();  // calls AbstractScene(), which calls WindowUtils.getPrimaryStage()
+        // The parent constructor calls WindowUtils.getPrimaryStage()
+        super();
 
+        // Set the default scene fill to black
         this.getScene().setFill(Color.BLACK);
 
+        // Attempt to load and set a background image for the menu
         addBackgroundImage();
     }
 
     /**
-     * Trying to add the background image
+     * Attempts to load a background image from {@link Constants#MENU_BACKGROUND}.
+     * If loading fails, a black background is used as a fallback.
      */
     protected void addBackgroundImage() {
         Image image;
         try {
             image = getImage(Constants.MENU_BACKGROUND);
         } catch (Exception e) {
-            System.err.println("Error loading background image, using black background instead.");
+            System.err.println("Error loading background image, using black background instead. " + e.getMessage());
             image = null;
         }
         setPaneBackground(image);
     }
 
     /**
-     * Setting background for current pane
-     * @param image image to display
+     * Sets the background of the pane to the given image. If the image is null,
+     * a solid black background is used instead.
+     *
+     * @param image The image to use as the background (may be null).
      */
     private void setPaneBackground(Image image) {
-        // If image is not null, it will change the background
-        // Furthermore, it will repeat the background to fill out the whole screen
         if (image != null) {
+            // Repeat the background image to fill the entire screen
             BackgroundImage backgroundImage = new BackgroundImage(
                     image,
                     BackgroundRepeat.REPEAT,
@@ -57,12 +66,19 @@ public abstract class AbstractMenu extends AbstractScene {
             );
             getPane().setBackground(new Background(backgroundImage));
         } else {
+            // Use a solid black background if loading failed or if the image is null
             getPane().setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, null)));
         }
     }
 
     /**
-     * Creates a Text item for the menu with given label and on-click action.
+     * Creates a {@link Text} object that serves as a clickable menu item.
+     * The text uses a default font and color from {@link Constants}, and runs
+     * the specified action when clicked.
+     *
+     * @param label         The text content to display.
+     * @param onClickAction The code to be executed when this text is clicked.
+     * @return A configured {@link Text} node representing the menu item.
      */
     protected Text createMenuItem(String label, Runnable onClickAction) {
         Text text = new Text(label);
@@ -73,8 +89,10 @@ public abstract class AbstractMenu extends AbstractScene {
     }
 
     /**
-     * Create a VBox
-     * @return VBox
+     * Creates a new {@link VBox} with default spacing and alignment as defined
+     * in {@link Constants}, then centers it within the scene's pane.
+     *
+     * @return The configured {@link VBox}.
      */
     protected VBox createVBox() {
         VBox vbox = new VBox(Constants.DEFAULT_VBOX_SPACING);
@@ -85,8 +103,10 @@ public abstract class AbstractMenu extends AbstractScene {
     }
 
     /**
-     * Centering the given parameter
-     * @param node node
+     * Centers a given {@link Region} (such as a VBox) within this menu's pane
+     * by binding its layout position to half the difference in width/height.
+     *
+     * @param node The region to be centered.
      */
     protected void centerNodeInPane(Region node) {
         node.layoutXProperty().bind(getPane().widthProperty().subtract(node.widthProperty()).divide(2));

@@ -8,7 +8,7 @@ import breakoutadvance.objects.Paddle;
 import breakoutadvance.objects.Powerup;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
-import breakoutadvance.scenes.GameOverScene;
+import breakoutadvance.scenes.menus.GameOverMenu;
 import breakoutadvance.scenes.PlayScene;
 import breakoutadvance.utils.*;
 
@@ -86,7 +86,7 @@ public class Game {
             }
 
             // Setting game over scene
-            Breakout.getInstance().setCurrentScene(new GameOverScene(score));
+            Breakout.getInstance().setCurrentScene(new GameOverMenu(score));
             Sound.playSound(Sound.LOSE);
             return;
         }

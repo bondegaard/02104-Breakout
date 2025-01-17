@@ -12,88 +12,102 @@ import javafx.scene.text.Text;
 import static breakoutadvance.utils.Fonts.getFont;
 
 /**
- * Main menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.
+ * The main menu scene displayed when the game is launched or returned to from
+ * other scenes. It offers options to start the game, open settings, or quit.
+ * This class extends {@link AbstractMenu}, which automatically initializes the
+ * scene on the primary stage.
  */
 public class MainMenu extends AbstractMenu {
+
+    /** Stores the menu items (Text nodes) displayed to the user. */
     private Text[] textItems;
+
+    /** The index of the currently highlighted menu item (e.g., 0 for the first item). */
     private int selectedBtn = 0;
 
     /**
-     * Constructor for main menu, consisting of basic setup
+     * Constructs the main menu, creates the menu items and high score display,
+     * and sets up key-press events for navigation and selection.
      */
     public MainMenu() {
-        // Parent class
+        // Calls the parent constructor to set up the scene
         super();
 
-        // Creating menu items
+        // Create a VBox for menu items and populate it
         VBox vbox = createVBox();
         setupMenuItems(vbox);
+
+        // Add the VBox to the scene's pane
         getPane().getChildren().add(vbox);
+
+        // Display the high score at the bottom of the screen
         addHighScore();
 
-        // Setting up key events
+        // Enable menu navigation via keyboard events
         setupKeyPressedEvents();
     }
 
     /**
-     * Adding items to start menu, such as displayed text "Start", "Settings" and "Quit"
-     * Linking actions to labels, determining what happens when its clicked
+     * Creates and configures the menu items displayed to the user, including
+     * their associated actions (e.g., start game, open settings, quit).
      *
-     * @param vbox what vbox to draw it in
+     * @param vbox The VBox container where the items will be added.
      */
     private void setupMenuItems(VBox vbox) {
-        // Creating labels and assigning functions
+        // Define the labels (text) and actions for each menu item
         String[] labels = {"Start", "Settings", "Quit"};
         Runnable[] actions = {this::startGame, this::openSettings, this::quitGame};
 
-        // Link labels and actions together
+        // Create a Text item for each label and store it in textItems
         textItems = new Text[labels.length];
         for (int i = 0; i < labels.length; i++) {
             textItems[i] = createMenuItem(labels[i], actions[i]);
         }
-        // Adding it to the vbox
+
+        // Add all menu items to the VBox
         vbox.getChildren().addAll(textItems);
+
+        // Highlight the initial menu item
         selectText(selectedBtn);
     }
 
     /**
-     * Setting up key pressed events, making the user able to press ENTER,
-     * and call a function which determines what happens
+     * Sets up key-press events on the scene to navigate the menu or select
+     * the highlighted option. ENTER activates the selected item, whereas
+     * UP/DOWN (or W/S) changes which item is highlighted.
      */
     private void setupKeyPressedEvents() {
-        // When pressed a key
         getScene().setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
-            // If the key is ENTER
             if (code == KeyCode.ENTER) {
                 btnEnter();
             } else {
-                // If the key is not ENTER
                 handleNavigation(code);
             }
         });
     }
 
     /**
-     * Used to navigate the menu - either up or down
-     * @param code keycode / key pressed
+     * Handles navigation through the menu items based on key presses:
+     * - UP/W moves selection up one item.
+     * - DOWN/S moves selection down one item.
+     *
+     * @param code The {@link KeyCode} of the key that was pressed.
      */
     private void handleNavigation(KeyCode code) {
         if (code == KeyCode.UP || code == KeyCode.W) {
-            // Move one item up
             selectedBtn = (selectedBtn - 1 + textItems.length) % textItems.length;
         } else if (code == KeyCode.DOWN || code == KeyCode.S) {
-            // Move one item down
             selectedBtn = (selectedBtn + 1) % textItems.length;
         }
-        // Highlight current text
         selectText(selectedBtn);
     }
 
     /**
-     * Used to determine which text to highlight
+     * Applies highlighting to the currently selected menu item and removes it
+     * from the others.
      *
-     * @param btnIndex which button
+     * @param btnIndex The index of the item that should be highlighted.
      */
     private void selectText(int btnIndex) {
         for (int i = 0; i < textItems.length; i++) {
@@ -102,19 +116,19 @@ public class MainMenu extends AbstractMenu {
     }
 
     /**
-     * If selected used to highlight text, displaying what item the user is on
-     * If not selected, used to remove the highlight
+     * Highlights the given {@link Text} node if it is the selected item,
+     * otherwise resets it to the normal text color.
      *
-     * @param item which Text
-     * @param isSelected is it selected?
+     * @param item       The Text node to style.
+     * @param isSelected True if this item should be highlighted.
      */
     private void highlightMenuItem(Text item, boolean isSelected) {
         item.setFill(isSelected ? Constants.HIGHLIGHT_TEXT_COLOR : Constants.NORMAL_TEXT_COLOR);
     }
 
     /**
-     * Function which handles operation when ENTER key has been pressed,
-     * based on what the selected button
+     * Determines which action to perform when the ENTER key is pressed,
+     * based on the currently selected menu item.
      */
     private void btnEnter() {
         switch (selectedBtn) {
@@ -126,10 +140,11 @@ public class MainMenu extends AbstractMenu {
     }
 
     /**
-     * Used to display highscore at the bottom of the screen
+     * Displays the high score at the bottom of the screen.
+     * Retrieves the score from the {@link breakoutadvance.persistentdata.DataManager} object
+     * managed by the {@link Breakout} instance.
      */
     public void addHighScore() {
-        // Styles for text
         Text displayHighScore = new Text("High Score: " + Breakout.getInstance().getDataManager().getData().getHighscore());
         displayHighScore.setFont(getFont(Constants.DEFAULT_FONT));
         displayHighScore.setStyle(Constants.HIGH_SCORE_STYLE);
@@ -137,19 +152,20 @@ public class MainMenu extends AbstractMenu {
         displayHighScore.setStrokeWidth(Constants.HIGH_SCORE_STROKE_WIDTH);
         displayHighScore.setStroke(Constants.HIGH_SCORE_STROKE_COLOR);
 
-        // Adding it to the pane
         getPane().getChildren().add(displayHighScore);
         alignHighScore(displayHighScore);
     }
 
     /**
-     * Used to determine the position of the text
-     * @param text highscore text
+     * Aligns the high score text at the bottom-left corner of the window,
+     * dynamically adjusting the position if the window is resized.
+     *
+     * @param text The {@link Text} node displaying the high score.
      */
     private void alignHighScore(Text text) {
-        // Used to make sure the highscore stays at the bottom of the screen, if the screen size changes
+        // Recalculate the text position whenever its bounds change (e.g., on resize)
         text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            Platform.runLater( () -> {
+            Platform.runLater(() -> {
                 double textHeight = newValue.getHeight();
                 text.setX(10);
                 text.setY(WindowUtils.getWindowHeight() - (textHeight / 2));
@@ -158,7 +174,7 @@ public class MainMenu extends AbstractMenu {
     }
 
     /**
-     * Starting the game
+     * Starts the game by transitioning to the {@link PlayScene}.
      */
     private void startGame() {
         try {
@@ -169,14 +185,14 @@ public class MainMenu extends AbstractMenu {
     }
 
     /**
-     * Opening settings menu
+     * Opens the settings menu by transitioning to {@link SettingsMenu}.
      */
     private void openSettings() {
         Breakout.getInstance().setCurrentScene(new SettingsMenu());
     }
 
     /**
-     * Quitting the game
+     * Exits the entire application.
      */
     private void quitGame() {
         System.exit(0);

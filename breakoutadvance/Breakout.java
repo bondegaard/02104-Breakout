@@ -58,7 +58,7 @@ public class Breakout extends Application {
     public void start(Stage primaryStage) throws IOException {
         instance = this;
 
-        // Load Sounds
+        // Load attributes
         Sound.load();
         Images.load();
         Fonts.load();

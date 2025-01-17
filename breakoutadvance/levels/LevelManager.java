@@ -23,6 +23,7 @@ public class LevelManager {
 
     /**
      * Setting the dataManager
+     *
      * @param dataManager dataManager
      */
     public LevelManager(DataManager dataManager) {
