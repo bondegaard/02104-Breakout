@@ -212,7 +212,7 @@ public class PlayScene extends AbstractScene {
     }
 
     /**
-     * Makes sure the text is at the middle of the screen
+     * Makes sure the text is dynamic
      *
      * @param text Text given
      * @param xOffset x-offset
