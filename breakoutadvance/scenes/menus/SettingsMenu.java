@@ -22,60 +22,87 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Settings menu scene; inherits from AbstractMenu, which sets up the stage/scene via WindowUtils.
+ * The Settings menu scene, allowing the user to adjust various game options
+ * such as volume, mute status, and the appearance (colors) of the ball and paddle.
+ * Inherits from {@link AbstractMenu}, which handles scene initialization.
  */
 public class SettingsMenu extends AbstractMenu {
-    private int currentBallColorIndex; // Current chosen ball
-    private int currentPaddleColorIndex; // Current chosen paddle
-    private ImageView ballImageView; // Used to draw/view the ball
-    private ImageView paddleImageView; // Used to draw/view the paddle
+
+    /** The current selected color index for the ball. */
+    private int currentBallColorIndex;
+
+    /** The current selected color index for the paddle. */
+    private int currentPaddleColorIndex;
+
+    /** Displays the currently selected ball color. */
+    private ImageView ballImageView;
+
+    /** Displays the currently selected paddle color. */
+    private ImageView paddleImageView;
 
     /**
-     * Constructor for settings menu, consisting of basic setup
+     * Constructs the Settings menu, creating UI components for volume control,
+     * mute settings, ball/paddle color selectors, and a "Back" button.
      */
     public SettingsMenu() {
-        // Parent class
-        super();
+        super(); // Calls AbstractMenu constructor, which sets up the scene
 
-        // Creating vbox and adding styles
+        // Create a VBox for holding all settings elements, applying styling
         VBox vbox = createVBox();
         vbox.setStyle("-fx-padding: 20;");
         vbox.setAlignment(Pos.CENTER);
 
-        // Creating title
-        Text title = UIComponentFactory.createText("Settings", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Color.WHITE);
+        // Create and configure the title
+        Text title = UIComponentFactory.createText(
+                "Settings",
+                Constants.DEFAULT_FONT,
+                Constants.DEFAULT_FONT_SIZE,
+                Color.WHITE
+        );
 
-        // Creating various items, which the user can configurate
+        // Create UI components for volume and mute
         VBox volumeBox = createVolumeBox();
         CheckBox muteCheckBox = createMuteCheckBox();
+
+        // Create UI components to cycle through ball and paddle colors
         HBox ballColorSelector = createColorSelector(Constants.BALL_COLORS, currentBallColorIndex, true);
         HBox paddleColorSelector = createColorSelector(Constants.PADDLE_COLORS, currentPaddleColorIndex, false);
+
+        // Create a "Back" button that returns the user to the MainMenu
         Text backBtn = createBackButton();
 
-        // Adding it to the vbox, and adding the vbox to the pane
-        vbox.getChildren().addAll(title, volumeBox, muteCheckBox, ballColorSelector, paddleColorSelector, backBtn);
+        // Add all components to the VBox and then to the scene
+        vbox.getChildren().addAll(
+                title,
+                volumeBox,
+                muteCheckBox,
+                ballColorSelector,
+                paddleColorSelector,
+                backBtn
+        );
         getPane().getChildren().add(vbox);
 
-        // Setting up key events
+        // Set up key-press events for ESC or ENTER to save changes and return to the MainMenu
         setupKeyPressedEvents();
     }
 
     /**
-     * Creating the volume vbox
-     *
-     * @return volume Vbox
+     * Creates a VBox containing a Slider and a Label to adjust and display the volume level.
+     * @return A VBox containing the volume slider and its label.
      */
     private VBox createVolumeBox() {
-        // Creating a slider to change the volume
+        // Create a slider for volume control
         Slider volumeSlider = UIComponentFactory.createSlider(
-                0, 100,
+                0,
+                100,
                 Breakout.getInstance().getDataManager().getData().getVolume(),
                 Constants.SETTINGS_VOLUME_SLIDER_WIDTH,
                 true,
                 10.0,
                 true
         );
-        // Creating a label for it
+
+        // Create a label showing the current volume in percentage
         Label volumeLabel = UIComponentFactory.createLabel(
                 String.format("Volume: %3d %%", (int) volumeSlider.getValue()),
                 20,
@@ -83,28 +110,27 @@ public class SettingsMenu extends AbstractMenu {
         );
         volumeLabel.setMinWidth(Constants.SETTINGS_VOLUME_LABEL_WIDTH);
 
-        // Saving user data
+        // Update the label and save user data whenever the slider value changes
         volumeSlider.valueProperty().addListener((observable, oldVal, newVal) -> {
             volumeLabel.setText(String.format("Volume: %3d %%", newVal.intValue()));
             Breakout.getInstance().getDataManager().getData().setVolume(newVal.intValue());
             Breakout.getInstance().getDataManager().saveData();
         });
+
         return new VBox(10, volumeSlider, volumeLabel);
     }
 
     /**
-     * Creating a checkbox for muting the volume
-     *
-     * @return mute checkbox
+     * Creates a CheckBox that toggles mute on or off. Updates the game's data
+     * store when checked or unchecked.
+     * @return A CheckBox controlling the mute setting.
      */
     private CheckBox createMuteCheckBox() {
-        // Creating the checkbox
         CheckBox muteCheckBox = UIComponentFactory.createCheckBox(
                 "Mute",
                 Breakout.getInstance().getDataManager().getData().isMute(),
                 getFont(Constants.DEFAULT_FONT)
         );
-        // Saving user data
         muteCheckBox.selectedProperty().addListener((observable, oldVal, newVal) -> {
             Breakout.getInstance().getDataManager().getData().setMute(newVal);
             Breakout.getInstance().getDataManager().saveData();
@@ -113,18 +139,23 @@ public class SettingsMenu extends AbstractMenu {
     }
 
     /**
-     * Creating a back text button
-     * @return back text button
+     * Creates a clickable "Back" button that returns the user to the MainMenu.
+     * @return A Text node representing the back button.
      */
     private Text createBackButton() {
-        Text backBtn = UIComponentFactory.createText("Back", Constants.DEFAULT_FONT, Constants.DEFAULT_FONT_SIZE, Constants.HIGHLIGHT_TEXT_COLOR);
+        Text backBtn = UIComponentFactory.createText(
+                "Back",
+                Constants.DEFAULT_FONT,
+                Constants.DEFAULT_FONT_SIZE,
+                Constants.HIGHLIGHT_TEXT_COLOR
+        );
         backBtn.setOnMouseClicked(event -> Breakout.getInstance().setCurrentScene(new MainMenu()));
         return backBtn;
     }
 
     /**
-     * Setting up key pressed events, making the user able to press ENTER,
-     * and call a function which determines what happens
+     * Configures key-press events so that pressing ESC or ENTER will save the
+     * current settings and return the user to the MainMenu.
      */
     private void setupKeyPressedEvents() {
         getScene().setOnKeyPressed(event -> {
@@ -136,11 +167,12 @@ public class SettingsMenu extends AbstractMenu {
     }
 
     /**
-     * Updating the image shown to the user
+     * Updates the provided ImageView with a new image path corresponding to a
+     * color change. Saves the updated configuration to the user data.
      *
-     * @param imageView ImageView
-     * @param newColor the new color
-     * @param filePath the file path
+     * @param imageView The ImageView to update.
+     * @param newColor  The new color name (e.g., "Blue", "Red").
+     * @param filePath  The file path prefix for the resource (ball or paddle).
      */
     private void updateColorImageView(ImageView imageView, String newColor, String filePath) {
         imageView.setImage(getImage(filePath + newColor + ".png"));
@@ -148,65 +180,72 @@ public class SettingsMenu extends AbstractMenu {
     }
 
     /**
-     * Function to change color of either the ball or the paddle
+     * Changes the color index for either the ball or the paddle and updates
+     * the associated ImageView to reflect the newly selected color.
      *
-     * @param colors list of colors
-     * @param direction direction
-     * @param isBall is ball or not (paddle)
-     * @param <T> function is generic, works with different variables
+     * @param colors    A list of possible colors (e.g., ["Red", "Blue", "Green"]).
+     * @param direction The increment or decrement step (-1 for previous color, +1 for next color).
+     * @param isBall    True if changing the ball's color, false if changing the paddle's color.
+     * @param <T>       The type of the color entries (usually String).
      */
     private <T> void changeColor(List<T> colors, int direction, boolean isBall) {
-        // Getting current index, based on whether its a ball or a paddle
+        // Determine the current index from ball or paddle
         int currentIndex = isBall ? currentBallColorIndex : currentPaddleColorIndex;
 
-        // Calculating new index
+        // Compute the new index in a cyclic manner
         currentIndex = (currentIndex + direction + colors.size()) % colors.size();
 
-        // Changing color of ball or paddle, based on the newly found current index
+        // Retrieve the new color and update data accordingly
         String newColor = colors.get(currentIndex).toString();
         if (isBall) {
-            currentBallColorIndex = currentIndex; // Updating current color index
-            Breakout.getInstance().getDataManager().getData().setBallColor(newColor); // Setting new color in userdata
-            updateColorImageView(ballImageView, newColor, Constants.BALL_FILEPATH); // Updating ball on screen
+            currentBallColorIndex = currentIndex;
+            Breakout.getInstance().getDataManager().getData().setBallColor(newColor);
+            updateColorImageView(ballImageView, newColor, Constants.BALL_FILEPATH);
         } else {
-            currentPaddleColorIndex = currentIndex; // Updating current color index
-            Breakout.getInstance().getDataManager().getData().setPaddleColor(newColor); // Setting new color in userdata
-            updateColorImageView(paddleImageView, newColor, Constants.PADDLE_FILEPATH); // Updating paddle on screen
+            currentPaddleColorIndex = currentIndex;
+            Breakout.getInstance().getDataManager().getData().setPaddleColor(newColor);
+            updateColorImageView(paddleImageView, newColor, Constants.PADDLE_FILEPATH);
         }
     }
 
     /**
-     * Function creating a text arrow
+     * Creates a Text-based arrow (e.g. "<" or ">") which, when clicked, triggers
+     * the provided action (e.g., navigating through a list of available colors).
      *
-     * @param content content of text
-     * @param action action
-     * @return arrow Text
+     * @param content The visible text for the arrow (e.g., "<" or ">").
+     * @param action  The action to run when the arrow is clicked.
+     * @return A Text node representing the arrow.
      */
     private Text createArrow(String content, Runnable action) {
-        // Creating the text using UIComponentFactory, and assigning an action to it
-        Text arrow = UIComponentFactory.createText(content, Constants.ARROW_FONT, Constants.ARROW_FONT_SIZE, Constants.NORMAL_TEXT_COLOR);
+        Text arrow = UIComponentFactory.createText(
+                content,
+                Constants.ARROW_FONT,
+                Constants.ARROW_FONT_SIZE,
+                Constants.NORMAL_TEXT_COLOR
+        );
         arrow.setOnMouseClicked(event -> action.run());
         return arrow;
     }
 
     /**
-     * Creating an ImageView for either the ball or the paddle
+     * Creates an ImageView for either the ball or the paddle based on a color
+     * name, setting the appropriate dimensions depending on whether it's a ball
+     * or a paddle.
      *
-     * @param colorName which color
-     * @param isBall ball or paddle?
-     * @return ImageView
+     * @param colorName The color name to be applied (e.g. "Blue", "Green").
+     * @param isBall    True if creating an ImageView for the ball, false for the paddle.
+     * @return An ImageView showing the specified color for the ball or paddle.
      */
     private ImageView createColorImageView(String colorName, boolean isBall) {
-       // Getting an image path, based on whether its the ball or paddle
+        // Construct the path to the image based on whether it's a ball or a paddle
         String imagePath = isBall
                 ? Constants.BALL_FILEPATH + colorName + ".png"
                 : Constants.PADDLE_FILEPATH + colorName + ".png";
 
-        Image image = getImage(imagePath); // Assumes Images.getImage handles loading or returns a default image in case of errors
+        Image image = getImage(imagePath);
         ImageView imageView = new ImageView(image);
 
-        // If it's a ball, some dimensions are set
-        // If it's a paddle, different dimensions are set
+        // Set the dimensions based on whether it's a ball or a paddle
         if (isBall) {
             imageView.setFitWidth(Constants.BALL_RADIUS * 2);
             imageView.setFitHeight(Constants.BALL_RADIUS * 2);
@@ -217,44 +256,49 @@ public class SettingsMenu extends AbstractMenu {
         return imageView;
     }
 
-
     /**
-     * Creating HBox for either the balls or the paddles
-     * Therefore creating an option for the user to change between balls and paddles
+     * Creates an HBox containing left and right arrow Text nodes and an ImageView
+     * to allow the user to cycle through an array of possible colors for the ball
+     * or paddle. Clicking an arrow calls {@link #changeColor(List, int, boolean)}
+     * to update the current color selection.
      *
-     * @param colors array of colors
-     * @param currentIndex current index
-     * @param isBall ball or paddle?
-     * @return HBox
-     * @param <T> function is generic, works with different variables
+     * @param colors       The array of color options (e.g., {"Red", "Green", "Blue"}).
+     * @param currentIndex The initially selected color index.
+     * @param isBall       True if editing the ball's color, false if editing the paddle's color.
+     * @param <T>          The type of the color array (usually String).
+     * @return An HBox containing the arrows and the color ImageView.
      */
     private <T> HBox createColorSelector(T[] colors, int currentIndex, boolean isBall) {
-        // List of colors
+        // Convert the array of colors into a List
         List<T> colorList = Arrays.asList(colors);
 
-        // Creating an ImageView
+        // Create the initial ImageView based on the given color index
         ImageView colorImageView = createColorImageView(colorList.get(currentIndex).toString(), isBall);
 
-        // Updating ImageView for the one of them
-        // If it's a ball, some dimensions are set
-        // If it's a paddle, different dimensions are set
+        // Assign the created ImageView to the appropriate field (ball or paddle)
         if (isBall) {
             ballImageView = colorImageView;
-            colorImageView.setFitWidth(Constants.BALL_RADIUS * 2);
-            colorImageView.setFitHeight(Constants.BALL_RADIUS * 2);
+            ballImageView.setFitWidth(Constants.BALL_RADIUS * 2);
+            ballImageView.setFitHeight(Constants.BALL_RADIUS * 2);
         } else {
             paddleImageView = colorImageView;
-            colorImageView.setFitWidth(Constants.PADDLE_WIDTH);
-            colorImageView.setFitHeight(Constants.PADDLE_HEIGHT);
+            paddleImageView.setFitWidth(Constants.PADDLE_WIDTH);
+            paddleImageView.setFitHeight(Constants.PADDLE_HEIGHT);
         }
 
-        // New Hbox to display arrows: "<",">", to switch between the balls/paddles
-        HBox hbox = new HBox(Constants.COLOR_SELECTOR_SPACING,
-                createArrow("<", () -> changeColor(colorList, -1, isBall)),
+        // Create arrows for switching colors
+        Text leftArrow = createArrow("<", () -> changeColor(colorList, -1, isBall));
+        Text rightArrow = createArrow(">", () -> changeColor(colorList, 1, isBall));
+
+        // Build and configure the HBox container
+        HBox hbox = new HBox(
+                Constants.COLOR_SELECTOR_SPACING,
+                leftArrow,
                 colorImageView,
-                createArrow(">", () -> changeColor(colorList, 1, isBall))
+                rightArrow
         );
         hbox.setAlignment(Pos.CENTER);
+
         return hbox;
     }
 }

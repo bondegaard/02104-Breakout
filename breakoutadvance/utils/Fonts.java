@@ -46,7 +46,7 @@ public enum Fonts {
             Font font = Font.loadFont(fileInputStream, size);
             fonts.put(filePath, font);
         } catch (IOException | IllegalStateException e) {
-            System.err.println("Error loading found: " + filePath + " " + e.getMessage());
+            System.err.println("Error loading font: " + filePath + " " + e.getMessage());
         }
     }
 
