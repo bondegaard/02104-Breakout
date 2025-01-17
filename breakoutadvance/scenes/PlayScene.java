@@ -15,21 +15,29 @@ import javafx.scene.text.Text;
 
 import static breakoutadvance.utils.Fonts.getFont;
 
+/**
+ * This class contains all graphical content in the game
+ */
 public class PlayScene extends AbstractScene {
 
-    private final LivesDisplay lifesDisplay;
-    private final breakoutadvance.core.Game game;
-    private Text startOrPauseText;
-    private Text infoText;
-    private Text addInfoText;
-    private Text deathPauseText;
-    private Text deathInfoText;
-    private Text displayScoreText;
+    private final LivesDisplay livesDisplay; // Lives display
+    private final breakoutadvance.core.Game game; // game instance
+    private Text startOrPauseText; // Start or pause text
+    private Text infoText; // Info text
+    private Text addInfoText; // Additional info text
+    private Text deathPauseText; // Text to display how many lives you have left
+    private Text deathInfoText; // Info text when dead
+    private Text displayScoreText; // Displaying score text
 
 
+    /**
+     * Constructor for play scene, consisting of basic setup
+     */
     public PlayScene() {
+        // Creating new instance of game
         this.game = new breakoutadvance.core.Game(this);
 
+        // Adding background images
         this.addBackgroundImage();
 
         // Add start or pause text
@@ -42,62 +50,87 @@ public class PlayScene extends AbstractScene {
         setupKeyPressedEvents();
 
         // Add lives
-        this.lifesDisplay = new LivesDisplay();
-        this.lifesDisplay.updateLives(this, this.game.getLives());
+        this.livesDisplay = new LivesDisplay();
+        this.livesDisplay.updateLives(this, this.game.getLives());
 
         // Add score
         addDisplayScore();
     }
 
+    /**
+     * Setting up key pressed events, making the user able to press keys,
+     * and call a function which determines what happens
+     */
     public void setupKeyPressedEvents() {
+        // When key is pressed
         this.getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
+                // When pressed ENTER, start the game, or pause if the game has been started
                 this.game.togglePlaying();
                 addInfoText.setVisible(false);
 
                 if (!this.game.isPlaying()) this.startOrPauseText.setText("Press ENTER to continue");
             }
             if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
+                // Move left if left key is pressed
                 this.game.getPaddle().setMoveLeft(true);
             }
 
             if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT || event.getCode() == KeyCode.D) {
+                // Move right if right key is pressed
                 this.game.getPaddle().setMoveRight(true);
             }
         });
 
+        // When key is released
         this.getScene().setOnKeyReleased(event -> {
             if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.KP_LEFT || event.getCode() == KeyCode.A) {
+                // Stop moving left, when left key is released
                 this.game.getPaddle().setMoveLeft(false);
             }
 
             if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.KP_RIGHT || event.getCode() == KeyCode.D) {
+                // Stop moving right, when right key is released
                 this.game.getPaddle().setMoveRight(false);
             }
         });
     }
 
+    /**
+     * Trying to add background image
+     * Will fill the screen with a black color, and display this, if background image can't load
+     */
     public void addBackgroundImage() {
+        // Filling background
         this.getScene().setFill(Color.BLACK);
+
+        // Trying to set background image
         try {
+            // Image
             Image image = Images.getImage(Constants.BACKGROUND_FILEPATH + "background12.png");
 
+            // Will repeat the background to fill out the whole screen
             BackgroundImage backgroundimage = new BackgroundImage(image,
                     BackgroundRepeat.REPEAT,
                     BackgroundRepeat.REPEAT,
                     BackgroundPosition.CENTER,
                     BackgroundSize.DEFAULT);
 
+            // Setting background
             Background background = new Background(backgroundimage);
 
+            // Adding background to pane
             this.getPane().setBackground(background);
         } catch (Exception ex) {
             System.err.println("Error loading background image");
         }
     }
 
-
+    /**
+     * Adding start text
+     */
     public void addStartOrPauseText() {
+        // How to start the game text
         this.startOrPauseText = new Text("Press ENTER to start");
         this.startOrPauseText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.startOrPauseText.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
@@ -106,6 +139,7 @@ public class PlayScene extends AbstractScene {
         this.startOrPauseText.setStrokeWidth(0.75);
         this.getPane().getChildren().add(this.startOrPauseText);
 
+        // Movement info text
         this.infoText = new Text("Press 'a' to move left and 'd' to move right");
         this.infoText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.infoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
@@ -114,6 +148,7 @@ public class PlayScene extends AbstractScene {
         this.infoText.setStrokeWidth(0.5);
         this.getPane().getChildren().add(this.infoText);
 
+        // How to pause text
         this.addInfoText = new Text("When started, you can press ENTER to pause the game");
         this.addInfoText.setFont(getFont(Constants.FONT_FILEPATH + "BlackwoodCastle.ttf"));
         this.addInfoText.setStyle("-fx-font-size: 32px; -fx-font-weight: bold;");
@@ -122,12 +157,16 @@ public class PlayScene extends AbstractScene {
         this.addInfoText.setStrokeWidth(0.5);
         this.getPane().getChildren().add(this.addInfoText);
 
-        // Manually set the positions initially
+        // Center the text after it is added to the scene as it needs to be visible and text changes
+        // This makes sure that it is centered no matter what
         addCenterTextListener(this.startOrPauseText, 2, 2);
         addCenterTextListener(this.infoText, 2, 1.8);
         addCenterTextListener(this.addInfoText, 2, 1.6);
     }
 
+    /**
+     * Adding text when player loses a life
+     */
     public void addDeathPauseText() {
         // Text to display start or pause information
         this.deathPauseText = new Text("You Died. You have " + this.game.getLives() + " left.");
@@ -149,13 +188,15 @@ public class PlayScene extends AbstractScene {
         this.getPane().getChildren().add(this.deathInfoText);
         this.deathInfoText.setVisible(false);
 
-
         // Center the text after it is added to the scene as it needs to be visible and text changes
         // This makes sure that it is centered no matter what
         addCenterTextListener(this.deathPauseText, 2, 2);
         addCenterTextListener(this.deathInfoText, 2, 1.8);
     }
 
+    /**
+     * Text to display score
+     */
     public void addDisplayScore() {
         // Text to display start or pause information
         this.displayScoreText = new Text("Score: " + this.game.getScore());
@@ -166,21 +207,22 @@ public class PlayScene extends AbstractScene {
         this.displayScoreText.setVisible(true);
         this.getPane().getChildren().add(this.displayScoreText);
 
-        // Center the text after it is added to the scene as it needs to be visible and text changes
-        // This makes sure that it is centered no matter what
+        // Make sure the text will stay at the same relative position, when window size is changed
         addCenterTextListener(this.displayScoreText, 20, 1);
     }
 
     /**
      * Makes sure the text is at the middle of the screen
      *
-     * @param text
-     * @param xOffset
-     * @param yOffSet
+     * @param text Text given
+     * @param xOffset x-offset
+     * @param yOffSet y-offset
      */
     private void addCenterTextListener(Text text, double xOffset, double yOffSet) {
+        // If text is null, return
         if (text == null) return;
 
+        // Make sure the text will stay at the same relative position, when window size is changed
         text.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
 
             // Make sure bounds of text are updated correctly before calculating new position
@@ -205,7 +247,6 @@ public class PlayScene extends AbstractScene {
         // Check for Victory and return if victory has been reached
         if (this.game.checkVictory()) return;
 
-
         // Check if each ball is out of bounds
         this.game.checkBallOutOfBounds();
 
@@ -225,7 +266,6 @@ public class PlayScene extends AbstractScene {
         // Handle ontick for each ball
         this.game.getBalls().forEach(Ball::onTick);
 
-
         // Remove powerups under screen or collides with paddle
         this.game.checkPowerupCollision();
 
@@ -240,6 +280,8 @@ public class PlayScene extends AbstractScene {
      * @return if text should be displayed and stop game from running when displayed
      */
     private boolean handleTextChangeAndVisibility() {
+        // If game is not playing, and player has died, display deathInfo Texts
+        // If game is not playing, and player has not died, display startInfo Texts
         if (!this.game.isPlaying()) {
             if (this.game.isDied()) {
                 startOrPauseText.setVisible(false);
@@ -259,6 +301,7 @@ public class PlayScene extends AbstractScene {
         startOrPauseText.setVisible(false);
         infoText.setVisible(false);
 
+        // Setting deathInfo Texts visibility to false
         this.game.setDied(false);
         deathPauseText.setVisible(false);
         deathInfoText.setVisible(false);
@@ -269,8 +312,8 @@ public class PlayScene extends AbstractScene {
         return displayScoreText;
     }
 
-    public LivesDisplay getLifesDisplay() {
-        return lifesDisplay;
+    public LivesDisplay getLivesDisplay() {
+        return livesDisplay;
     }
 
     public Text getDeathPauseText() {

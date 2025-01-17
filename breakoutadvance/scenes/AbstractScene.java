@@ -13,7 +13,7 @@ import javafx.scene.text.Font;
 public abstract class AbstractScene {
     private final Scene scene; // Scene that is displayed
 
-    private final Pane pane; // Pane which spands the full screen.
+    private final Pane pane; // Pane which spans the full screen.
 
     /**
      * Create a basic Scene

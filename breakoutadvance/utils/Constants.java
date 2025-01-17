@@ -3,6 +3,9 @@ package breakoutadvance.utils;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Color;
 
+/**
+ * This class is used to save constants used throughout the program
+ */
 public class Constants {
 
     // Paddle constants
@@ -16,10 +19,6 @@ public class Constants {
     public static final int BALL_RADIUS = 16;
     public static final double MINIMUN_BALL_Y_VELOCITY = 0.2;
     public static final String[] BALL_COLORS = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
-
-    // Block constants
-    public static final int BLOCK_WIDTH = 128;
-    public static final int BLOCK_HEIGHT = 16;
 
     // Asset paths
     public static final String IMAGE_PATH = "./assets/img/";
@@ -68,8 +67,5 @@ public class Constants {
     public static final String ARROW_FONT = FONT_FILEPATH + "BLACEB__.ttf";
     public static final int ARROW_FONT_SIZE = DEFAULT_FONT_SIZE*3/4;
     public static final double COLOR_SELECTOR_SPACING = 20;
-
-
-
 }
 

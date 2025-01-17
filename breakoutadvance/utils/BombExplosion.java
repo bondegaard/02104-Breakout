@@ -27,10 +27,11 @@ public class BombExplosion {
      * @param pane Pane to draw on
      */
     public BombExplosion(double posX, double posY, Pane pane) {
-
+        // Values
         int numberOfParticles = 150;
         ParallelTransition bombExplosion = new ParallelTransition();
 
+        // For every particle
         for (int i = 0; i < numberOfParticles; i++) {
             // Creating new particle, with a randomly selected color from the colors array
             Circle eParticle = new Circle(posX, posY, rand.nextInt(2, 5), colors[rand.nextInt(3)]);
@@ -48,7 +49,7 @@ public class BombExplosion {
             // Combining the animations
             bombExplosion.getChildren().add(new ParallelTransition(scaling, fading, translating));
 
-            // Adding it
+            // Adding it to pane
             pane.getChildren().add(eParticle);
 
             // Removing the particles when explosion is done

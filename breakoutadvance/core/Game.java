@@ -67,7 +67,7 @@ public class Game {
     public void hasDied() {
         // Lives will be updated
         lives--;
-        this.playScene.getLifesDisplay().updateLives(this.playScene, lives);
+        this.playScene.getLivesDisplay().updateLives(this.playScene, lives);
 
         //reset and update paddle width of paddle when die
         resetBallAndPaddle();
@@ -370,7 +370,7 @@ public class Game {
         died = true;
 
         // Updating lives
-        this.playScene.getLifesDisplay().updateLives(playScene, lives);
+        this.playScene.getLivesDisplay().updateLives(playScene, lives);
 
         // Playing bomb animation
         new BombExplosion(posX, posY, this.playScene.getPane());
@@ -437,7 +437,7 @@ public class Game {
      */
     public void increaseHealth() {
         lives++;
-        this.playScene.getLifesDisplay().updateLives(this.playScene, lives);
+        this.playScene.getLivesDisplay().updateLives(this.playScene, lives);
     }
 
     /*
@@ -484,7 +484,7 @@ public class Game {
      */
     public void setLives(int lives) {
         this.lives = lives;
-        this.playScene.getLifesDisplay().updateLives(this.playScene, lives);
+        this.playScene.getLivesDisplay().updateLives(this.playScene, lives);
     }
 
     public int getScore() {

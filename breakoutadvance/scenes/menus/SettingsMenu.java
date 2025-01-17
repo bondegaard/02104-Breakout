@@ -190,12 +190,14 @@ public class SettingsMenu extends AbstractMenu {
     }
 
     /**
+     * Creating an ImageView for either the ball or the paddle
      *
-     * @param colorName
-     * @param isBall
-     * @return
+     * @param colorName which color
+     * @param isBall ball or paddle?
+     * @return ImageView
      */
     private ImageView createColorImageView(String colorName, boolean isBall) {
+       // Getting an image path, based on whether its the ball or paddle
         String imagePath = isBall
                 ? Constants.BALL_FILEPATH + colorName + ".png"
                 : Constants.PADDLE_FILEPATH + colorName + ".png";
@@ -203,6 +205,8 @@ public class SettingsMenu extends AbstractMenu {
         Image image = getImage(imagePath); // Assumes Images.getImage handles loading or returns a default image in case of errors
         ImageView imageView = new ImageView(image);
 
+        // If it's a ball, some dimensions are set
+        // If it's a paddle, different dimensions are set
         if (isBall) {
             imageView.setFitWidth(Constants.BALL_RADIUS * 2);
             imageView.setFitHeight(Constants.BALL_RADIUS * 2);
@@ -210,15 +214,30 @@ public class SettingsMenu extends AbstractMenu {
             imageView.setFitWidth(Constants.PADDLE_WIDTH);
             imageView.setFitHeight(Constants.PADDLE_HEIGHT);
         }
-
         return imageView;
     }
 
 
+    /**
+     * Creating HBox for either the balls or the paddles
+     * Therefore creating an option for the user to change between balls and paddles
+     *
+     * @param colors array of colors
+     * @param currentIndex current index
+     * @param isBall ball or paddle?
+     * @return HBox
+     * @param <T> function is generic, works with different variables
+     */
     private <T> HBox createColorSelector(T[] colors, int currentIndex, boolean isBall) {
+        // List of colors
         List<T> colorList = Arrays.asList(colors);
+
+        // Creating an ImageView
         ImageView colorImageView = createColorImageView(colorList.get(currentIndex).toString(), isBall);
 
+        // Updating ImageView for the one of them
+        // If it's a ball, some dimensions are set
+        // If it's a paddle, different dimensions are set
         if (isBall) {
             ballImageView = colorImageView;
             colorImageView.setFitWidth(Constants.BALL_RADIUS * 2);
@@ -229,6 +248,7 @@ public class SettingsMenu extends AbstractMenu {
             colorImageView.setFitHeight(Constants.PADDLE_HEIGHT);
         }
 
+        // New Hbox to display arrows: "<",">", to switch between the balls/paddles
         HBox hbox = new HBox(Constants.COLOR_SELECTOR_SPACING,
                 createArrow("<", () -> changeColor(colorList, -1, isBall)),
                 colorImageView,

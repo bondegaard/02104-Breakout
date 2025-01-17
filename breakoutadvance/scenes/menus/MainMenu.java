@@ -92,6 +92,7 @@ public class MainMenu extends AbstractMenu {
 
     /**
      * Used to determine which text to highlight
+     *
      * @param btnIndex which button
      */
     private void selectText(int btnIndex) {

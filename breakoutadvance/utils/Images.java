@@ -5,6 +5,9 @@ import javafx.scene.image.Image;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Enum to store all images used in the game
+ */
 public enum Images {
 
     // Background files
@@ -126,6 +129,12 @@ public enum Images {
         }
     }
 
+    /**
+     * Getting an image
+     *
+     * @param key key
+     * @return Image - if it exists, else null
+     */
     public static Image getImage(String key) {
         if (!images.containsKey(key)) {
             System.err.println("Image key not found: " + key);

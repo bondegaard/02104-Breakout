@@ -17,13 +17,16 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Class to set up the game (window)
+ */
 public class Breakout extends Application {
 
     public static Breakout instance; // Instance of breakout
 
     private AbstractScene currentScene; // Current displayed scene
 
-    private GameLoop gameLoop; // Gameloop which calls the onTick function.
+    private GameLoop gameLoop; // Game loop which calls the onTick function
 
     private DataManager dataManager; // Manager to handle persistent data
 
@@ -33,11 +36,24 @@ public class Breakout extends Application {
         return instance;
     }
 
+    /**
+     * Run() constructor, which launches the game
+     * @return this
+     */
     public Breakout run() {
         launch();
         return this;
     }
 
+    /**
+     * Used to start window in JavaFX
+     *
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws IOException
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         instance = this;

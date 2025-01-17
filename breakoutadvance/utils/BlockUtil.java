@@ -5,6 +5,9 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
+/**
+ * Class to set images for blocks
+ */
 public class BlockUtil {
     /**
      * Creates a single paddle image composed of:
@@ -19,14 +22,17 @@ public class BlockUtil {
      * - totalWidth must be >= (leftWidth + rightWidth).
      */
     public static Image buildBrickImage(int totalWidth, String color) {
+        // Images
         Image leftImg = Images.getImage(Constants.BLOCK_FILEPATH + color + "Left.png");
         Image middleImg = Images.getImage(Constants.BLOCK_FILEPATH + color + "Middle.png");
         Image rightImg = Images.getImage(Constants.BLOCK_FILEPATH + color + "Right.png");
 
+        // Size
         int leftWidth = (int) leftImg.getWidth();
         int rightWidth = (int) rightImg.getWidth();
         int middleWidth = totalWidth - leftWidth - rightWidth;
 
+        // If too small
         if (middleWidth < 0) {
             throw new IllegalArgumentException(
                     String.format("Total width (%d) too small for left + right images (%d + %d).",

@@ -17,10 +17,16 @@ import static breakoutadvance.utils.Fonts.getFont;
  * You can also restart the game after the game has been lost.
  */
 public class GameOverScene extends AbstractMenu {
-    private int selectedBtn = 0;
-    private final Text[] textItems;
+    private int selectedBtn = 0; // Index of selected button
+    private final Text[] textItems; // Array of text items
 
+    /**
+     * Constructor for game over scene, consisting of basic setup
+     *
+     * @param score
+     */
     public GameOverScene(int score) {
+        // Parent class
         super();
 
         // Create menu items
@@ -37,9 +43,11 @@ public class GameOverScene extends AbstractMenu {
         mainVBox.setAlignment(Pos.CENTER);
         mainVBox.setSpacing(Constants.DEFAULT_VBOX_SPACING);
 
+        // Centering items, and adding to pane
         centerNodeInPane(mainVBox);
         getPane().getChildren().add(mainVBox);
 
+        // Setting text array
         textItems = new Text[]{playAgainText, returnToMenuText};
 
         // Highlight first button
@@ -50,16 +58,37 @@ public class GameOverScene extends AbstractMenu {
         addBackgroundImage();
     }
 
+    /**
+     * Used to determine which text to highlight
+     *
+     * @param btnIndex which button
+     */
     private void selectText(int btnIndex) {
         for (int i = 0; i < textItems.length; i++) {
             highlightMenuItem(textItems[i], i == btnIndex);
         }
     }
 
+    /**
+     * If selected used to highlight text, displaying what item the user is on
+     * If not selected, used to remove the highlight
+     *
+     * @param item which Text
+     * @param isSelected is it selected?
+     */
     private void highlightMenuItem(Text item, boolean isSelected) {
         item.setFill(isSelected ? Constants.HIGHLIGHT_TEXT_COLOR : Constants.NORMAL_TEXT_COLOR);
     }
 
+    /**
+     * Function to create a styled text, with the font from the Constants class
+     *
+     * @param content content of text
+     * @param style css-style
+     * @param fill color fill
+     * @param stroke stroke color
+     * @return the created Text
+     */
     private Text createStyledText(String content, String style, Color fill, Color stroke) {
         Text text = new Text(content);
         text.setFont(getFont(Constants.DEFAULT_FONT));
@@ -69,6 +98,12 @@ public class GameOverScene extends AbstractMenu {
         return text;
     }
 
+    /**
+     * Function to create VBox to contain menu items
+     *
+     * @param texts given texts
+     * @return the created VBox
+     */
     private VBox createMenuVBox(Text... texts) {
         VBox vbox = new VBox(Constants.DEFAULT_VBOX_SPACING, texts);
         vbox.setAlignment(Pos.CENTER);
@@ -76,6 +111,10 @@ public class GameOverScene extends AbstractMenu {
         return vbox;
     }
 
+    /**
+     * Used to navigate the menu - either up or down
+     * @param code keycode / key pressed
+     */
     private void navigateMenu(KeyCode code) {
         if (code == KeyCode.UP || code == KeyCode.W) {
             selectedBtn = (selectedBtn - 1 + textItems.length) % textItems.length;
@@ -85,6 +124,10 @@ public class GameOverScene extends AbstractMenu {
         selectText(selectedBtn);
     }
 
+    /**
+     * Setting up key pressed events, making the user able to press ENTER,
+     * and call a function which determines what happens
+     */
     public void setupKeyPressedEvents() {
         getScene().setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -95,6 +138,10 @@ public class GameOverScene extends AbstractMenu {
         });
     }
 
+    /**
+     * Function which handles operation when ENTER key has been pressed,
+     * based on what the selected button
+     */
     private void btnEnter() {
         switch (selectedBtn) {
             case 0 -> loadPlayScene();
