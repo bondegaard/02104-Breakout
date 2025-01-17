@@ -120,7 +120,7 @@ public class CollisionChecker {
                 }
             }
         }
-
+        // If not hit
         return EdgeHit.NONE;
     }
 
@@ -136,9 +136,11 @@ public class CollisionChecker {
         double[][] ballEdges = new double[ballEdgesToCheck][2];
 
         for (int i = 0; i < ballEdgesToCheck; i++) {
+            // Calculating x and y
             double x = ball.getPosX() + ball.getWidth() + ball.getWidth() * Math.cos(((double) i * Math.PI * 2 / ballEdgesToCheck));
             double y = ball.getPosY() + ball.getWidth() + ball.getWidth() * Math.sin(((double) i * Math.PI * 2 / ballEdgesToCheck));
 
+            // Setting x and y in ballEdges[][]
             ballEdges[i][0] = x;
             ballEdges[i][1] = y;
         }

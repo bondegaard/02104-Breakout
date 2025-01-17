@@ -10,7 +10,7 @@ import javafx.scene.layout.Pane;
 public abstract class AbstractScene {
     private final Scene scene; // Scene that is displayed
 
-    private final Pane pane; // Pane which spands the full screen.
+    private final Pane pane; // Pane which spans the full screen.
 
     /**
      * Create a basic Scene
@@ -33,7 +33,7 @@ public abstract class AbstractScene {
     }
 
     /**
-     * Display screne on the current stage
+     * Display screen on the current stage
      */
     public void displayScene() {
         // Adding Scene to Stage

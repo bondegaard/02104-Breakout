@@ -146,7 +146,6 @@ public class PlayScene extends AbstractScene {
         return grid;
     }
 
-    @Override
     public void onTick() {
         // Handle unstarted or paused game
         if (!playing) {

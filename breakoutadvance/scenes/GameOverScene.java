@@ -23,7 +23,7 @@ public class GameOverScene extends AbstractMenu {
     /**
      * Constructor for game over scene, consisting of basic setup
      *
-     * @param score
+     * @param score score
      */
     public GameOverScene(int score) {
         // Parent class

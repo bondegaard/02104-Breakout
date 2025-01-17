@@ -6,7 +6,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-
+/**
+ * Used to create blocks on the screen
+ */
 public class Block extends AbstractEntity {
 
     private BlockType blockType; // Type of block

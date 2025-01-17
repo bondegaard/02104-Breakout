@@ -16,7 +16,7 @@ public class Grid {
     private final Block[][] grid; // 2d-Array which is filled with blocks or null depending on if the block is alive.
 
     /**
-     * Setup a grid of blocks which is displayed on the scene.
+     * Set up a grid of blocks which is displayed on the scene.
      *
      * @param playScene Current instance of playScene
      * @param n         Amount of rows
@@ -42,6 +42,7 @@ public class Grid {
                 double posX = posXStart + col * lSize; // Horizontal position for each rectangle
                 double posY = posYStart + row * sSize; // Vertical position for each rectangle
 
+                // Creating new block
                 Block block = new Block(posX, posY, lSize - OFFSET, sSize - OFFSET, colors[(int) Math.floor(row / 2)]);
 
                 // Adding it to grid
@@ -52,7 +53,6 @@ public class Grid {
             }
         }
     }
-    //remove block method
 
     /**
      * Remove a block from the grid and scene
@@ -69,10 +69,10 @@ public class Grid {
         this.grid[n][m] = null;
     }
 
-    //get amount of blocks alive
-
     /**
-     * @return Amount of alive blocks in the grid
+     * Getting the amount of alive blocks in the grid
+     *
+     * @return 1 - if at least one block is alive, 0 - if no blocks are alive
      */
     public int getAliveAmount() {
         // If at least on block is alive, return 1

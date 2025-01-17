@@ -12,11 +12,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Class to set up the JavaFX game
+ */
 public class Breakout extends Application {
 
     public static Breakout instance; // Instance of breakout
-    public int n; // Amount of rows
-    public int m; // Amount of columns
     private AbstractScene currentScene; // Current displayed scene
     private GameLoop gameLoop; // Gameloop which calls the onTick function.
 
@@ -24,11 +25,24 @@ public class Breakout extends Application {
         return instance;
     }
 
+    /**
+     * Run() constructor, which launches the game
+     * @return this
+     */
     public Breakout run() {
         launch();
         return this;
     }
 
+    /**
+     * Used to start window in JavaFX
+     *
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws IOException
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         instance = this;
@@ -64,15 +78,17 @@ public class Breakout extends Application {
     /**
      * Setup starting PlayScene
      */
-    private void setupPlayScene() {
+    public void setupPlayScene() {
         // Getting values from user
+        int n = 0;
+        int m = 0;
         do {
-            this.n = UserInputUtils.getUserInputInteger("Enter number of rows: (must be between 1 and 10): ");
-        } while (this.n < 1 || this.n > 10); // Keep asking until n is between 1 and 10 (inclusive)
+            n = UserInputUtils.getUserInputInteger("Enter number of rows: (must be between 1 and 10): ");
+        } while (n < 1 || n > 10); // Keep asking until n is between 1 and 10 (inclusive)
 
         do {
-            this.m = UserInputUtils.getUserInputInteger("Enter number of columns: (must be between 5 and 20): ");
-        } while (this.m < 5 || this.m > 20); // Keep asking until m is between 5 and 20 (inclusive)
+            m = UserInputUtils.getUserInputInteger("Enter number of columns: (must be between 5 and 20): ");
+        } while (m < 5 || m > 20); // Keep asking until m is between 5 and 20 (inclusive)
 
         // Closing the scanner
         UserInputUtils.scan.close();
