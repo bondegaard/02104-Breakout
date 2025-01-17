@@ -5,6 +5,20 @@ package breakoutadvance.levels;
  */
 
 public class Level {
+
+    /**
+     * Basic setup for creating a level
+     * Sets the parameters a level need to be created
+     *
+     * @param name   level name
+     * @param nextLevel  next level
+     * @param paddleWidth sets paddle width
+     * @param ballSpeed  sets ball speed
+     * @param maxBallVelocity sets the max ball speed of the ball
+     * @param powerUpSpeed sets powerup falling speed
+     * @param paddleSpeed sets paddle speed
+     * @param levelMap sets the level
+     */
     private String name = "level_unknown"; // Name of level
 
     private String nextLevel = "level_unknown"; // Name of next level
@@ -21,6 +35,7 @@ public class Level {
 
     private LevelMap levelMap = new LevelMap(); // A representation of a level
 
+    // All getters and Setters
     public String getName() {
         return name;
     }
@@ -57,6 +72,8 @@ public class Level {
         return nextLevel;
     }
 
+
+    // Convert level data into a string
     @Override
     public String toString() {
         return "Level{" +
