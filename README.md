@@ -37,6 +37,7 @@ The program can also be compiled into a .jar file and run with the following ter
 ```bash
 java -jar <jar-file> n m
 ```
+Where n and m are used for the basic implementation to define size of the grid. n and m are both integers.
 
 ---
 ## Deppendency
