@@ -82,7 +82,6 @@ public class Game {
 
                 data.addGame(new breakoutadvance.persistentdata.data.Game(this.score));
                 Breakout.getInstance().getDataManager().saveData();
-                return;
             }
 
             // Setting game over scene
