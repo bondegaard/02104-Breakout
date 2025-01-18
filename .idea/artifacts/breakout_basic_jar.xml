@@ -7,6 +7,7 @@
       <element id="directory" name="src">
         <element id="module-source" name="breakout-basic" />
       </element>
+      <element id="file-copy" path="$PROJECT_DIR$/readme.txt" />
     </root>
   </artifact>
 </component>
