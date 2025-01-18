@@ -6,6 +6,7 @@ import breakoutbasic.scenes.PlayScene;
 import breakoutbasic.utils.UserInputUtils;
 import breakoutbasic.utils.WindowUtils;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -29,8 +30,8 @@ public class Breakout extends Application {
      * Run() constructor, which launches the game
      * @return this
      */
-    public Breakout run() {
-        launch();
+    public Breakout run(String[] args) {
+        launch(args);
         return this;
     }
 
@@ -65,7 +66,7 @@ public class Breakout extends Application {
         WindowUtils.setPrimaryStage(primaryStage);
 
         // Setup Play Scene for Game
-        setupPlayScene();
+        Platform.runLater(this::setupPlayScene);
 
         // Start Game Loop
         gameLoop = new GameLoop(this::onTick);
@@ -80,18 +81,37 @@ public class Breakout extends Application {
      */
     public void setupPlayScene() {
         // Getting values from user
-        int n = 0;
-        int m = 0;
-        do {
-            n = UserInputUtils.getUserInputInteger("Enter number of rows: (must be between 1 and 10): ");
-        } while (n < 1 || n > 10); // Keep asking until n is between 1 and 10 (inclusive)
+        int n = 1;
+        int m = 1;
 
-        do {
-            m = UserInputUtils.getUserInputInteger("Enter number of columns: (must be between 5 and 20): ");
-        } while (m < 5 || m > 20); // Keep asking until m is between 5 and 20 (inclusive)
+        String[] args = this.getParameters().getRaw().toArray(new String[0]);
+        if (args.length >= 2) {
+            try {
+                n = Integer.parseInt(args[0]);
+                m = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid arguments. Please enter valid integers.");
+                System.exit(1);
+                return;
+            }
+        } else {
+            System.out.println("Could not find run arguments. Please enter the number of rows and columns instead.");
+            do {
+                n = UserInputUtils.getUserInputInteger("Enter number of rows: (must be between 1 and 10): ");
+            } while (n < 1 || n > 10); // Keep asking until n is between 1 and 10 (inclusive)
 
+            do {
+                m = UserInputUtils.getUserInputInteger("Enter number of columns: (must be between 5 and 20): ");
+            } while (m < 5 || m > 20); // Keep asking until m is between 5 and 20 (inclusive)
+        }
         // Closing the scanner
         UserInputUtils.scan.close();
+
+        if (n < 1 || n > 10 || m < 1|| m > 20) {
+            System.out.println("Invalid arguments. Please enter valid integers.");
+            System.exit(2);
+            return;
+        }
 
         System.out.println("The game is now running.");
 
