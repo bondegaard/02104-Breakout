@@ -21,7 +21,7 @@ import static breakoutadvance.utils.Fonts.getFont;
 public class PlayScene extends AbstractScene {
 
     private final LivesDisplay livesDisplay; // Lives display
-    private final breakoutadvance.core.Game game; // game instance
+    private final Game game; // game instance
     private Text startOrPauseText; // Start or pause text
     private Text infoText; // Info text
     private Text addInfoText; // Additional info text
@@ -35,7 +35,7 @@ public class PlayScene extends AbstractScene {
      */
     public PlayScene() {
         // Creating new instance of game
-        this.game = new breakoutadvance.core.Game(this);
+        this.game = new Game(this);
 
         // Adding background images
         this.addBackgroundImage();

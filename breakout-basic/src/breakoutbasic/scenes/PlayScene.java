@@ -1,6 +1,6 @@
 package breakoutbasic.scenes;
 
-import breakoutadvance.utils.Constants;
+import breakoutbasic.utils.Constants;
 import breakoutbasic.Breakout;
 import breakoutbasic.grid.Grid;
 import breakoutbasic.objects.Ball;

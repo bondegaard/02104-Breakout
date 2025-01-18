@@ -1,6 +1,5 @@
 package breakoutbasic.scenes;
 
-import breakoutbasic.Breakout;
 import breakoutbasic.utils.WindowUtils;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;

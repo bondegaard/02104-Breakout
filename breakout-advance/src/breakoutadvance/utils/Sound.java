@@ -5,6 +5,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -15,12 +16,12 @@ import java.util.concurrent.CompletableFuture;
 public enum Sound {
 
     // Sound files
-    HIT_1("./assets/sound/hit1.wav"),
-    HIT_2("./assets/sound/hit2.wav"),
-    HIT_3("./assets/sound/hit3.wav"),
-    PADDLE("./assets/sound/paddle.wav"),
-    WON("./assets/sound/won.wav"),
-    LOSE("./assets/sound/lose.wav");
+    HIT_1(Constants.SOUND_PATH+"hit1.wav"),
+    HIT_2(Constants.SOUND_PATH+"hit2.wav"),
+    HIT_3(Constants.SOUND_PATH+"hit3.wav"),
+    PADDLE(Constants.SOUND_PATH+"paddle.wav"),
+    WON(Constants.SOUND_PATH+"won.wav"),
+    LOSE(Constants.SOUND_PATH+"lose.wav");
 
     // Map to store the media objects
     private static final Map<Sound, Media> mediaMap = new HashMap<>();
@@ -74,7 +75,8 @@ public enum Sound {
             // Run async so it doesn't block the main thread
             CompletableFuture.runAsync(() -> {
                 try {
-                    Media media = new Media(new File(sound.getFileName()).toURI().toString());
+                    URL resource = FileUtils.getURL(sound.getFileName());
+                    Media media = new Media(resource.toString());
                     mediaMap.put(sound, media);
                 } catch (Exception e) {
                     e.printStackTrace();

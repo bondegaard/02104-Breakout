@@ -15,11 +15,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import static breakoutadvance.utils.Fonts.getFont;
-import static breakoutadvance.utils.Images.getImage;
-
 import java.util.Arrays;
 import java.util.List;
+
+import static breakoutadvance.utils.Fonts.getFont;
+import static breakoutadvance.utils.Images.getImage;
 
 /**
  * The Settings menu scene, allowing the user to adjust various game options

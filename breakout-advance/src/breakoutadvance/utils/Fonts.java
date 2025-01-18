@@ -4,6 +4,7 @@ import javafx.scene.text.Font;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -26,11 +27,7 @@ public enum Fonts {
      */
     public static void load() {
         for (Fonts font : Fonts.values()) {
-            try {
-                loadFont(font.filename, Constants.DEFAULT_FONT_SIZE);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            loadFont(font.filename, Constants.DEFAULT_FONT_SIZE);
         }
     }
 
@@ -41,14 +38,20 @@ public enum Fonts {
      * @param size size
      * @throws IOException if unable to load font
      */
-    public static void loadFont(String filePath, double size) throws IOException {
-        try (FileInputStream fileInputStream = new FileInputStream(filePath)) {
-            Font font = Font.loadFont(fileInputStream, size);
+    public static void loadFont(String filePath, double size) {
+        try {
+            // Use a resource stream to support loading from JAR
+            InputStream resourceStream = FileUtils.getInputStream(filePath);
+            if (resourceStream == null) {
+                throw new IOException("Font file not found: " + filePath);
+            }
+            Font font = Font.loadFont(resourceStream, size);
             fonts.put(filePath, font);
         } catch (IOException | IllegalStateException e) {
-            System.err.println("Error loading font: " + filePath + " " + e.getMessage());
+            System.err.println("Error loading font: " + filePath + " - " + e.getMessage());
         }
     }
+
 
     /**
      * Getting font, to be able to use it throughout the program
@@ -60,13 +63,8 @@ public enum Fonts {
     public static Font getFont(String filePath, double size) {
         // If the font is not loaded, load it on demand
         return fonts.computeIfAbsent(filePath, path -> {
-            try {
-                loadFont(path, size);
-                return fonts.get(path);
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null; // Return null if font cannot be loaded
-            }
+            loadFont(path, size);
+            return fonts.get(path);
         });
     }
 

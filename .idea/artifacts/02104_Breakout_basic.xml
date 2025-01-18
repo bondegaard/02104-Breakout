@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="02104-Breakout-basic">
-    <output-path>$PROJECT_DIR$/out/artifacts/02104_Breakout_basic</output-path>
-    <root id="archive" name="02104-Breakout-basic.jar">
-      <element id="module-output" name="02104-Breakout" />
-    </root>
-  </artifact>
-</component>

@@ -2,6 +2,7 @@ package breakoutadvance.utils;
 
 import javafx.scene.image.Image;
 
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,7 +107,8 @@ public enum Images {
     public static void putImage(String filepath) {
         try {
             // Load the image
-            Image image = new Image(filepath);
+            URL resource = FileUtils.getURL(filepath);
+            Image image = new Image(resource.toString());
             // Put the key-image pair in the map
             images.put(filepath, image);
         } catch (Exception e) {

@@ -8,8 +8,8 @@ import breakoutadvance.objects.Paddle;
 import breakoutadvance.objects.Powerup;
 import breakoutadvance.objects.powerups.PowerupType;
 import breakoutadvance.persistentdata.data.Data;
-import breakoutadvance.scenes.menus.GameOverMenu;
 import breakoutadvance.scenes.PlayScene;
+import breakoutadvance.scenes.menus.GameOverMenu;
 import breakoutadvance.utils.*;
 
 import java.util.ArrayList;

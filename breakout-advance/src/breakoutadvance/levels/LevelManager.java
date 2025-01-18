@@ -1,10 +1,13 @@
 package breakoutadvance.levels;
 
 import breakoutadvance.persistentdata.DataManager;
+import breakoutadvance.utils.Constants;
+import breakoutadvance.utils.FileUtils;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,41 +37,36 @@ public class LevelManager {
      * Loading all levels, and adding them to levels list
      */
     public void load() {
-        // Setting the path
-        String directoryPath = "assets/levels";
+        // Path to the levels directory
+        String directoryPath = Constants.DEFAULT_PATH +"levels";
 
-        // Checking if the directory exists, if not it's created
-        File directory = new File(directoryPath);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
+        try {
+            // Get resource folder paths (resource listing workaround)
+            List<String> resourceFiles = FileUtils.getResourceFiles(directoryPath);
 
-        // Only have json files
-        File[] files = directory.listFiles();
-        assert files != null;
-        files = Arrays.stream(files).filter(file -> file.getName().endsWith(".json")).toArray(File[]::new);
+            // Filter JSON files and load levels
+            for (String resourceFilePath : resourceFiles) {
+                if (!resourceFilePath.endsWith(".json")) continue;
 
-        // Running through the files
-        for (File file : files) {
-            // Don't check if the file doesn't exist
-            if (!file.exists()) continue;
+                try (InputStreamReader reader = new InputStreamReader(
+                        FileUtils.getResourceAsStream(resourceFilePath))) {
 
-            try (FileReader fileReader = new FileReader(file)) {
-                // Getting a level configuration from a json-file
-                Level level = dataManager.getGson().fromJson(fileReader, Level.class);
-                if (level == null) continue;
-
-                // Adding the level to levels list
-                levels.add(level);
-            } catch (IOException e) {
-                System.err.println("Error reading data file: " + e.getMessage());
+                    // Read JSON and parse the level
+                    Level level = dataManager.getGson().fromJson(reader, Level.class);
+                    if (level != null) {
+                        levels.add(level);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Error reading data file: " + resourceFilePath + " - " + e.getMessage());
+                }
             }
+
+            // Set the first level
+            this.currentLevel = getLevelByName("level_1");
+        } catch (IOException e) {
+            System.err.println("Error loading levels: " + e.getMessage());
         }
-
-        System.out.println("Levels loaded: " + levels.size());
-
-        // Finding and setting the first level
-        this.currentLevel = getLevelByName("level_1");
     }
 
     public Level getLevelByName(String name) {

@@ -21,12 +21,14 @@ public class Constants {
     public static final String[] BALL_COLORS = new String[]{"beige", "black", "blue", "blue2", "brown", "green", "pink", "red", "yellow"};
 
     // Asset paths
-    public static final String IMAGE_PATH = "./assets/img/";
-    public static final String BACKGROUND_FILEPATH = "./assets/img/backgrounds/";
-    public static final String BALL_FILEPATH = "./assets/img/OpenGameArt/balls/";
-    public static final String PADDLE_FILEPATH = "./assets/img/OpenGameArt/paddles/";
-    public static final String BLOCK_FILEPATH = "./assets/img/OpenGameArt/bricks/";
-    public static final String FONT_FILEPATH = "./assets/fonts/";
+    public static final String DEFAULT_PATH = "assets/";
+    public static final String IMAGE_PATH = DEFAULT_PATH+"img/";
+    public static final String SOUND_PATH = DEFAULT_PATH+"sound/";
+    public static final String BACKGROUND_FILEPATH = DEFAULT_PATH+"img/backgrounds/";
+    public static final String BALL_FILEPATH = DEFAULT_PATH+"img/OpenGameArt/balls/";
+    public static final String PADDLE_FILEPATH = DEFAULT_PATH+"img/OpenGameArt/paddles/";
+    public static final String BLOCK_FILEPATH = DEFAULT_PATH+"img/OpenGameArt/bricks/";
+    public static final String FONT_FILEPATH = DEFAULT_PATH+"fonts/";
 
     // Font constants
     public static final String DEFAULT_FONT = FONT_FILEPATH + "BlackwoodCastle.ttf";
