@@ -1,6 +1,7 @@
 package breakoutbasic.scenes;
 
 import breakoutbasic.utils.WindowUtils;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -17,6 +18,7 @@ public class GameOverScene extends AbstractScene {
      * Constructor for game over scene, consisting of basic setup
      */
     public GameOverScene() {
+        super();
         // Screen color
         this.getScene().setFill(Color.BLACK);
 
@@ -28,21 +30,23 @@ public class GameOverScene extends AbstractScene {
      * Adding different text pieces
      */
     public void addGameOverText() {
-        // Game over text
+        // Create a StackPane for centering
+        StackPane stackPane = new StackPane();
+        stackPane.setPrefSize(WindowUtils.getWindowWidth(), WindowUtils.getWindowHeight());
+
+        // Create and style the Game Over text
         this.gameOver = new Text("Game over!");
         this.gameOver.setStyle("-fx-font-size: 100px;");
         this.gameOver.setFill(Color.DARKRED);
-        this.getPane().getChildren().add(this.gameOver);
 
-        // Center the text after it is added to the scene as it needs to be visible and text changes
-        // This makes sure that it is centered no matter what
-        this.gameOver.boundsInLocalProperty().addListener((observable, oldValue, newValue) -> {
-            double textWidth = newValue.getWidth();
-            double textHeight = newValue.getHeight();
-            this.gameOver.setX((WindowUtils.getWindowWidth() - textWidth) / 2);
-            this.gameOver.setY((WindowUtils.getWindowHeight() - textHeight) / 2);
-        });
+        // Add the text to the StackPane
+        stackPane.getChildren().add(this.gameOver);
+
+        // Replace the Pane with the StackPane
+        this.getPane().getChildren().add(stackPane);
     }
+
+
 
     public void onTick() {
 
