@@ -210,6 +210,7 @@ public class PlayScene extends AbstractScene {
                 } else if (ballBlockHit == EdgeHit.BOTH) {
                     flipX = true;
                     flipY = true;
+                    grid.removeBlock(i, j);
                 }
             }
         }

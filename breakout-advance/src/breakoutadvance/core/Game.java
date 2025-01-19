@@ -218,6 +218,12 @@ public class Game {
                         // Flipping both axis for the ball
                         flipX = true;
                         flipY = true;
+
+                        attemptPowerupSpawn(block.getPosX() + block.getWidth() / 2, block.getPosY() + block.getHeight() / 2);
+                        
+                        grid.removeBlock(i, j);
+                        Sound.playSound(Sound.getRandomHitSound());
+
                     }
                 }
             }
