@@ -6,145 +6,99 @@ import breakoutadvance.objects.Paddle;
 import breakoutadvance.objects.Powerup;
 
 /**
- * Class to check collision
+ * Utility class for collision detection.
  */
 public class CollisionChecker {
 
     /**
-     * Checking collision between two entities
+     * Checks collision between two entities (box-to-box collision).
      *
-     * @param entity1 entity 1
-     * @param entity2 entity 2
-     * @return true if collided, false if not
+     * @param firstEntity  the first entity
+     * @param secondEntity the second entity
+     * @return true if collided, false otherwise
      */
-    public static boolean checkCollision(AbstractEntity entity1, AbstractEntity entity2) {
-        // If one of the entities, overlaps the other, return true
-        return entity1.getPosX() <= entity2.getPosX() + entity2.getWidth() &&
-                entity1.getPosX() + entity1.getWidth() >= entity2.getPosX() &&
-                entity1.getPosY() <= entity2.getPosY() + entity2.getWidth() &&
-                entity1.getPosY() + entity1.getWidth() >= entity2.getPosY();
+    public static boolean checkCollision(AbstractEntity firstEntity, AbstractEntity secondEntity) {
+        return overlaps(firstEntity.getPosX(), firstEntity.getPosY(), firstEntity.getWidth(), firstEntity.getHeight(),
+                secondEntity.getPosX(), secondEntity.getPosY(), secondEntity.getWidth(), secondEntity.getHeight());
     }
 
     /**
-     * Checking collision between a paddle and a powerup
+     * Checks collision between a paddle and a powerup (box-to-box collision).
      *
-     * @param paddle paddle
-     * @param powerup powerup
-     * @return true if collided, false if not
+     * @param paddle  the paddle
+     * @param powerup the powerup
+     * @return true if collided, false otherwise
      */
     public static boolean checkCollision(Paddle paddle, Powerup powerup) {
-        // If powerup has a smaller y-value (is further up in the screen) return false
-        if (paddle.getPosY() + paddle.getHeight() < powerup.getPosY())
-            return false;
+        if (paddle.getPosY() + paddle.getHeight() < powerup.getPosY()) {
+            return false; // Powerup is above the paddle
+        }
 
-        // If the powerup overlaps the paddle, return true
-        return paddle.getPosX() <= powerup.getPosX() + 8 + powerup.getWidth() &&
-                paddle.getPosX() + paddle.getWidth() >= powerup.getPosX() + 8 &&
-                paddle.getPosY() <= powerup.getPosY() + 8 + powerup.getWidth() &&
-                paddle.getPosY() + paddle.getWidth() >= powerup.getPosY() + 8;
+        return overlaps(paddle.getPosX(), paddle.getPosY(), paddle.getWidth(), paddle.getHeight(),
+                powerup.getPosX(), powerup.getPosY(), powerup.getWidth(), powerup.getWidth());
     }
 
     /**
-     * Checking collision between block/paddle and ball
+     * Checks collision between a ball (sphere) and an entity (box).
      *
-     * @param entity block or paddle
-     * @param ball ball
-     * @return which axis collided
+     * @param entity the entity (block or paddle)
+     * @param ball   the ball
+     * @return the axis of collision or NONE if no collision
      */
     public static EdgeHit checkCollision(AbstractEntity entity, Ball ball) {
-        double[][] ballEdges = ballCollision(ball, 8);
+        double ballCenterX = ball.getPosX() + ball.getRadius();
+        double ballCenterY = ball.getPosY() + ball.getRadius();
 
-        for (double[] ballEdge : ballEdges) {
-            // Check if this ballEdge is inside the entity bounds
-            if (ballEdge[0] >= entity.getPosX() && ballEdge[0] <= entity.getPosX() + entity.getWidth()
-                    && ballEdge[1] >= entity.getPosY() && ballEdge[1] <= entity.getPosY() + entity.getHeight()) {
+        // Entity bounds
+        double left = entity.getPosX();
+        double right = left + entity.getWidth();
+        double top = entity.getPosY();
+        double bottom = top + entity.getHeight();
 
-                // Calculate centers
-                double entityCenterX = entity.getPosX() + entity.getWidth() / 2.0;
-                double entityCenterY = entity.getPosY() + entity.getHeight() / 2.0;
-                double ballCenterX = ball.getPosX() + ball.getWidth() / 2.0;
-                double ballCenterY = ball.getPosY() + ball.getWidth() / 2.0;
+        // Find the closest point on the entity to the center of the ball
+        double closestX = clamp(ballCenterX, left, right);
+        double closestY = clamp(ballCenterY, top, bottom);
 
-                // Distances to each edge
-                double distanceToTop = ballEdge[1] - entity.getPosY();
-                double distanceToBottom = (entity.getPosY() + entity.getHeight()) - ballEdge[1];
-                double distanceToLeft = ballEdge[0] - entity.getPosX();
-                double distanceToRight = (entity.getPosX() + entity.getWidth()) - ballEdge[0];
+        // Calculate the distance between the ball's center and the closest point
+        double distanceX = ballCenterX - closestX;
+        double distanceY = ballCenterY - closestY;
+        double distanceSquared = distanceX * distanceX + distanceY * distanceY;
 
-                // Determine quadrant
-                boolean ballLeft = ballCenterX < entityCenterX;
-                boolean ballAbove = ballCenterY < entityCenterY;
-
-                if (ballLeft) {
-                    // LEFT side
-                    if (ballAbove) {
-                        // TOP-LEFT
-                        if (distanceToTop < distanceToLeft) {
-                            return EdgeHit.YAXIS; // Collided with top edge
-                        } else if (distanceToTop == distanceToLeft) {
-                            return EdgeHit.BOTH;  // Perfect corner
-                        } else {
-                            return EdgeHit.XAXIS; // Collided with left edge
-                        }
-                    } else {
-                        // BOTTOM-LEFT
-                        if (distanceToBottom < distanceToLeft) {
-                            return EdgeHit.YAXIS;
-                        } else if (distanceToBottom == distanceToLeft) {
-                            return EdgeHit.BOTH;
-                        } else {
-                            return EdgeHit.XAXIS;
-                        }
-                    }
-                } else {
-                    // RIGHT side
-                    if (ballAbove) {
-                        // TOP-RIGHT
-                        if (distanceToTop < distanceToRight) {
-                            return EdgeHit.YAXIS;
-                        } else if (distanceToTop == distanceToRight) {
-                            return EdgeHit.BOTH;
-                        } else {
-                            return EdgeHit.XAXIS;
-                        }
-                    } else {
-                        // BOTTOM-RIGHT
-                        if (distanceToBottom < distanceToRight) {
-                            return EdgeHit.YAXIS;
-                        } else if (distanceToBottom == distanceToRight) {
-                            return EdgeHit.BOTH;
-                        } else {
-                            return EdgeHit.XAXIS;
-                        }
-                    }
-                }
-            }
+        // Check if the distance is less than the radius squared
+        if (distanceSquared > ball.getRadius() * ball.getRadius()) {
+            return EdgeHit.NONE; // No collision
         }
-        // If not hit
-        return EdgeHit.NONE;
+
+        // Determine the axis of collision
+        boolean hitHorizontal = (ballCenterY > top && ballCenterY < bottom);
+        boolean hitVertical = (ballCenterX > left && ballCenterX < right);
+
+        if (hitHorizontal) return EdgeHit.XAXIS;
+        if (hitVertical) return EdgeHit.YAXIS;
+
+        return EdgeHit.BOTH; // Corner collision
     }
 
+    /**
+     * Utility method to clamp a value between a minimum and a maximum.
+     *
+     * @param value the value to clamp
+     * @param min   the minimum value
+     * @param max   the maximum value
+     * @return the clamped value
+     */
+    private static double clamp(double value, double min, double max) {
+        return Math.max(min, Math.min(max, value));
+    }
 
     /**
-     * Calculating coordinates of where the ball has collided
+     * Utility method to check if two rectangles overlap.
      *
-     * @param ball ball
-     * @param ballEdgesToCheck  ballEdgesToCheck
-     * @return double[ballEdgesToCheck][2] : foreach there are an x and y coordinate at double[i][0] = x, and double[i][1] = y
+     * @param x1, y1, w1, h1 - first rectangle properties
+     * @param x2, y2, w2, h2 - second rectangle properties
+     * @return true if rectangles overlap, false otherwise
      */
-    public static double[][] ballCollision(Ball ball, int ballEdgesToCheck) {
-        double[][] ballEdges = new double[ballEdgesToCheck][2];
-
-        for (int i = 0; i < ballEdgesToCheck; i++) {
-            // Calculating x and y
-            double x = ball.getPosX() + ball.getWidth() + ball.getWidth() * Math.cos(((double) i * Math.PI * 2 / ballEdgesToCheck));
-            double y = ball.getPosY() + ball.getWidth() + ball.getWidth() * Math.sin(((double) i * Math.PI * 2 / ballEdgesToCheck));
-
-            // Setting x and y in ballEdges[][]
-            ballEdges[i][0] = x;
-            ballEdges[i][1] = y;
-        }
-
-        return ballEdges;
+    private static boolean overlaps(double x1, double y1, double w1, double h1, double x2, double y2, double w2, double h2) {
+        return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2;
     }
 }

@@ -16,6 +16,7 @@ import javafx.scene.shape.Circle;
 public class Ball extends AbstractEntity {
     private double velX; // x-velocity
     private double velY; // y-velocity
+    private double radius; // Added to avoid confusion with width and height
     private Image img; // Image to draw
     private ImageView imgView = new ImageView(); // To draw/view to image on screen
 
@@ -36,6 +37,7 @@ public class Ball extends AbstractEntity {
         super(posX, posY, radius, radius);
         this.velX = velX;
         this.velY = velY;
+        this.radius = radius;
 
         // Trying to display the ball using an image
         try {
@@ -111,6 +113,14 @@ public class Ball extends AbstractEntity {
 
     public void setVelY(double velY) {
         this.velY = velY;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     /**

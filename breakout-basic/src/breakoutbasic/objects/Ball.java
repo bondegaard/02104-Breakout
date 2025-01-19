@@ -11,6 +11,7 @@ import javafx.scene.shape.Circle;
 public class Ball extends AbstractEntity {
     private double velX; // x-velocity
     private double velY; // y-velocity
+    private double radius;
 
     /**
      * Creating a ball, based on the given parameters
@@ -27,6 +28,7 @@ public class Ball extends AbstractEntity {
         super(posX, posY, radius, radius);
         this.velX = velX;
         this.velY = velY;
+        this.radius = radius;
 
         // Drawing ball
         // Adding radius (this.getHeight()) to accommodate how a circle is drawn
@@ -81,6 +83,14 @@ public class Ball extends AbstractEntity {
 
     public void setVelY(double velY) {
         this.velY = velY;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(double radius) {
+        this.radius = radius;
     }
 
     /**
